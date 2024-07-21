@@ -1,9 +1,9 @@
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
 import 'package:eb_demo_app/core/utils/constants/sizes.dart';
 import 'package:eb_demo_app/core/utils/validators/validation.dart';
-import 'package:eb_demo_app/src/features/authentication/presentation/bloc/bloc/auth_bloc.dart';
+import 'package:eb_demo_app/src/features/authentication/presentation/blocs/login_bloc/login_bloc.dart';
+import 'package:eb_demo_app/src/features/authentication/presentation/blocs/signup_bloc/signup_bloc.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/screens/signin/signin_screen.dart';
-import 'package:eb_demo_app/src/features/authentication/presentation/screens/signup/signup_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,8 +32,9 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
         if (email == null || enteredPassword == null) {
           return;
         }
-        context.read<AuthBloc>().add(
-            AuthSignInRequestEvent(email: email!, password: enteredPassword!));
+        context
+            .read<LoginBloc>()
+            .add(LoginRequestEvent(email: email!, password: enteredPassword!));
       } else {
         if (email == null ||
             enteredPassword == null ||
@@ -41,7 +42,7 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
             username == null) {
           return;
         }
-        context.read<AuthBloc>().add(AuthSignUpRequestEvent(
+        context.read<SignupBloc>().add(SignUpRequestEvent(
               email: email!,
               password: enteredPassword!,
               username: username!,
@@ -180,9 +181,9 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
                     foregroundColor: Colors.amber.shade300,
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20)))),
-                child: BlocBuilder<AuthBloc, AuthState>(
+                child: BlocBuilder<LoginBloc, LoginState>(
                   builder: (context, state) {
-                    if (state is AuthSignInLoading) {
+                    if (state is LoginLoading) {
                       return const Center(
                           child: CupertinoActivityIndicator(
                         color: Colors.white,
@@ -207,7 +208,7 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
                 TextButton(
                   onPressed: () {
                     final screen = widget.isSignIn
-                        ? const SignupScreen()
+                        ? const SigninScreen()
                         : const SigninScreen();
                     if (!widget.isSignIn) {
                       Navigator.of(context).pop();

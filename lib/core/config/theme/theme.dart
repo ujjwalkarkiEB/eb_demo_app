@@ -21,14 +21,16 @@ class AppTheme {
       // chipTheme: AppChipTheme.lightChipTheme,
       );
   static ThemeData darkThemeData = ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.dark,
-    fontFamily: 'Poppins',
-    scaffoldBackgroundColor: Colors.black,
-    primaryColor: Colors.white,
-    textTheme: AppTextTheme.darkTextTheme,
-    elevatedButtonTheme: AppElevatedButtonTheme.darkElevatedButtonTheme,
-    // appBarTheme: EAppBarTheme.darkAppBarTheme,
-    // chipTheme: AppChipTheme.darkChipTheme,
-  );
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      fontFamily: 'Poppins',
+      scaffoldBackgroundColor: Colors.black,
+      primaryColor: Colors.white,
+      textTheme: AppTextTheme.darkTextTheme,
+      elevatedButtonTheme: AppElevatedButtonTheme.darkElevatedButtonTheme,
+      inputDecorationTheme: AppTextFormFieldTheme.darkInputDecorationTheme
+
+      // appBarTheme: EAppBarTheme.darkAppBarTheme,
+      // chipTheme: AppChipTheme.darkChipTheme,
+      );
 }

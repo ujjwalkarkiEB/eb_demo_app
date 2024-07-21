@@ -1,12 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/core/common/widgets/forms/authentication_form.dart';
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
+import 'package:eb_demo_app/src/features/authentication/presentation/blocs/signup_bloc/signup_bloc.dart';
+import 'package:eb_demo_app/src/features/authentication/presentation/screens/signup/sign_up_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../../../core/config/route/app_route.dart';
-import '../../bloc/bloc/auth_bloc.dart';
 
 @RoutePage()
 class SignupScreen extends StatelessWidget {
@@ -15,13 +16,11 @@ class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is AuthRegistrationFailure) {
-          context.router.push(const OtpRoute());
-        }
-      },
+
+    return BlocProvider(
+      create: (context) => SignupBloc(),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
             Stack(
@@ -81,17 +80,16 @@ class SignupScreen extends StatelessWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                  height: screenSize.height * 0.85,
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(40),
-                  decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(60),
-                      ),
-                      color: Colors.white),
-                  child: const AuthenticationForm(
-                    isSignIn: false,
-                  )),
+                height: screenSize.height * 0.85,
+                width: double.infinity,
+                padding: const EdgeInsets.all(40),
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(60),
+                    ),
+                    color: Colors.white),
+                child: SignUpForm(),
+              ),
             )
           ],
         ),
