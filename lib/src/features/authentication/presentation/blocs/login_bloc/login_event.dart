@@ -16,3 +16,5 @@ class LoginRequestEvent extends LoginEvent {
     required this.password,
   });
 }
+
+class ReDirectToSignupScreenEvent extends LoginEvent {}

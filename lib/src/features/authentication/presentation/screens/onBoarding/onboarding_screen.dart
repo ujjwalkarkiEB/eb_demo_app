@@ -26,6 +26,7 @@ const List<Widget> screens = [
   ),
 ];
 
+@RoutePage()
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
@@ -113,13 +114,17 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   ),
                 ),
                 Positioned(
-                  top: 60,
+                  top: 20,
                   right: 20,
                   child: Visibility(
                     visible: !isLastPage,
                     child: TextButton(
                       onPressed: () => _skipOnboarding(context),
-                      child: const Text('Skip'),
+                      child: Text(
+                        'Skip',
+                        style: TextStyle(
+                            color: Colors.black.withOpacity(0.6), fontSize: 18),
+                      ),
                     ),
                   ),
                 ),

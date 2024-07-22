@@ -9,7 +9,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginRequestEvent>((event, emit) async {
       emit(LoginLoading());
       await Future.delayed(Duration(seconds: 3));
-      emit(LoginSuccess());
+      emit(LoginFailed(errorMsg: 'asdasdasd'));
+      // emit(LoginSuccess());
     });
+
+    on<ReDirectToSignupScreenEvent>(_redirectEvent);
+  }
+
+  void _redirectEvent(
+      ReDirectToSignupScreenEvent event, Emitter<LoginState> emit) {
+    emit(ScreenRedirect());
   }
 }

@@ -19,11 +19,11 @@ class AppTextFormFieldTheme {
     ),
     enabledBorder: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(width: 1, color: Colors.white),
+      borderSide: const BorderSide(width: 1, color: Colors.green),
     ),
     focusedBorder: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(width: 2, color: Colors.white),
+      borderSide: const BorderSide(width: 2, color: Colors.amber),
     ),
     errorBorder: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(12),

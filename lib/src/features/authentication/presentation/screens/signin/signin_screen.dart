@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
 import 'package:eb_demo_app/core/utils/constants/images.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/blocs/login_bloc/login_bloc.dart';
@@ -21,6 +22,9 @@ class SigninScreen extends StatelessWidget {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.errorMsg)));
           }
+          if (state is ScreenRedirect) {
+            context.router.push(const SignupRoute());
+          }
         },
         builder: (context, state) {
           return Scaffold(
@@ -31,7 +35,7 @@ class SigninScreen extends StatelessWidget {
                     Container(
                       height: screenSize.height * 0.4,
                       width: double.infinity,
-                      decoration: BoxDecoration(color: Colors.white),
+                      decoration: const BoxDecoration(color: Colors.white),
                     ),
                     Container(
                       height: screenSize.height * 0.4,
@@ -73,38 +77,16 @@ class SigninScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
-                      height: screenSize.height * 0.6,
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(40),
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(60),
-                          ),
-                          color: Colors.white),
-                      child: Column(
-                        children: [
-                          const SiginInForm(),
-                          const Spacer(),
-                          SizedBox(
-                            height: 80,
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.buttonColor,
-                                  foregroundColor: Colors.amber.shade300,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20)))),
-                              child: const Text(
-                                'Login',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
+                    height: screenSize.height * 0.6,
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(40),
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(60),
+                        ),
+                        color: Colors.white),
+                    child: const SignInForm(),
+                  ),
                 )
               ],
             ),

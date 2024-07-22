@@ -8,8 +8,9 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   SignupBloc() : super(SignupInitial()) {
     on<SignupEvent>((event, emit) async {
       emit(SignupLoading());
-      await Future.delayed(Duration(seconds: 3));
-      emit(SignupSuccess());
+      await Future.delayed(Duration(seconds: 2));
+      // emit(SignupSuccess());
+      emit(SignupFailed(errorMsg: 'adaasdasd'));
     });
   }
 }

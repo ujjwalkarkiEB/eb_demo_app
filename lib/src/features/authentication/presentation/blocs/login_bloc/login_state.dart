@@ -18,3 +18,5 @@ final class LoginFailed extends LoginState {
 
   const LoginFailed({required this.errorMsg});
 }
+
+final class ScreenRedirect extends LoginState {}
