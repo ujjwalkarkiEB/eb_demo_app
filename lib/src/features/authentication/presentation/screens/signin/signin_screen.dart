@@ -25,6 +25,10 @@ class SigninScreen extends StatelessWidget {
           if (state is ScreenRedirect) {
             context.router.push(const SignupRoute());
           }
+
+          if (state is LoginSuccess) {
+            context.router.push(const MainNavRoute());
+          }
         },
         builder: (context, state) {
           return Scaffold(

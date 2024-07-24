@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:eb_demo_app/core/utils/constants/strings.dart';
 import 'package:injectable/injectable.dart';
 
+import '../auth_interceptor/auth_interceptor.dart';
+
 @lazySingleton
 class DioClient {
   DioClient(AuthInterceptor authInterceptor)

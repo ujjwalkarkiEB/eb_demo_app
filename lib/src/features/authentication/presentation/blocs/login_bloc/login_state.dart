@@ -11,7 +11,11 @@ final class LoginInitial extends LoginState {}
 
 final class LoginLoading extends LoginState {}
 
-final class LoginSuccess extends LoginState {}
+final class LoginSuccess extends LoginState {
+  final bool isUserAdmin;
+
+  const LoginSuccess({this.isUserAdmin = false});
+}
 
 final class LoginFailed extends LoginState {
   final String errorMsg;

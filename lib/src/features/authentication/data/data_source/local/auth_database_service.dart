@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/utils/constants/strings.dart';
-import '../../../../../../core/utils/helpers/database_helper.dart';
+import '../../../../../../core/utils/local_storage/database_helper.dart';
 
 @lazySingleton
 class AuthDatabaseService {

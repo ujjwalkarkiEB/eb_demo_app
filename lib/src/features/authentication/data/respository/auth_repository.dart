@@ -1,3 +1,11 @@
-abstract class AuthRepository {}
+abstract class AuthRepository {
+  Future<bool> isAuthenticated();
+}
 
-class AuthRepositoryImpl extends AuthRepository {}
+class AuthReposeitoryImpl extends AuthRepository {
+  fina
+  @override
+  Future<bool> isAuthenticated() {
+    
+  }
+}

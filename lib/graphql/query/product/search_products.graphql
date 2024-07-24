@@ -1,0 +1,22 @@
+query searchProducts(
+  $title: String
+  $price_min: Int
+  $price_max: Int
+  $categoryId: Float
+  $limit: Int
+  $offset: Int
+) {
+  products(
+    title: $title
+    price_min: $price_min
+    price_max: $price_max
+    categoryId: $categoryId
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    title
+    price
+    images
+  }
+}

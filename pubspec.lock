@@ -931,6 +931,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
+  searchfield:
+    dependency: "direct main"
+    description:
+      name: searchfield
+      sha256: aecc5be51e8e1a9e0bead099083cae1e97a024c270e46b115dcf850433766ba2
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.8"
   shelf:
     dependency: transitive
     description:

@@ -6,7 +6,8 @@ import 'package:iconsax/iconsax.dart';
 
 @RoutePage()
 class MainNavScreen extends StatefulWidget {
-  const MainNavScreen({super.key});
+  const MainNavScreen({super.key, required this.isCurrentUserAdmin});
+  final bool isCurrentUserAdmin;
 
   @override
   State<MainNavScreen> createState() => _MainScreenState();

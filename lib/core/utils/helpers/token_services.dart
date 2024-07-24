@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:eb_demo_app/core/utils/network/dio_client.dart';
+import 'package:eb_demo_app/core/utils/network/client/dio_client.dart';
 import 'package:eb_demo_app/src/features/authentication/data/data_source/local/auth_database_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jwt_decode/jwt_decode.dart';
@@ -12,7 +12,7 @@ abstract class TokenService {
   Future<void> clearTokens();
   Future<bool> refreshToken();
   Future<void> storeToken({String? refreshToken, String? accessToken});
-  Future<bool> doesAccessTokenExist();
+  Future<bool> isAuthenticated();
   Future<bool> hasSession();
 }
 
@@ -44,20 +44,29 @@ class TokenServiceImpl implements TokenService {
   }
 
   @override
-  Future<bool> doesAccessTokenExist() async {
+  Future<bool> isAuthenticated() async {
     return await _databaseService.chechIfTokenExist();
   }
 
+  @override
   Future<bool> refreshToken() async {
     try {
       final String? refreshToken = await getRefreshToken();
       if (refreshToken == null) {
         return false;
       }
-    
-     final response = _client.dio.request('/ ')
-      await storeToken(accessToken: newToken);
-      return true;
+      if (Jwt.isExpired(refreshToken)) {
+        return false;
+      }
+
+      final response = await _client.dio
+          .post('/account/token/refresh', data: {"refreshToken": refreshToken});
+      final String? token = response.data['refreshToken'];
+      if (token != null) {
+        await storeToken(accessToken: token);
+        return true;
+      }
+      return false;
     } catch (e) {
       throw 'Error while refreshing token : ${e.toString()}';
     }
@@ -68,12 +77,10 @@ class TokenServiceImpl implements TokenService {
     try {
       final String? accessToken = await getAccessToken();
 
-      if (accessToken != null) {}
-      final bool isExpired = Jwt.isExpired(accessToken!);
-      if (isExpired) {
-        return false;
+      if (accessToken != null) {
+        return Jwt.isExpired(accessToken);
       }
-      return true;
+      return false;
     } catch (e) {
       log('Error checking token session: ${e.toString()} ');
       throw 'Error: session check';
