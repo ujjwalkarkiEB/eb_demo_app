@@ -25,7 +25,7 @@ class _SignInFormState extends State<SignInForm> {
   bool rememberMe = false;
 
   void _submitForm() {
-    context.router.pushAndPopUntil(HomeNavRoute(), predicate: (route) => false);
+    // context.router.pushAndPopUntil(MainNavRoute(), predicate: (route) => false);
     if (_formKey.currentState?.validate() ?? false) {
       _formKey.currentState?.save();
       context.read<LoginBloc>().add(LoginRequestEvent(
@@ -90,14 +90,13 @@ class _SignInFormState extends State<SignInForm> {
               ),
             ],
           ),
+          // login button
           SizedBox(
             height: 80,
             width: double.infinity,
             child: ElevatedButton(
               onPressed: _submitForm,
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.buttonColor,
-                  foregroundColor: Colors.amber.shade300,
+              style: OutlinedButton.styleFrom(
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20)))),
               child: BlocBuilder<LoginBloc, LoginState>(
@@ -113,6 +112,25 @@ class _SignInFormState extends State<SignInForm> {
                   );
                 },
               ),
+            ),
+          ),
+          const Gap(10),
+
+          // login as admin
+          TextButton(
+            onPressed: _submitForm,
+            child: BlocBuilder<LoginBloc, LoginState>(
+              builder: (context, state) {
+                if (state is LoginLoading) {
+                  return const CupertinoActivityIndicator(
+                    color: Colors.white,
+                  );
+                }
+                return const Text(
+                  'Login as Admin',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                );
+              },
             ),
           ),
           const Gap(10),

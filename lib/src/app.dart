@@ -6,11 +6,11 @@ import 'package:eb_demo_app/src/features/authentication/presentation/screens/pas
 import 'package:eb_demo_app/src/features/authentication/presentation/screens/password_config/reset_password/rest_password.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/screens/password_config/widget/psw_config_form.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/screens/signin/signin_screen.dart';
+import 'package:eb_demo_app/src/features/personalization/presentation/screens/profile/profile.dart';
+import 'package:eb_demo_app/src/features/shop/presentation/screens/homenav/cart/cart.dart';
+import 'package:eb_demo_app/src/features/shop/presentation/screens/homenav/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'features/authentication/presentation/screens/onBoarding/onboarding_screen.dart';
-import 'features/authentication/presentation/screens/signup/signup_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -26,17 +26,15 @@ class MyApp extends StatelessWidget {
         darkTheme: AppTheme.darkThemeData,
         theme: AppTheme.lightThemeData,
         routerConfig: AppRouter().config(),
-        // home: const OnboardingScreen(),
       ),
       // child: MaterialApp(
-      //     title: 'EBP DEMO APP',
-      //     debugShowCheckedModeBanner: false,
-      //     themeMode: ThemeMode.system,
-      //     darkTheme: AppTheme.darkThemeData,
-      //     theme: AppTheme.lightThemeData,
-      //     home: ForgotPasswordScreen()
-      //     // home: const OnboardingScreen(),
-      //     ),
+      //   title: 'EBP DEMO APP',
+      //   debugShowCheckedModeBanner: false,
+      //   themeMode: ThemeMode.system,
+      //   darkTheme: AppTheme.darkThemeData,
+      //   theme: AppTheme.lightThemeData,
+      //   home: const SigninScreen(),
+      // ),
     );
   }
 }

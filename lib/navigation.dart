@@ -5,21 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 @RoutePage()
-class HomeNavScreen extends StatefulWidget {
-  const HomeNavScreen({super.key});
+class MainNavScreen extends StatefulWidget {
+  const MainNavScreen({super.key});
 
   @override
-  State<HomeNavScreen> createState() => _MainScreenState();
+  State<MainNavScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<HomeNavScreen> {
+class _MainScreenState extends State<MainNavScreen> {
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       routes: const [
-        EventNavigationRoute(),
-        MyEventsRoute(),
-        PersonalizationRoute()
+        HomeNavRoute(),
+        StoreRoute(),
+        WishlistRoute(),
+        PersonalizationRoute(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
         return BottomNavigationBar(
@@ -40,9 +41,13 @@ class _MainScreenState extends State<HomeNavScreen> {
           // selectedItemColor: .buttonColor,
           iconSize: 25,
           items: const [
-            BottomNavigationBarItem(label: 'Home', icon: Icon(Icons.home)),
             BottomNavigationBarItem(
-                label: 'My Events', icon: Icon(Icons.favorite_outlined)),
+              label: 'Home',
+              icon: Icon(Icons.home),
+            ),
+            BottomNavigationBarItem(label: 'Store', icon: Icon(Icons.store)),
+            BottomNavigationBarItem(
+                label: 'Wishlist', icon: Icon(Icons.favorite)),
             BottomNavigationBarItem(
                 label: 'Profile', icon: Icon(Iconsax.profile_2user)),
           ],

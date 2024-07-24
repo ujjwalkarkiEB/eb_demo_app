@@ -33,12 +33,12 @@ class SigninScreen extends StatelessWidget {
                 Stack(
                   children: [
                     Container(
-                      height: screenSize.height * 0.4,
+                      height: screenSize.height * 0.3,
                       width: double.infinity,
                       decoration: const BoxDecoration(color: Colors.white),
                     ),
                     Container(
-                      height: screenSize.height * 0.4,
+                      height: screenSize.height * 0.3,
                       width: double.infinity,
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
@@ -69,7 +69,7 @@ class SigninScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
-                    height: screenSize.height * 0.6,
+                    height: screenSize.height * 0.7,
                     width: double.infinity,
                     color: AppColors.customContainerColor,
                   ),
@@ -77,7 +77,7 @@ class SigninScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
-                    height: screenSize.height * 0.6,
+                    height: screenSize.height * 0.7,
                     width: double.infinity,
                     padding: const EdgeInsets.all(40),
                     decoration: const BoxDecoration(

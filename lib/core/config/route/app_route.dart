@@ -7,13 +7,17 @@ import '../../../src/features/authentication/presentation/screens/password_confi
 import '../../../src/features/authentication/presentation/screens/password_config/reset_password/rest_password.dart';
 import '../../../src/features/authentication/presentation/screens/signin/signin_screen.dart';
 import '../../../src/features/authentication/presentation/screens/signup/signup_screen.dart';
-import '../../../src/features/event/presentation/screens/all_events/all_events.dart';
-import '../../../src/features/event/presentation/screens/event_detail/event_detail.dart';
-import '../../../src/features/event/presentation/screens/event_navigation.dart';
-import '../../../src/features/event/presentation/screens/my_events/my_events.dart';
+
 import '../../../src/features/personalization/presentation/screens/personalization.dart';
 import '../../../src/features/personalization/presentation/screens/profile/profile.dart';
 import '../../../src/features/personalization/presentation/screens/settings/settings.dart';
+import '../../../src/features/shop/presentation/screens/homenav/cart/cart.dart';
+import '../../../src/features/shop/presentation/screens/homenav/home/home.dart';
+import '../../../src/features/shop/presentation/screens/homenav/home_nav.dart';
+import '../../../src/features/shop/presentation/screens/product_detail/product_detail.dart';
+import '../../../src/features/shop/presentation/screens/product_review/product_review.dart';
+import '../../../src/features/shop/presentation/screens/store/store.dart';
+import '../../../src/features/shop/presentation/screens/wishlist/wishlist.dart';
 
 part 'app_route.gr.dart';
 
@@ -21,8 +25,8 @@ part 'app_route.gr.dart';
 class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => [
-        AutoRoute(initial: true, page: OnboardingRoute.page),
-        AutoRoute(page: SigninRoute.page),
+        // AutoRoute(initial: true, page: OnboardingRoute.page),
+        AutoRoute(initial: true, page: SigninRoute.page),
         AutoRoute(page: EmailVerificationRoute.page),
         AutoRoute(page: ForgotPasswordRoute.page),
         AutoRoute(page: ResetPasswordRoute.page),
@@ -30,20 +34,31 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: OtpRoute.page),
 
         // navigation bar routes configuration
-        AutoRoute(page: HomeNavRoute.page, children: [
-          AutoRoute(page: EventNavigationRoute.page, children: [
-            AutoRoute(initial: true, page: AllEventsRoute.page),
-            AutoRoute(page: EventDetailRoute.page),
-          ]),
-          AutoRoute(page: MyEventsRoute.page),
-          AutoRoute(
-              initial: true,
-              page: PersonalizationRoute.page,
-              maintainState: false,
-              children: [
-                AutoRoute(initial: true, page: SettingRoute.page),
-                AutoRoute(page: ProfileRoute.page),
-              ]),
-        ]),
+        AutoRoute(
+          page: MainNavRoute.page,
+          children: [
+            AutoRoute(
+                initial: true,
+                page: HomeNavRoute.page,
+                maintainState: false,
+                children: [
+                  AutoRoute(initial: true, page: HomeRoute.page),
+                  AutoRoute(page: CartRoute.page),
+                ]),
+            AutoRoute(page: StoreRoute.page),
+            AutoRoute(page: WishlistRoute.page),
+            AutoRoute(
+                page: PersonalizationRoute.page,
+                maintainState: false,
+                children: [
+                  AutoRoute(initial: true, page: SettingRoute.page),
+                  AutoRoute(page: ProfileRoute.page),
+                ]),
+
+            //  global route for homenav
+          ],
+        ),
+        AutoRoute(page: ProductDetailRoute.page),
+        AutoRoute(page: ProductReviewRoute.page),
       ];
 }

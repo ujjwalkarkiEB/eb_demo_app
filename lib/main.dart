@@ -1,6 +1,11 @@
+import 'package:eb_demo_app/core/config/injection/injection.dart';
+import 'package:eb_demo_app/core/utils/helpers/database_helper.dart';
 import 'package:eb_demo_app/src/app.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DatabaseHelper().initializeLocalDatabase();
+  configureDependencies();
   runApp(const MyApp());
 }

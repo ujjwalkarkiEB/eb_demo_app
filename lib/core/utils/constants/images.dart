@@ -12,4 +12,10 @@ class AppImages {
   static const onBoardingImg1 = "assets/images/onboarding1.png";
   static const onBoardingImg2 = "assets/images/onboarding2.png";
   static const onBoardingImg3 = "assets/images/onboarding3.png";
+
+  // product images
+  static const productImg1 = "assets/images/products/product1.jpg";
+  static const productImg2 = "assets/images/products/product2.jpeg";
+  static const productImg3 = "assets/images/products/product3.png";
+  static const productImg4 = "assets/images/products/product4.png";
 }
