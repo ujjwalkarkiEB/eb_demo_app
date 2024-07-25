@@ -45,23 +45,23 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    gh.factory<_i553.HomeBloc>(() => _i553.HomeBloc());
     gh.factory<_i772.LoginBloc>(() => _i772.LoginBloc());
-    gh.lazySingleton<_i752.DatabaseHelper>(() => _i752.DatabaseHelper());
+    gh.factory<_i553.HomeBloc>(() => _i553.HomeBloc());
     gh.lazySingleton<_i752.AuthInterceptor>(() => _i752.AuthInterceptor());
+    gh.lazySingleton<_i752.DatabaseHelper>(() => _i752.DatabaseHelper());
     gh.lazySingleton<_i590.DioClient>(
         () => _i590.DioClient(gh<_i752.AuthInterceptor>()));
-    gh.lazySingleton<_i849.AuthApiService>(
-        () => _i849.AuthApiServiceImpl(client: gh<_i590.DioClient>()));
     gh.lazySingleton<_i457.AuthDatabaseService>(() =>
         _i457.AuthDatabaseService(databaseHelper: gh<_i752.DatabaseHelper>()));
-    gh.lazySingleton<_i819.AuthRepository>(() => _i819.AuthReposeitoryImpl(
-          authApiService: gh<_i849.AuthApiService>(),
-          authDatabaseService: gh<_i457.AuthDatabaseService>(),
-        ));
     gh.lazySingleton<_i863.TokenService>(() => _i863.TokenServiceImpl(
           gh<_i457.AuthDatabaseService>(),
           gh<_i590.DioClient>(),
+        ));
+    gh.lazySingleton<_i849.AuthRemoteSource>(
+        () => _i849.AuthRemoteSourceImpl(gh<_i590.DioClient>()));
+    gh.lazySingleton<_i819.AuthRepository>(() => _i819.AuthReposeitoryImpl(
+          authRemoteSource: gh<_i849.AuthRemoteSource>(),
+          authDatabaseService: gh<_i457.AuthDatabaseService>(),
         ));
     gh.factory<_i124.SignupBloc>(
         () => _i124.SignupBloc(gh<_i819.AuthRepository>()));

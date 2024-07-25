@@ -28,7 +28,7 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
     final result = await _authRepository.verifyOtp(userID!, otpCode!);
 
     result.fold(
-      (failure) => emit(OtpCheckFailed(failureMsg: failure.failureMsg)),
+      (failure) => emit(OtpCheckFailed(failureMsg: failure.failureMsg!)),
       (_) => emit(OtpCheckSuccess()),
     );
   }

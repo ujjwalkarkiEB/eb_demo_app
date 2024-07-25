@@ -12,8 +12,8 @@ class ServerFailure extends Failure {
   const ServerFailure(String message) : super(failureMsg: message);
 }
 
-class UnAuthenticatedFailure extends Failure {
-  const UnAuthenticatedFailure(String message) : super(failureMsg: message);
-}
-
 class LocalStorageFailure extends Failure {}
+
+class UnkownFailure extends Failure {
+  const UnkownFailure(String message) : super(failureMsg: message);
+}

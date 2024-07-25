@@ -10,8 +10,8 @@ class DioClient {
   DioClient(this.authInterceptor)
       : _dio = Dio(BaseOptions(
           baseUrl: authServerBaseUrl,
-          connectTimeout: const Duration(seconds: 6000),
-          receiveTimeout: const Duration(seconds: 6000),
+          connectTimeout: const Duration(seconds: 3),
+          receiveTimeout: const Duration(seconds: 3),
           responseType: ResponseType.json,
         )) {
     _dio.interceptors.add(authInterceptor);
