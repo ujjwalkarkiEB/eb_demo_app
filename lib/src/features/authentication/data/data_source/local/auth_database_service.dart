@@ -13,6 +13,27 @@ class AuthDatabaseService {
 
   final DatabaseHelper _databaseHelper;
 
+  Future<void> setAppVisitFlag() async {
+    try {
+      final Box<String> settingsBox = _databaseHelper.settingsBox;
+      await settingsBox.put(isFirstVisitKey, 'true');
+    } catch (e) {
+      log('Error saving token: $e');
+    }
+  }
+
+  bool chechIfFirstVisit() {
+    try {
+      final Box<String> authBox = _databaseHelper.settingsBox;
+      if (authBox.get(isFirstVisitKey) == 'true') {
+        return false;
+      }
+      return true;
+    } catch (e) {
+      throw Exception('Error Getting Token: ${e.toString()}');
+    }
+  }
+
   Future<void> storeToken({String? refreshToken, String? accessToken}) async {
     try {
       final Box<String> authBox = _databaseHelper.authBox;
@@ -50,7 +71,7 @@ class AuthDatabaseService {
     }
   }
 
-  Future<bool> chechIfTokenExist() async {
+  bool chechIfTokenExist() {
     final Box<String> authBox = _databaseHelper.authBox;
     if (authBox.get(accessTokenKey) != null) {
       return true;

@@ -6,6 +6,9 @@ import 'package:eb_demo_app/src/features/authentication/presentation/screens/sig
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:quickalert/quickalert.dart';
+
+import '../../../../../../core/config/injection/injection.dart';
 
 @RoutePage()
 class SignupScreen extends StatelessWidget {
@@ -16,11 +19,17 @@ class SignupScreen extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
 
     return BlocProvider(
-      create: (context) => SignupBloc(),
+      create: (context) => getIt<SignupBloc>(),
       child: BlocListener<SignupBloc, SignupState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is SignupSuccess) {
-            context.router.push(const OtpRoute());
+            await QuickAlert.show(
+              context: context,
+              type: QuickAlertType.info,
+              text: 'Registered Successfully! Proceed to verify email',
+              width: 50,
+            );
+            context.router.push(OtpRoute(userID: state.userID));
           }
           if (state is SignupFailed) {
             ScaffoldMessenger.of(context)

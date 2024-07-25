@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/screens/otp/otp_screen.dart';
+import 'package:flutter/material.dart';
 import '../../../navigation.dart';
 import '../../../src/features/authentication/presentation/screens/onBoarding/onboarding_screen.dart';
 import '../../../src/features/authentication/presentation/screens/password_config/email_verification/email_verification.dart';
@@ -18,6 +19,7 @@ import '../../../src/features/shop/presentation/screens/product_detail/product_d
 import '../../../src/features/shop/presentation/screens/product_review/product_review.dart';
 import '../../../src/features/shop/presentation/screens/store/store.dart';
 import '../../../src/features/shop/presentation/screens/wishlist/wishlist.dart';
+import '../../../src/splash_screen.dart';
 
 part 'app_route.gr.dart';
 
@@ -25,12 +27,14 @@ part 'app_route.gr.dart';
 class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => [
-        // AutoRoute(initial: true, page: OnboardingRoute.page),
-        AutoRoute(initial: true, page: SigninRoute.page),
+        // AutoRoute(initial: true, page: SplashRoute.page),
+
+        AutoRoute(page: OnboardingRoute.page),
+        AutoRoute(page: SigninRoute.page),
         AutoRoute(page: EmailVerificationRoute.page),
         AutoRoute(page: ForgotPasswordRoute.page),
         AutoRoute(page: ResetPasswordRoute.page),
-        AutoRoute(page: SignupRoute.page),
+        AutoRoute(initial: true, page: SignupRoute.page),
         AutoRoute(page: OtpRoute.page),
 
         // navigation bar routes configuration

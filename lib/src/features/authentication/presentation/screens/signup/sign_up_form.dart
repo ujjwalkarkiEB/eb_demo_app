@@ -26,19 +26,14 @@ class _SignUpFormState extends State<SignUpForm> {
   String? repeatedPsw;
 
   void _submitForm() {
-    // if (_formKey.currentState!.validate()) {
-    //   _formKey.currentState!.save();
-    //   context.read<SignupBloc>().add(SignUpRequestEvent(
-    //       username: username!,
-    //       email: email!,
-    //       password: enteredPassword!,
-    //       repeatedPassword: repeatedPsw!));
-    // }
-    context.read<SignupBloc>().add(SignUpRequestEvent(
-        username: 'adas',
-        email: 'ada',
-        password: 'asdas',
-        repeatedPassword: 'adsa'));
+    _formKey.currentState!.save();
+    if (_formKey.currentState!.validate()) {
+      context.read<SignupBloc>().add(SignUpRequestEvent(
+          username: username!,
+          email: email!,
+          password: enteredPassword!,
+          repeatedPassword: repeatedPsw!));
+    }
   }
 
   @override
@@ -90,12 +85,7 @@ class _SignUpFormState extends State<SignUpForm> {
               return Validator.validatePassword(value);
             },
             onSaved: (newValue) {
-              print('entereed val: $newValue');
-
-              if (newValue!.isNotEmpty) {
-                enteredPassword = newValue;
-                print('entereed psw: $enteredPassword');
-              }
+              enteredPassword = newValue;
             },
           ),
           const Gap(40),
@@ -111,6 +101,7 @@ class _SignUpFormState extends State<SignUpForm> {
               }
             },
             validator: (value) {
+              print('entered psw inside vali: $enteredPassword');
               return Validator.validateRepeatPassword(
                   repeatedPsw: value!, enteredPsw: enteredPassword);
             },

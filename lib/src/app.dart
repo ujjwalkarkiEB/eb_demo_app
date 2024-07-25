@@ -1,6 +1,9 @@
+import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/config/theme/theme.dart';
+import 'package:eb_demo_app/src/features/authentication/presentation/blocs/auth/auth_bloc.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/blocs/login_bloc/login_bloc.dart';
+import 'package:eb_demo_app/src/features/authentication/presentation/blocs/otp/otp_bloc.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/screens/password_config/email_verification/email_verification.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/screens/password_config/forgot_psw/forgot_psw.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/screens/password_config/reset_password/rest_password.dart';
@@ -17,8 +20,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LoginBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => getIt<AuthBloc>()..add(AppStartedEvent()),
+        ),
+        BlocProvider(
+          create: (context) => getIt<OtpBloc>(),
+        ),
+      ],
       child: MaterialApp.router(
         title: 'EBP DEMO APP',
         debugShowCheckedModeBanner: false,

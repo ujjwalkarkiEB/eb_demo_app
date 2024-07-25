@@ -16,7 +16,7 @@ abstract class TokenService {
   Future<bool> hasSession();
 }
 
-@lazySingleton
+@LazySingleton(as: TokenService)
 class TokenServiceImpl implements TokenService {
   TokenServiceImpl(this._databaseService, this._client);
   final AuthDatabaseService _databaseService;
@@ -100,7 +100,8 @@ class TokenServiceImpl implements TokenService {
 
       return response;
     } catch (e) {
-      throw ApiException.fromDioError(e as DioException);
+      throw '';
+      // throw ApiException.fromDioError(e as DioException);
     }
   }
 }

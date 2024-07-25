@@ -58,9 +58,13 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     OtpRoute.name: (routeData) {
+      final args = routeData.argsAs<OtpRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const OtpScreen(),
+        child: OtpScreen(
+          key: args.key,
+          userID: args.userID,
+        ),
       );
     },
     PersonalizationRoute.name: (routeData) {
@@ -109,6 +113,12 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const SignupScreen(),
+      );
+    },
+    SplashRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SplashScreen(),
       );
     },
     StoreRoute.name: (routeData) {
@@ -226,16 +236,39 @@ class OnboardingRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [OtpScreen]
-class OtpRoute extends PageRouteInfo<void> {
-  const OtpRoute({List<PageRouteInfo>? children})
-      : super(
+class OtpRoute extends PageRouteInfo<OtpRouteArgs> {
+  OtpRoute({
+    Key? key,
+    required String userID,
+    List<PageRouteInfo>? children,
+  }) : super(
           OtpRoute.name,
+          args: OtpRouteArgs(
+            key: key,
+            userID: userID,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'OtpRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<OtpRouteArgs> page = PageInfo<OtpRouteArgs>(name);
+}
+
+class OtpRouteArgs {
+  const OtpRouteArgs({
+    this.key,
+    required this.userID,
+  });
+
+  final Key? key;
+
+  final String userID;
+
+  @override
+  String toString() {
+    return 'OtpRouteArgs{key: $key, userID: $userID}';
+  }
 }
 
 /// generated route for
@@ -346,6 +379,20 @@ class SignupRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SignupRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [SplashScreen]
+class SplashRoute extends PageRouteInfo<void> {
+  const SplashRoute({List<PageRouteInfo>? children})
+      : super(
+          SplashRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SplashRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

@@ -12,8 +12,10 @@ class DatabaseHelper {
     Hive.init(databaseDir.path);
     await Hive.openBox<String>(authBoxName);
     await Hive.openBox<String>(cacheBoxName);
+    await Hive.openBox<String>(settingsBoxName);
   }
 
   Box<String> get authBox => Hive.box(authBoxName);
   Box<String> get cacheBox => Hive.box(cacheBoxName);
+  Box<String> get settingsBox => Hive.box(settingsBoxName);
 }

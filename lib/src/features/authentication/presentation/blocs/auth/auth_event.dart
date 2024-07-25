@@ -6,3 +6,11 @@ sealed class AuthEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class AppStartedEvent extends AuthEvent {}
+
+class AuthCheckEvent extends AuthEvent {}
+
+class FirstVisitCheckEvent extends AuthEvent {}
+
+class AuthLogoutReuqestEvenet extends AuthEvent {}

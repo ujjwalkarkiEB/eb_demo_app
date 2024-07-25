@@ -9,7 +9,9 @@ const String ecommercerBaseUrl = "https://api.escuelajs.co/graphql";
 // database
 const String authBoxName = "authBox";
 const String cacheBoxName = "cacheBox";
+const String settingsBoxName = "settingsBox";
 
 // keys
 const String accessTokenKey = "accessTokenKey";
 const String refreshTokenKey = "refreshTokenKey";
+const String isFirstVisitKey = "isFirstVisitKey";

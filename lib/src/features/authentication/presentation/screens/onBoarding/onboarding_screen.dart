@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -64,7 +65,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => OnboardingBloc(),
+      create: (_) => getIt<OnboardingBloc>(),
       child: BlocConsumer<OnboardingBloc, OnboardingState>(
           listener: (context, state) {
         if (state is OnboardingNextPage) {
