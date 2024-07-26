@@ -9,11 +9,11 @@ class DioClient {
   final AuthInterceptor authInterceptor;
   DioClient(this.authInterceptor)
       : _dio = Dio(BaseOptions(
-          baseUrl: authServerBaseUrl,
-          connectTimeout: const Duration(seconds: 3),
-          receiveTimeout: const Duration(seconds: 3),
-          responseType: ResponseType.json,
-        )) {
+            baseUrl: authServerBaseUrl,
+            connectTimeout: const Duration(seconds: 3),
+            receiveTimeout: const Duration(seconds: 3),
+            responseType: ResponseType.json,
+            contentType: 'application/json')) {
     _dio.interceptors.add(authInterceptor);
   }
   final Dio _dio;

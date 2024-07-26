@@ -9,7 +9,11 @@ import '../../../../../../../core/utils/constants/images.dart';
 class UserTile extends StatelessWidget {
   const UserTile({
     super.key,
+    required this.name,
+    required this.email,
   });
+  final String name;
+  final String email;
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +34,10 @@ class UserTile extends StatelessWidget {
             image: DecorationImage(image: AssetImage(AppImages.userImage))),
       ),
       title: Text(
-        'Ujjwal Karki',
+        name,
         style: Theme.of(context).textTheme.titleLarge,
       ),
-      subtitle: const Text('ujwal.bdev@gmail.com'),
+      subtitle: Text(email),
       trailing: IconButton(
           onPressed: () {
             context.router.push(const ProfileRoute());

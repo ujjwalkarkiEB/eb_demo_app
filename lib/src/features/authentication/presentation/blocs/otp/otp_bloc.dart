@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -16,6 +18,7 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
   OtpBloc(this._authRepository) : super(OtpInitial()) {
     on<OtpCheckEvent>(_onOtpCheckEvent);
     on<AddDataOnCompleteInputEvent>(_addOtpData);
+    on<ResendOtpRequestEvent>(_onResendOtp);
   }
 
   Future<void> _onOtpCheckEvent(
@@ -25,7 +28,8 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
       return;
     }
     emit(OtpCheckLoading());
-    final result = await _authRepository.verifyOtp(userID!, otpCode!);
+    final result = await _authRepository.verifyOtp(
+        userID!, otpCode!, event.isRedirectedFromLogin);
 
     result.fold(
       (failure) => emit(OtpCheckFailed(failureMsg: failure.failureMsg!)),
@@ -38,11 +42,27 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
     userID = event.userID;
   }
 
-  void _onResendOtp(
-      ResendOtpRequestEvent event, Emitter<OtpState> emit) async {}
+  void _onResendOtp(ResendOtpRequestEvent event, Emitter<OtpState> emit) async {
+    final result = await _authRepository.resendOtp(event.userID);
+
+    result.fold(
+      (l) => emit(OtpResendFailed()),
+      (r) => emit(OtpResendSuccess()),
+    );
+
+    // result.fold(
+    //   (l) {
+    //     print('error');
+    //   },
+    //   (r) {
+    //     print('success');
+    //   },
+    // );
+  }
 
   @override
   void onTransition(Transition<OtpEvent, OtpState> transition) {
+    // TODO: implement onTransition
     super.onTransition(transition);
     print(transition);
   }

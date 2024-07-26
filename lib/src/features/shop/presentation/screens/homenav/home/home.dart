@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/core/common/widgets/layout/grid_layout.dart';
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
 import 'package:eb_demo_app/core/utils/constants/images.dart';
+import 'package:eb_demo_app/core/utils/helpers/helper_functions.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/screens/homenav/home/widget/promo_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -33,7 +34,7 @@ class HomeScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Good day for shopping',
+                              HelperFunctions.getGreeting(TimeOfDay.now()),
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineSmall!

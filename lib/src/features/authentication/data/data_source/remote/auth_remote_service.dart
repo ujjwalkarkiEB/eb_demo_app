@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:eb_demo_app/core/utils/base/base_remote_source.dart';
 import 'package:eb_demo_app/core/utils/constants/strings.dart';
-import 'package:eb_demo_app/core/utils/error/exception/api_exception.dart';
 import 'package:eb_demo_app/core/utils/network/client/dio_client.dart';
 import 'package:injectable/injectable.dart';
 
@@ -23,7 +22,10 @@ abstract class AuthRemoteSource {
   Future<void> resetPassword(
       {required String token, required String newPassword});
   Future<void> verifyAuthenticatorOtp({required String otp});
-  Future<void> verifyOtp({required String otp, required String userId});
+  Future<void> verifyOtp(
+      {required String otp,
+      required String userId,
+      required bool isOtpResentForRegister});
   Future<void> resendOtp({required String userID});
 }
 
@@ -37,7 +39,6 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
     required String oldPassword,
     required String newPassword,
   }) {
-    // TODO: implement changePassword
     throw UnimplementedError();
   }
 
@@ -64,11 +65,11 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
     return networkRequest<void>(
       request: (dio) async {
         return await dio.post(
-          '/api/account/resend-otp/',
+          '/account/resend-otp/',
           data: {"userId": userID, "otpType": "ResendRegisterOtp"},
         );
       },
-      onResponse: (_) => null,
+      responseType: false,
     );
   }
 
@@ -83,8 +84,22 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
 
   @override
   Future<void> resetPasswordEmail({required String email}) {
-    // TODO: implement resetPasswordEmail
-    throw UnimplementedError();
+    return networkRequest<String?>(
+      request: (dio) async {
+        return await dio.post(
+          '/account/password-reset',
+          data: {
+            "email": email,
+          },
+        );
+      },
+      onResponse: (data) {
+        final Map<String, dynamic>? sucessData = data['data'];
+        if (sucessData != null) {
+          return sucessData['userId'];
+        }
+      },
+    );
   }
 
   @override
@@ -102,6 +117,7 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
             "accessToken": data[accessTokenKey],
             "refreshToken": data[refreshTokenKey],
           };
+
           return json.encode(tokens);
         });
   }
@@ -119,6 +135,7 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
     required String password,
     required String repeatedPassword,
   }) async {
+    print('inside remet srvice');
     return networkRequest<String>(
       request: (dio) async {
         final formData = FormData.fromMap({
@@ -131,22 +148,28 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
           '/account/register',
           data: formData,
         );
-        return response.data;
+        return response;
       },
-      onResponse: (data) => data['data']["userId"],
+      onResponse: (data) {
+        return data['data']["userId"];
+      },
     );
   }
 
   @override
-  Future<void> verifyOtp({
-    required String otp,
-    required String userId,
-  }) async {
+  Future<void> verifyOtp(
+      {required String otp,
+      required String userId,
+      required bool isOtpResentForRegister}) async {
     return networkRequest<void>(
       request: (dio) async {
         return await dio.post(
           '/account/verify-user-email/',
-          data: {"userId": userId, "otp": otp, "otpType": "Register"},
+          data: {
+            "userId": userId,
+            "otp": otp,
+            "otpType": isOtpResentForRegister ? "ResendRegisterOtp" : "Register"
+          },
         );
       },
       responseType: false,

@@ -12,6 +12,6 @@ const String cacheBoxName = "cacheBox";
 const String settingsBoxName = "settingsBox";
 
 // keys
-const String accessTokenKey = "accessTokenKey";
-const String refreshTokenKey = "refreshTokenKey";
+const String accessTokenKey = "accessToken";
+const String refreshTokenKey = "refreshToken";
 const String isFirstVisitKey = "isFirstVisitKey";

@@ -1,0 +1,14 @@
+targets:
+  $default:
+    builders:
+      ferry_generator|graphql_builder:
+        enabled: true
+        options:
+          schema: eb_demo_app|lib/graphql/schema.graphql
+          output_dir: "g.files"
+      ferry_generator|serializer_builder:
+        enabled: true
+        options:
+          schema: eb_demo_app|lib/graphql/schema.graphql
+          output_dir: "g.files"
+

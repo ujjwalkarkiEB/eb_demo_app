@@ -64,6 +64,7 @@ abstract class _$AppRouter extends RootStackRouter {
         child: OtpScreen(
           key: args.key,
           userID: args.userID,
+          isRedirectedFromLogin: args.isRedirectedFromLogin,
         ),
       );
     },
@@ -113,6 +114,12 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const SignupScreen(),
+      );
+    },
+    SplashRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SplashScreen(),
       );
     },
     StoreRoute.name: (routeData) {
@@ -234,12 +241,14 @@ class OtpRoute extends PageRouteInfo<OtpRouteArgs> {
   OtpRoute({
     Key? key,
     required String userID,
+    bool isRedirectedFromLogin = false,
     List<PageRouteInfo>? children,
   }) : super(
           OtpRoute.name,
           args: OtpRouteArgs(
             key: key,
             userID: userID,
+            isRedirectedFromLogin: isRedirectedFromLogin,
           ),
           initialChildren: children,
         );
@@ -253,15 +262,18 @@ class OtpRouteArgs {
   const OtpRouteArgs({
     this.key,
     required this.userID,
+    this.isRedirectedFromLogin = false,
   });
 
   final Key? key;
 
   final String userID;
 
+  final bool isRedirectedFromLogin;
+
   @override
   String toString() {
-    return 'OtpRouteArgs{key: $key, userID: $userID}';
+    return 'OtpRouteArgs{key: $key, userID: $userID, isRedirectedFromLogin: $isRedirectedFromLogin}';
   }
 }
 
@@ -373,6 +385,20 @@ class SignupRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SignupRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [SplashScreen]
+class SplashRoute extends PageRouteInfo<void> {
+  const SplashRoute({List<PageRouteInfo>? children})
+      : super(
+          SplashRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SplashRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

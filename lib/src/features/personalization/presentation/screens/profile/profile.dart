@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/core/utils/constants/images.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()
@@ -11,7 +10,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(14.0),
@@ -25,7 +24,8 @@ class ProfileScreen extends StatelessWidget {
                   radius: 30,
                 ),
                 TextButton(
-                    onPressed: () {}, child: Text('Update Profile picture'))
+                    onPressed: () {},
+                    child: const Text('Update Profile picture'))
               ],
             ),
             const Divider(),
@@ -54,9 +54,9 @@ class ProfileScreen extends StatelessWidget {
                     'User-ID',
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
-                  title: Text('12345645'),
-                  trailing:
-                      IconButton(onPressed: () {}, icon: Icon(Icons.copy)),
+                  title: const Text('12345645'),
+                  trailing: IconButton(
+                      onPressed: () {}, icon: const Icon(Icons.copy)),
                 ),
                 const ListTile(
                   leading: Text('Email'),

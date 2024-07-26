@@ -1,11 +1,14 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:eb_demo_app/core/config/route/app_route.dart';
-import 'package:eb_demo_app/core/utils/constants/colors.dart';
-import 'package:eb_demo_app/core/utils/constants/images.dart';
-import 'package:eb_demo_app/src/features/authentication/presentation/blocs/login_bloc/login_bloc.dart';
-import 'package:eb_demo_app/src/features/authentication/presentation/screens/signin/widgets/sigin_in_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quickalert/quickalert.dart';
+
+import '../../../../../../core/config/injection/injection.dart';
+import '../../../../../../core/config/route/app_route.dart';
+import '../../../../../../core/utils/constants/colors.dart';
+import '../../../../../../core/utils/constants/images.dart';
+import '../../blocs/login_bloc/login_bloc.dart';
+import 'widgets/sigin_in_form.dart';
 
 @RoutePage()
 class SigninScreen extends StatelessWidget {
@@ -15,10 +18,22 @@ class SigninScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return BlocProvider(
-      create: (context) => LoginBloc(),
+      create: (context) => getIt<LoginBloc>(),
       child: BlocConsumer<LoginBloc, LoginState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is LoginFailed) {
+            if (state.data != null) {
+              await QuickAlert.show(
+                context: context,
+                type: QuickAlertType.info,
+                text: 'OTP is sent to your mail. First verify it!',
+                width: 50,
+              );
+              context.router.push(
+                  OtpRoute(userID: state.data!, isRedirectedFromLogin: true));
+              return;
+            }
+
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.errorMsg)));
           }
@@ -27,7 +42,7 @@ class SigninScreen extends StatelessWidget {
           }
 
           if (state is LoginSuccess) {
-            context.router.push(MainNavRoute());
+            context.router.push(const MainNavRoute());
           }
         },
         builder: (context, state) {

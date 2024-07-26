@@ -17,3 +17,7 @@ final class OtpCheckFailed extends OtpState {
 }
 
 final class OtpCheckSuccess extends OtpState {}
+
+final class OtpResendFailed extends OtpState {}
+
+final class OtpResendSuccess extends OtpState {}

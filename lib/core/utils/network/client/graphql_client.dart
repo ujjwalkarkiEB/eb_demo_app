@@ -1,13 +1,17 @@
-abstract class Failure {
-  final String failureMsg;
+import 'package:eb_demo_app/core/utils/constants/strings.dart';
+import 'package:ferry/ferry.dart';
+import 'package:gql_dio_link/gql_dio_link.dart';
+import 'package:injectable/injectable.dart';
 
-  Failure({required this.failureMsg});
-}
+import 'dio_client.dart';
 
-class ServerFailure extends Failure {
-  ServerFailure({required super.failureMsg});
-}
+@lazySingleton
+class GraphqlClient {
+  GraphqlClient({required DioClient dioClient})
+      : client =
+            Client(link: DioLink(ecommercerBaseUrl, client: dioClient.dio));
 
-class LocalStorageFailure extends Failure {
-  LocalStorageFailure({required super.failureMsg});
+  final Client client;
+
+  Client get gqlClient => client;
 }

@@ -30,28 +30,26 @@ class AppRouter extends _$AppRouter {
         // AutoRoute(initial: true, page: SplashRoute.page),
 
         AutoRoute(page: OnboardingRoute.page),
-        AutoRoute(page: SigninRoute.page),
+        // AutoRoute(initial: true, page: SigninRoute.page),
         AutoRoute(page: EmailVerificationRoute.page),
         AutoRoute(page: ForgotPasswordRoute.page),
         AutoRoute(page: ResetPasswordRoute.page),
-        AutoRoute(initial: true, page: SignupRoute.page),
+        AutoRoute(page: SignupRoute.page),
         AutoRoute(page: OtpRoute.page),
 
         // navigation bar routes configuration
         AutoRoute(
+          initial: true,
           page: MainNavRoute.page,
           children: [
-            AutoRoute(
-                initial: true,
-                page: HomeNavRoute.page,
-                maintainState: false,
-                children: [
-                  AutoRoute(initial: true, page: HomeRoute.page),
-                  AutoRoute(page: CartRoute.page),
-                ]),
+            AutoRoute(page: HomeNavRoute.page, maintainState: false, children: [
+              AutoRoute(initial: true, page: HomeRoute.page),
+              AutoRoute(page: CartRoute.page),
+            ]),
             AutoRoute(page: StoreRoute.page),
             AutoRoute(page: WishlistRoute.page),
             AutoRoute(
+                initial: true,
                 page: PersonalizationRoute.page,
                 maintainState: false,
                 children: [

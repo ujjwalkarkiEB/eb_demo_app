@@ -27,12 +27,19 @@ import '../../../src/features/authentication/presentation/blocs/otp/otp_bloc.dar
     as _i155;
 import '../../../src/features/authentication/presentation/blocs/signup_bloc/signup_bloc.dart'
     as _i124;
+import '../../../src/features/personalization/data/remote/profile_remote_source.dart'
+    as _i574;
+import '../../../src/features/personalization/data/repository/profile_repositiory.dart'
+    as _i46;
+import '../../../src/features/personalization/presentation/bloc/personalization_bloc.dart'
+    as _i905;
 import '../../../src/features/shop/presentation/blocs/home/home_bloc.dart'
     as _i553;
 import '../../utils/helpers/token_services.dart' as _i863;
 import '../../utils/local_storage/database_helper.dart' as _i752;
 import '../../utils/network/auth_interceptor/auth_interceptor.dart' as _i752;
 import '../../utils/network/client/dio_client.dart' as _i590;
+import '../../utils/network/client/graphql_client.dart' as _i322;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -45,24 +52,31 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    gh.factory<_i772.LoginBloc>(() => _i772.LoginBloc());
     gh.factory<_i553.HomeBloc>(() => _i553.HomeBloc());
-    gh.lazySingleton<_i752.AuthInterceptor>(() => _i752.AuthInterceptor());
     gh.lazySingleton<_i752.DatabaseHelper>(() => _i752.DatabaseHelper());
+    gh.lazySingleton<_i752.AuthInterceptor>(() => _i752.AuthInterceptor());
     gh.lazySingleton<_i590.DioClient>(
         () => _i590.DioClient(gh<_i752.AuthInterceptor>()));
     gh.lazySingleton<_i457.AuthDatabaseService>(() =>
         _i457.AuthDatabaseService(databaseHelper: gh<_i752.DatabaseHelper>()));
+    gh.lazySingleton<_i322.GraphqlClient>(
+        () => _i322.GraphqlClient(dioClient: gh<_i590.DioClient>()));
     gh.lazySingleton<_i863.TokenService>(() => _i863.TokenServiceImpl(
           gh<_i457.AuthDatabaseService>(),
           gh<_i590.DioClient>(),
         ));
     gh.lazySingleton<_i849.AuthRemoteSource>(
         () => _i849.AuthRemoteSourceImpl(gh<_i590.DioClient>()));
+    gh.lazySingleton<_i574.ProfileRemoteSource>(
+        () => _i574.ProfileRemoteSourceImpl(gh<_i590.DioClient>()));
     gh.lazySingleton<_i819.AuthRepository>(() => _i819.AuthReposeitoryImpl(
           authRemoteSource: gh<_i849.AuthRemoteSource>(),
           authDatabaseService: gh<_i457.AuthDatabaseService>(),
         ));
+    gh.lazySingleton<_i46.ProfileRepositiory>(
+        () => _i46.ProfileRepositioryImpl(gh<_i574.ProfileRemoteSource>()));
+    gh.factory<_i905.PersonalizationBloc>(
+        () => _i905.PersonalizationBloc(gh<_i46.ProfileRepositiory>()));
     gh.factory<_i124.SignupBloc>(
         () => _i124.SignupBloc(gh<_i819.AuthRepository>()));
     gh.factory<_i205.OnboardingBloc>(
@@ -70,6 +84,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i839.AuthBloc>(
         () => _i839.AuthBloc(gh<_i819.AuthRepository>()));
     gh.factory<_i155.OtpBloc>(() => _i155.OtpBloc(gh<_i819.AuthRepository>()));
+    gh.factory<_i772.LoginBloc>(
+        () => _i772.LoginBloc(gh<_i819.AuthRepository>()));
     return this;
   }
 }

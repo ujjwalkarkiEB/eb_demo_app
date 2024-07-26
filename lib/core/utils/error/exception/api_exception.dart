@@ -1,20 +1,30 @@
 import 'package:dio/dio.dart';
+import 'package:eb_demo_app/core/utils/error/model/error_model.dart';
 
-/// Base class for all API exceptions.
 abstract class ApiException implements Exception {
   final String message;
   final int? statusCode;
+  final String? errorData;
 
-  ApiException(this.message, [this.statusCode]);
+  ApiException(this.message, [this.statusCode, this.errorData]);
 
   factory ApiException.fromDioError(DioException dioError) {
     if (dioError.response != null) {
       final statusCode = dioError.response?.statusCode;
-      final errorMessage =
-          dioError.response?.data['msg'] ?? 'Unknown server error';
+      final errorModel = ErrorModel.fromJson(dioError.response?.data);
+      final errorMessage = errorModel.message;
 
       switch (statusCode) {
         case 400:
+          if (errorModel.code != null) {
+            switch (errorModel.code) {
+              case 'not-verified':
+                return BadRequestException(
+                    errorMessage, statusCode, errorModel.userId);
+              default:
+                return BadRequestException(errorMessage, statusCode);
+            }
+          }
           return BadRequestException(errorMessage, statusCode);
         case 401:
           return UnauthorizedException(errorMessage, statusCode);
@@ -34,8 +44,15 @@ abstract class ApiException implements Exception {
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
         return NetworkException('Network timeout, please try again.');
+      case DioExceptionType.cancel:
+        return NetworkException('Request to API was cancelled');
+      case DioExceptionType.badCertificate:
+      case DioExceptionType.badResponse:
+      case DioExceptionType.unknown:
+        return NetworkException(
+            'Connection to API failed due to internet connection.');
       default:
-        return UnknownException(dioError.message ?? 'Unkown Server Error');
+        return UnknownException(dioError.message ?? 'Unknown Server Error');
     }
   }
 
@@ -56,7 +73,7 @@ class NetworkException extends ApiException {
 
 /// Exception thrown for bad requests.
 class BadRequestException extends ApiException {
-  BadRequestException(super.message, [super.statusCode]);
+  BadRequestException(super.message, [super.statusCode, super.errorData]);
 }
 
 /// Exception thrown for unauthorized access.

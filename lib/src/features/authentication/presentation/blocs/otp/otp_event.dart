@@ -7,7 +7,11 @@ sealed class OtpEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class OtpCheckEvent extends OtpEvent {}
+class OtpCheckEvent extends OtpEvent {
+  final bool isRedirectedFromLogin;
+
+  const OtpCheckEvent({this.isRedirectedFromLogin = false});
+}
 
 class AddDataOnCompleteInputEvent extends OtpEvent {
   final String otpCode;
@@ -17,4 +21,8 @@ class AddDataOnCompleteInputEvent extends OtpEvent {
       {required this.otpCode, required this.userID});
 }
 
-class ResendOtpRequestEvent extends OtpEvent {}
+class ResendOtpRequestEvent extends OtpEvent {
+  final String userID;
+
+  const ResendOtpRequestEvent({required this.userID});
+}

@@ -19,12 +19,16 @@ abstract class BaseRemoteSource {
   }) async {
     try {
       final response = await request(_dio);
-      if (response.statusCode == 200) {
+
+      if (response.statusCode! >= 200 || response.statusCode! < 300) {
         if (responseType && onResponse != null) {
           return onResponse(response.data);
+        } else {
+          return response as T;
         }
+      } else {
+        throw ServerException('Something went wrong');
       }
-      throw ServerException('Something went wrong!');
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);
     } catch (e) {

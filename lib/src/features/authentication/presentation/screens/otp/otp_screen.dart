@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/core/common/widgets/snackbars/error_snackbar.dart';
+import 'package:eb_demo_app/core/common/widgets/snackbars/sucess_snackbar.dart';
 import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/utils/constants/images.dart';
@@ -16,8 +17,10 @@ import 'package:pinput/pinput.dart';
 
 @RoutePage()
 class OtpScreen extends StatelessWidget {
-  const OtpScreen({super.key, required this.userID});
+  const OtpScreen(
+      {super.key, required this.userID, this.isRedirectedFromLogin = false});
   final String userID;
+  final bool isRedirectedFromLogin;
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +42,18 @@ class OtpScreen extends StatelessWidget {
       listenWhen: (previous, current) => previous != current,
       listener: (context, state) {
         if (state is OtpCheckSuccess) {
-          context.router.replace(const MainNavRoute());
+          context.router.replace(const SigninRoute());
         }
 
         if (state is OtpCheckFailed) {
           showFlashError(context, state.failureMsg);
+        }
+        if (state is OtpResendFailed) {
+          print('errorstae');
+          showFlashError(context, 'Unknown Error. Wait for few minutes!');
+        }
+        if (state is OtpResendSuccess) {
+          showSuccessSnackbar(context, 'Otp is sent successfully!', () {});
         }
       },
       child: Scaffold(
@@ -92,23 +102,29 @@ class OtpScreen extends StatelessWidget {
                       },
                     ),
                     const Gap(AppSizes.spaceBetweenSections),
-                    const Center(
-                      child: Text.rich(TextSpan(children: [
-                        TextSpan(text: 'Didn\'t Recieve an OTP?'),
-                        TextSpan(
-                            text: 'Resend',
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                            )),
-                      ])),
-                    ),
+                    Center(
+                        child: Row(
+                      children: [
+                        const Text('Didn\'t recieve any OTP'),
+                        const Gap(10),
+                        TextButton(
+                          onPressed: () {
+                            context
+                                .read<OtpBloc>()
+                                .add(ResendOtpRequestEvent(userID: userID));
+                          },
+                          child: const Text('Resend'),
+                        ),
+                      ],
+                    )),
                   ],
                 ),
                 const Gap(AppSizes.spaceBetweenSections),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(onPressed: () {
-                    context.read<OtpBloc>().add(OtpCheckEvent());
+                    context.read<OtpBloc>().add(OtpCheckEvent(
+                        isRedirectedFromLogin: isRedirectedFromLogin));
                   }, child: BlocBuilder<OtpBloc, OtpState>(
                     builder: (context, state) {
                       if (state is OtpCheckLoading) {
