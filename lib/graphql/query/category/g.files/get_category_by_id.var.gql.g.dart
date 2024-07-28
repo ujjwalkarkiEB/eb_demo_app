@@ -6,22 +6,22 @@ part of 'get_category_by_id.var.gql.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<GgetProductDetailsVars> _$ggetProductDetailsVarsSerializer =
-    new _$GgetProductDetailsVarsSerializer();
+Serializer<GgetCategoryByIdVars> _$ggetCategoryByIdVarsSerializer =
+    new _$GgetCategoryByIdVarsSerializer();
 
-class _$GgetProductDetailsVarsSerializer
-    implements StructuredSerializer<GgetProductDetailsVars> {
+class _$GgetCategoryByIdVarsSerializer
+    implements StructuredSerializer<GgetCategoryByIdVars> {
   @override
   final Iterable<Type> types = const [
-    GgetProductDetailsVars,
-    _$GgetProductDetailsVars
+    GgetCategoryByIdVars,
+    _$GgetCategoryByIdVars
   ];
   @override
-  final String wireName = 'GgetProductDetailsVars';
+  final String wireName = 'GgetCategoryByIdVars';
 
   @override
   Iterable<Object?> serialize(
-      Serializers serializers, GgetProductDetailsVars object,
+      Serializers serializers, GgetCategoryByIdVars object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
       'id',
@@ -32,10 +32,10 @@ class _$GgetProductDetailsVarsSerializer
   }
 
   @override
-  GgetProductDetailsVars deserialize(
+  GgetCategoryByIdVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GgetProductDetailsVarsBuilder();
+    final result = new GgetCategoryByIdVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -54,31 +54,31 @@ class _$GgetProductDetailsVarsSerializer
   }
 }
 
-class _$GgetProductDetailsVars extends GgetProductDetailsVars {
+class _$GgetCategoryByIdVars extends GgetCategoryByIdVars {
   @override
   final String id;
 
-  factory _$GgetProductDetailsVars(
-          [void Function(GgetProductDetailsVarsBuilder)? updates]) =>
-      (new GgetProductDetailsVarsBuilder()..update(updates))._build();
+  factory _$GgetCategoryByIdVars(
+          [void Function(GgetCategoryByIdVarsBuilder)? updates]) =>
+      (new GgetCategoryByIdVarsBuilder()..update(updates))._build();
 
-  _$GgetProductDetailsVars._({required this.id}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(id, r'GgetProductDetailsVars', 'id');
+  _$GgetCategoryByIdVars._({required this.id}) : super._() {
+    BuiltValueNullFieldError.checkNotNull(id, r'GgetCategoryByIdVars', 'id');
   }
 
   @override
-  GgetProductDetailsVars rebuild(
-          void Function(GgetProductDetailsVarsBuilder) updates) =>
+  GgetCategoryByIdVars rebuild(
+          void Function(GgetCategoryByIdVarsBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GgetProductDetailsVarsBuilder toBuilder() =>
-      new GgetProductDetailsVarsBuilder()..replace(this);
+  GgetCategoryByIdVarsBuilder toBuilder() =>
+      new GgetCategoryByIdVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is GgetProductDetailsVars && id == other.id;
+    return other is GgetCategoryByIdVars && id == other.id;
   }
 
   @override
@@ -91,23 +91,22 @@ class _$GgetProductDetailsVars extends GgetProductDetailsVars {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'GgetProductDetailsVars')
-          ..add('id', id))
+    return (newBuiltValueToStringHelper(r'GgetCategoryByIdVars')..add('id', id))
         .toString();
   }
 }
 
-class GgetProductDetailsVarsBuilder
-    implements Builder<GgetProductDetailsVars, GgetProductDetailsVarsBuilder> {
-  _$GgetProductDetailsVars? _$v;
+class GgetCategoryByIdVarsBuilder
+    implements Builder<GgetCategoryByIdVars, GgetCategoryByIdVarsBuilder> {
+  _$GgetCategoryByIdVars? _$v;
 
   String? _id;
   String? get id => _$this._id;
   set id(String? id) => _$this._id = id;
 
-  GgetProductDetailsVarsBuilder();
+  GgetCategoryByIdVarsBuilder();
 
-  GgetProductDetailsVarsBuilder get _$this {
+  GgetCategoryByIdVarsBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _id = $v.id;
@@ -117,24 +116,24 @@ class GgetProductDetailsVarsBuilder
   }
 
   @override
-  void replace(GgetProductDetailsVars other) {
+  void replace(GgetCategoryByIdVars other) {
     ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$GgetProductDetailsVars;
+    _$v = other as _$GgetCategoryByIdVars;
   }
 
   @override
-  void update(void Function(GgetProductDetailsVarsBuilder)? updates) {
+  void update(void Function(GgetCategoryByIdVarsBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  GgetProductDetailsVars build() => _build();
+  GgetCategoryByIdVars build() => _build();
 
-  _$GgetProductDetailsVars _build() {
+  _$GgetCategoryByIdVars _build() {
     final _$result = _$v ??
-        new _$GgetProductDetailsVars._(
+        new _$GgetCategoryByIdVars._(
             id: BuiltValueNullFieldError.checkNotNull(
-                id, r'GgetProductDetailsVars', 'id'));
+                id, r'GgetCategoryByIdVars', 'id'));
     replace(_$result);
     return _$result;
   }

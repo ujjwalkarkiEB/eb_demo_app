@@ -22,12 +22,21 @@ import 'package:eb_demo_app/graphql/query/category/g.files/get_all_categories.va
     show GgetAllCategoriesVars;
 import 'package:eb_demo_app/graphql/query/category/g.files/get_category_by_id.data.gql.dart'
     show
+        GgetCategoryByIdData,
+        GgetCategoryByIdData_category,
+        GgetCategoryByIdData_category_products;
+import 'package:eb_demo_app/graphql/query/category/g.files/get_category_by_id.req.gql.dart'
+    show GgetCategoryByIdReq;
+import 'package:eb_demo_app/graphql/query/category/g.files/get_category_by_id.var.gql.dart'
+    show GgetCategoryByIdVars;
+import 'package:eb_demo_app/graphql/query/product/g.files/get_product_by_id.data.gql.dart'
+    show
         GgetProductDetailsData,
         GgetProductDetailsData_product,
         GgetProductDetailsData_product_category;
-import 'package:eb_demo_app/graphql/query/category/g.files/get_category_by_id.req.gql.dart'
+import 'package:eb_demo_app/graphql/query/product/g.files/get_product_by_id.req.gql.dart'
     show GgetProductDetailsReq;
-import 'package:eb_demo_app/graphql/query/category/g.files/get_category_by_id.var.gql.dart'
+import 'package:eb_demo_app/graphql/query/product/g.files/get_product_by_id.var.gql.dart'
     show GgetProductDetailsVars;
 import 'package:eb_demo_app/graphql/query/product/g.files/search_products.data.gql.dart'
     show GsearchProductsData, GsearchProductsData_products;
@@ -57,6 +66,11 @@ final SerializersBuilder _serializersBuilder = _$serializers.toBuilder()
   GgetAllCategoriesData_categories,
   GgetAllCategoriesReq,
   GgetAllCategoriesVars,
+  GgetCategoryByIdData,
+  GgetCategoryByIdData_category,
+  GgetCategoryByIdData_category_products,
+  GgetCategoryByIdReq,
+  GgetCategoryByIdVars,
   GgetProductDetailsData,
   GgetProductDetailsData_product,
   GgetProductDetailsData_product_category,

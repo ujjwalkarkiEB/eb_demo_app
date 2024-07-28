@@ -33,6 +33,10 @@ import '../../../src/features/personalization/data/repository/profile_repositior
     as _i46;
 import '../../../src/features/personalization/presentation/bloc/personalization_bloc.dart'
     as _i905;
+import '../../../src/features/shop/data/data_source/remote/shop_remote_source.dart'
+    as _i760;
+import '../../../src/features/shop/data/repository/shop_repository.dart'
+    as _i67;
 import '../../../src/features/shop/presentation/blocs/home/home_bloc.dart'
     as _i553;
 import '../../utils/helpers/token_services.dart' as _i863;
@@ -52,9 +56,8 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    gh.factory<_i553.HomeBloc>(() => _i553.HomeBloc());
-    gh.lazySingleton<_i752.DatabaseHelper>(() => _i752.DatabaseHelper());
     gh.lazySingleton<_i752.AuthInterceptor>(() => _i752.AuthInterceptor());
+    gh.lazySingleton<_i752.DatabaseHelper>(() => _i752.DatabaseHelper());
     gh.lazySingleton<_i590.DioClient>(
         () => _i590.DioClient(gh<_i752.AuthInterceptor>()));
     gh.lazySingleton<_i457.AuthDatabaseService>(() =>
@@ -69,6 +72,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i849.AuthRemoteSourceImpl(gh<_i590.DioClient>()));
     gh.lazySingleton<_i574.ProfileRemoteSource>(
         () => _i574.ProfileRemoteSourceImpl(gh<_i590.DioClient>()));
+    gh.lazySingleton<_i760.ShopRemoteSource>(
+        () => _i760.ShopRemoteSourceImpl(gh<_i322.GraphqlClient>()));
     gh.lazySingleton<_i819.AuthRepository>(() => _i819.AuthReposeitoryImpl(
           authRemoteSource: gh<_i849.AuthRemoteSource>(),
           authDatabaseService: gh<_i457.AuthDatabaseService>(),
@@ -77,15 +82,18 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i46.ProfileRepositioryImpl(gh<_i574.ProfileRemoteSource>()));
     gh.factory<_i905.PersonalizationBloc>(
         () => _i905.PersonalizationBloc(gh<_i46.ProfileRepositiory>()));
+    gh.lazySingleton<_i67.ShopRepository>(
+        () => _i67.ShopRepositoryImpl(gh<_i760.ShopRemoteSource>()));
     gh.factory<_i124.SignupBloc>(
         () => _i124.SignupBloc(gh<_i819.AuthRepository>()));
+    gh.factory<_i772.LoginBloc>(
+        () => _i772.LoginBloc(gh<_i819.AuthRepository>()));
     gh.factory<_i205.OnboardingBloc>(
         () => _i205.OnboardingBloc(gh<_i819.AuthRepository>()));
     gh.factory<_i839.AuthBloc>(
         () => _i839.AuthBloc(gh<_i819.AuthRepository>()));
     gh.factory<_i155.OtpBloc>(() => _i155.OtpBloc(gh<_i819.AuthRepository>()));
-    gh.factory<_i772.LoginBloc>(
-        () => _i772.LoginBloc(gh<_i819.AuthRepository>()));
+    gh.factory<_i553.HomeBloc>(() => _i553.HomeBloc(gh<_i67.ShopRepository>()));
     return this;
   }
 }

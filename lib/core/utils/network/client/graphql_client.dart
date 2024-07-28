@@ -8,8 +8,12 @@ import 'dio_client.dart';
 @lazySingleton
 class GraphqlClient {
   GraphqlClient({required DioClient dioClient})
-      : client =
-            Client(link: DioLink(ecommercerBaseUrl, client: dioClient.dio));
+      : client = Client(
+          link: DioLink(
+            ecommercerBaseUrl,
+            client: dioClient.dio,
+          ),
+        );
 
   final Client client;
 

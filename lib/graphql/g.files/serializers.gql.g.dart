@@ -20,6 +20,11 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GgetAllCategoriesData_categories.serializer)
       ..add(GgetAllCategoriesReq.serializer)
       ..add(GgetAllCategoriesVars.serializer)
+      ..add(GgetCategoryByIdData.serializer)
+      ..add(GgetCategoryByIdData_category.serializer)
+      ..add(GgetCategoryByIdData_category_products.serializer)
+      ..add(GgetCategoryByIdReq.serializer)
+      ..add(GgetCategoryByIdVars.serializer)
       ..add(GgetProductDetailsData.serializer)
       ..add(GgetProductDetailsData_product.serializer)
       ..add(GgetProductDetailsData_product_category.serializer)
@@ -34,9 +39,16 @@ Serializers _$serializers = (new Serializers().toBuilder()
               const [const FullType(GgetAllCategoriesData_categories)]),
           () => new ListBuilder<GgetAllCategoriesData_categories>())
       ..addBuilderFactory(
+          const FullType(BuiltList,
+              const [const FullType(GgetCategoryByIdData_category_products)]),
+          () => new ListBuilder<GgetCategoryByIdData_category_products>())
+      ..addBuilderFactory(
           const FullType(
               BuiltList, const [const FullType(GsearchProductsData_products)]),
           () => new ListBuilder<GsearchProductsData_products>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())

@@ -26,23 +26,21 @@ class _PromoSliderState extends State<PromoSlider> {
       children: [
         CarouselSlider(
           items: widget.promoBanners
-              .map((e) => SizedBox(
-                    width: 300,
-                    height: 350,
-                    child: Card(
-                      clipBehavior: Clip.hardEdge,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30))),
-                      child: Image.asset(
-                        e,
-                        fit: BoxFit.cover,
-                      ),
-                      elevation: 0,
+              .map((e) => Card(
+                    clipBehavior: Clip.hardEdge,
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    elevation: 0,
+                    child: Image.asset(
+                      e,
+                      width: 350,
+                      // Adjusted width
+                      fit: BoxFit.cover, // Ensure the image is not stretched
                     ),
                   ))
               .toList(),
           options: CarouselOptions(
-            viewportFraction: 1,
+            viewportFraction: 2,
             onPageChanged: (index, _) {
               setState(() {
                 currentIndex = index;

@@ -8,26 +8,26 @@ import 'package:eb_demo_app/graphql/g.files/serializers.gql.dart' as _i1;
 
 part 'get_category_by_id.var.gql.g.dart';
 
-abstract class GgetProductDetailsVars
-    implements Built<GgetProductDetailsVars, GgetProductDetailsVarsBuilder> {
-  GgetProductDetailsVars._();
+abstract class GgetCategoryByIdVars
+    implements Built<GgetCategoryByIdVars, GgetCategoryByIdVarsBuilder> {
+  GgetCategoryByIdVars._();
 
-  factory GgetProductDetailsVars(
-          [void Function(GgetProductDetailsVarsBuilder b) updates]) =
-      _$GgetProductDetailsVars;
+  factory GgetCategoryByIdVars(
+          [void Function(GgetCategoryByIdVarsBuilder b) updates]) =
+      _$GgetCategoryByIdVars;
 
   String get id;
-  static Serializer<GgetProductDetailsVars> get serializer =>
-      _$ggetProductDetailsVarsSerializer;
+  static Serializer<GgetCategoryByIdVars> get serializer =>
+      _$ggetCategoryByIdVarsSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GgetProductDetailsVars.serializer,
+        GgetCategoryByIdVars.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GgetProductDetailsVars? fromJson(Map<String, dynamic> json) =>
+  static GgetCategoryByIdVars? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GgetProductDetailsVars.serializer,
+        GgetCategoryByIdVars.serializer,
         json,
       );
 }

@@ -1,15 +1,17 @@
-query getProductDetails($id: ID!) {
-  product(id: $id) {
+query getCategoryById($id: ID!) {
+  category(id: $id) {
     id
-    title
-    price
-    description
-    category {
+    name
+    image
+
+    products {
       id
-      name
+      title
+      price
+      description
+      images
+      creationAt
+      updatedAt
     }
-    images
-    creationAt
-    updatedAt
   }
 }

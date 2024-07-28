@@ -54,8 +54,9 @@ class VerticalProductCard extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: Colors.white),
-                  child: Image.asset(
-                    AppImages.productImg1,
+                  child: Image.network(
+                    image,
+                    width: double.infinity,
                     fit: BoxFit.cover,
                   ),
                 ),

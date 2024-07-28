@@ -10,46 +10,81 @@ import 'package:eb_demo_app/graphql/g.files/serializers.gql.dart' as _i1;
 
 part 'get_category_by_id.data.gql.g.dart';
 
-abstract class GgetProductDetailsData
-    implements Built<GgetProductDetailsData, GgetProductDetailsDataBuilder> {
-  GgetProductDetailsData._();
+abstract class GgetCategoryByIdData
+    implements Built<GgetCategoryByIdData, GgetCategoryByIdDataBuilder> {
+  GgetCategoryByIdData._();
 
-  factory GgetProductDetailsData(
-          [void Function(GgetProductDetailsDataBuilder b) updates]) =
-      _$GgetProductDetailsData;
+  factory GgetCategoryByIdData(
+          [void Function(GgetCategoryByIdDataBuilder b) updates]) =
+      _$GgetCategoryByIdData;
 
-  static void _initializeBuilder(GgetProductDetailsDataBuilder b) =>
+  static void _initializeBuilder(GgetCategoryByIdDataBuilder b) =>
       b..G__typename = 'Query';
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
-  GgetProductDetailsData_product get product;
-  static Serializer<GgetProductDetailsData> get serializer =>
-      _$ggetProductDetailsDataSerializer;
+  GgetCategoryByIdData_category get category;
+  static Serializer<GgetCategoryByIdData> get serializer =>
+      _$ggetCategoryByIdDataSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GgetProductDetailsData.serializer,
+        GgetCategoryByIdData.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GgetProductDetailsData? fromJson(Map<String, dynamic> json) =>
+  static GgetCategoryByIdData? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GgetProductDetailsData.serializer,
+        GgetCategoryByIdData.serializer,
         json,
       );
 }
 
-abstract class GgetProductDetailsData_product
+abstract class GgetCategoryByIdData_category
     implements
-        Built<GgetProductDetailsData_product,
-            GgetProductDetailsData_productBuilder> {
-  GgetProductDetailsData_product._();
+        Built<GgetCategoryByIdData_category,
+            GgetCategoryByIdData_categoryBuilder> {
+  GgetCategoryByIdData_category._();
 
-  factory GgetProductDetailsData_product(
-          [void Function(GgetProductDetailsData_productBuilder b) updates]) =
-      _$GgetProductDetailsData_product;
+  factory GgetCategoryByIdData_category(
+          [void Function(GgetCategoryByIdData_categoryBuilder b) updates]) =
+      _$GgetCategoryByIdData_category;
 
-  static void _initializeBuilder(GgetProductDetailsData_productBuilder b) =>
+  static void _initializeBuilder(GgetCategoryByIdData_categoryBuilder b) =>
+      b..G__typename = 'Category';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  String get id;
+  String get name;
+  String get image;
+  BuiltList<GgetCategoryByIdData_category_products> get products;
+  static Serializer<GgetCategoryByIdData_category> get serializer =>
+      _$ggetCategoryByIdDataCategorySerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GgetCategoryByIdData_category.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GgetCategoryByIdData_category? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GgetCategoryByIdData_category.serializer,
+        json,
+      );
+}
+
+abstract class GgetCategoryByIdData_category_products
+    implements
+        Built<GgetCategoryByIdData_category_products,
+            GgetCategoryByIdData_category_productsBuilder> {
+  GgetCategoryByIdData_category_products._();
+
+  factory GgetCategoryByIdData_category_products(
+      [void Function(GgetCategoryByIdData_category_productsBuilder b)
+          updates]) = _$GgetCategoryByIdData_category_products;
+
+  static void _initializeBuilder(
+          GgetCategoryByIdData_category_productsBuilder b) =>
       b..G__typename = 'Product';
 
   @BuiltValueField(wireName: '__typename')
@@ -58,55 +93,21 @@ abstract class GgetProductDetailsData_product
   String get title;
   double get price;
   String get description;
-  GgetProductDetailsData_product_category get category;
   BuiltList<String> get images;
   _i2.GDateTime get creationAt;
   _i2.GDateTime get updatedAt;
-  static Serializer<GgetProductDetailsData_product> get serializer =>
-      _$ggetProductDetailsDataProductSerializer;
+  static Serializer<GgetCategoryByIdData_category_products> get serializer =>
+      _$ggetCategoryByIdDataCategoryProductsSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GgetProductDetailsData_product.serializer,
+        GgetCategoryByIdData_category_products.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GgetProductDetailsData_product? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GgetProductDetailsData_product.serializer,
-        json,
-      );
-}
-
-abstract class GgetProductDetailsData_product_category
-    implements
-        Built<GgetProductDetailsData_product_category,
-            GgetProductDetailsData_product_categoryBuilder> {
-  GgetProductDetailsData_product_category._();
-
-  factory GgetProductDetailsData_product_category(
-      [void Function(GgetProductDetailsData_product_categoryBuilder b)
-          updates]) = _$GgetProductDetailsData_product_category;
-
-  static void _initializeBuilder(
-          GgetProductDetailsData_product_categoryBuilder b) =>
-      b..G__typename = 'Category';
-
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  String get id;
-  String get name;
-  static Serializer<GgetProductDetailsData_product_category> get serializer =>
-      _$ggetProductDetailsDataProductCategorySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GgetProductDetailsData_product_category.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GgetProductDetailsData_product_category? fromJson(
+  static GgetCategoryByIdData_category_products? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GgetProductDetailsData_product_category.serializer,
+        GgetCategoryByIdData_category_products.serializer,
         json,
       );
 }

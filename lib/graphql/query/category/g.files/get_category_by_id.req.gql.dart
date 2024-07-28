@@ -16,26 +16,26 @@ import 'package:gql_exec/gql_exec.dart' as _i4;
 
 part 'get_category_by_id.req.gql.g.dart';
 
-abstract class GgetProductDetailsReq
+abstract class GgetCategoryByIdReq
     implements
-        Built<GgetProductDetailsReq, GgetProductDetailsReqBuilder>,
-        _i1.OperationRequest<_i2.GgetProductDetailsData,
-            _i3.GgetProductDetailsVars> {
-  GgetProductDetailsReq._();
+        Built<GgetCategoryByIdReq, GgetCategoryByIdReqBuilder>,
+        _i1
+        .OperationRequest<_i2.GgetCategoryByIdData, _i3.GgetCategoryByIdVars> {
+  GgetCategoryByIdReq._();
 
-  factory GgetProductDetailsReq(
-          [void Function(GgetProductDetailsReqBuilder b) updates]) =
-      _$GgetProductDetailsReq;
+  factory GgetCategoryByIdReq(
+          [void Function(GgetCategoryByIdReqBuilder b) updates]) =
+      _$GgetCategoryByIdReq;
 
-  static void _initializeBuilder(GgetProductDetailsReqBuilder b) => b
+  static void _initializeBuilder(GgetCategoryByIdReqBuilder b) => b
     ..operation = _i4.Operation(
       document: _i5.document,
-      operationName: 'getProductDetails',
+      operationName: 'getCategoryById',
     )
     ..executeOnListen = true;
 
   @override
-  _i3.GgetProductDetailsVars get vars;
+  _i3.GgetCategoryByIdVars get vars;
   @override
   _i4.Operation get operation;
   @override
@@ -49,12 +49,12 @@ abstract class GgetProductDetailsReq
   String? get requestId;
   @override
   @BuiltValueField(serialize: false)
-  _i2.GgetProductDetailsData? Function(
-    _i2.GgetProductDetailsData?,
-    _i2.GgetProductDetailsData?,
+  _i2.GgetCategoryByIdData? Function(
+    _i2.GgetCategoryByIdData?,
+    _i2.GgetCategoryByIdData?,
   )? get updateResult;
   @override
-  _i2.GgetProductDetailsData? get optimisticResponse;
+  _i2.GgetCategoryByIdData? get optimisticResponse;
   @override
   String? get updateCacheHandlerKey;
   @override
@@ -67,32 +67,32 @@ abstract class GgetProductDetailsReq
   @BuiltValueField(serialize: false)
   _i4.Context? get context;
   @override
-  _i2.GgetProductDetailsData? parseData(Map<String, dynamic> json) =>
-      _i2.GgetProductDetailsData.fromJson(json);
+  _i2.GgetCategoryByIdData? parseData(Map<String, dynamic> json) =>
+      _i2.GgetCategoryByIdData.fromJson(json);
 
   @override
   Map<String, dynamic> varsToJson() => vars.toJson();
 
   @override
-  Map<String, dynamic> dataToJson(_i2.GgetProductDetailsData data) =>
+  Map<String, dynamic> dataToJson(_i2.GgetCategoryByIdData data) =>
       data.toJson();
 
   @override
-  _i1.OperationRequest<_i2.GgetProductDetailsData, _i3.GgetProductDetailsVars>
+  _i1.OperationRequest<_i2.GgetCategoryByIdData, _i3.GgetCategoryByIdVars>
       transformOperation(_i4.Operation Function(_i4.Operation) transform) =>
           this.rebuild((b) => b..operation = transform(operation));
 
-  static Serializer<GgetProductDetailsReq> get serializer =>
-      _$ggetProductDetailsReqSerializer;
+  static Serializer<GgetCategoryByIdReq> get serializer =>
+      _$ggetCategoryByIdReqSerializer;
 
   Map<String, dynamic> toJson() => (_i6.serializers.serializeWith(
-        GgetProductDetailsReq.serializer,
+        GgetCategoryByIdReq.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GgetProductDetailsReq? fromJson(Map<String, dynamic> json) =>
+  static GgetCategoryByIdReq? fromJson(Map<String, dynamic> json) =>
       _i6.serializers.deserializeWith(
-        GgetProductDetailsReq.serializer,
+        GgetCategoryByIdReq.serializer,
         json,
       );
 }

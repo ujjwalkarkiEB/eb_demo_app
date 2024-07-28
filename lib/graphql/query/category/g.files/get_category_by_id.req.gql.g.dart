@@ -6,27 +6,27 @@ part of 'get_category_by_id.req.gql.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<GgetProductDetailsReq> _$ggetProductDetailsReqSerializer =
-    new _$GgetProductDetailsReqSerializer();
+Serializer<GgetCategoryByIdReq> _$ggetCategoryByIdReqSerializer =
+    new _$GgetCategoryByIdReqSerializer();
 
-class _$GgetProductDetailsReqSerializer
-    implements StructuredSerializer<GgetProductDetailsReq> {
+class _$GgetCategoryByIdReqSerializer
+    implements StructuredSerializer<GgetCategoryByIdReq> {
   @override
   final Iterable<Type> types = const [
-    GgetProductDetailsReq,
-    _$GgetProductDetailsReq
+    GgetCategoryByIdReq,
+    _$GgetCategoryByIdReq
   ];
   @override
-  final String wireName = 'GgetProductDetailsReq';
+  final String wireName = 'GgetCategoryByIdReq';
 
   @override
   Iterable<Object?> serialize(
-      Serializers serializers, GgetProductDetailsReq object,
+      Serializers serializers, GgetCategoryByIdReq object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
       'vars',
       serializers.serialize(object.vars,
-          specifiedType: const FullType(_i3.GgetProductDetailsVars)),
+          specifiedType: const FullType(_i3.GgetCategoryByIdVars)),
       'operation',
       serializers.serialize(object.operation,
           specifiedType: const FullType(_i4.Operation)),
@@ -47,7 +47,7 @@ class _$GgetProductDetailsReqSerializer
       result
         ..add('optimisticResponse')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GgetProductDetailsData)));
+            specifiedType: const FullType(_i2.GgetCategoryByIdData)));
     }
     value = object.updateCacheHandlerKey;
     if (value != null) {
@@ -75,10 +75,10 @@ class _$GgetProductDetailsReqSerializer
   }
 
   @override
-  GgetProductDetailsReq deserialize(
+  GgetCategoryByIdReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GgetProductDetailsReqBuilder();
+    final result = new GgetCategoryByIdReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -88,8 +88,8 @@ class _$GgetProductDetailsReqSerializer
       switch (key) {
         case 'vars':
           result.vars.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(_i3.GgetProductDetailsVars))!
-              as _i3.GgetProductDetailsVars);
+                  specifiedType: const FullType(_i3.GgetCategoryByIdVars))!
+              as _i3.GgetCategoryByIdVars);
           break;
         case 'operation':
           result.operation = serializers.deserialize(value,
@@ -101,8 +101,8 @@ class _$GgetProductDetailsReqSerializer
           break;
         case 'optimisticResponse':
           result.optimisticResponse.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GgetProductDetailsData))!
-              as _i2.GgetProductDetailsData);
+                  specifiedType: const FullType(_i2.GgetCategoryByIdData))!
+              as _i2.GgetCategoryByIdData);
           break;
         case 'updateCacheHandlerKey':
           result.updateCacheHandlerKey = serializers.deserialize(value,
@@ -131,18 +131,18 @@ class _$GgetProductDetailsReqSerializer
   }
 }
 
-class _$GgetProductDetailsReq extends GgetProductDetailsReq {
+class _$GgetCategoryByIdReq extends GgetCategoryByIdReq {
   @override
-  final _i3.GgetProductDetailsVars vars;
+  final _i3.GgetCategoryByIdVars vars;
   @override
   final _i4.Operation operation;
   @override
   final String? requestId;
   @override
-  final _i2.GgetProductDetailsData? Function(
-      _i2.GgetProductDetailsData?, _i2.GgetProductDetailsData?)? updateResult;
+  final _i2.GgetCategoryByIdData? Function(
+      _i2.GgetCategoryByIdData?, _i2.GgetCategoryByIdData?)? updateResult;
   @override
-  final _i2.GgetProductDetailsData? optimisticResponse;
+  final _i2.GgetCategoryByIdData? optimisticResponse;
   @override
   final String? updateCacheHandlerKey;
   @override
@@ -154,11 +154,11 @@ class _$GgetProductDetailsReq extends GgetProductDetailsReq {
   @override
   final _i4.Context? context;
 
-  factory _$GgetProductDetailsReq(
-          [void Function(GgetProductDetailsReqBuilder)? updates]) =>
-      (new GgetProductDetailsReqBuilder()..update(updates))._build();
+  factory _$GgetCategoryByIdReq(
+          [void Function(GgetCategoryByIdReqBuilder)? updates]) =>
+      (new GgetCategoryByIdReqBuilder()..update(updates))._build();
 
-  _$GgetProductDetailsReq._(
+  _$GgetCategoryByIdReq._(
       {required this.vars,
       required this.operation,
       this.requestId,
@@ -170,28 +170,27 @@ class _$GgetProductDetailsReq extends GgetProductDetailsReq {
       required this.executeOnListen,
       this.context})
       : super._() {
+    BuiltValueNullFieldError.checkNotNull(vars, r'GgetCategoryByIdReq', 'vars');
     BuiltValueNullFieldError.checkNotNull(
-        vars, r'GgetProductDetailsReq', 'vars');
+        operation, r'GgetCategoryByIdReq', 'operation');
     BuiltValueNullFieldError.checkNotNull(
-        operation, r'GgetProductDetailsReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GgetProductDetailsReq', 'executeOnListen');
+        executeOnListen, r'GgetCategoryByIdReq', 'executeOnListen');
   }
 
   @override
-  GgetProductDetailsReq rebuild(
-          void Function(GgetProductDetailsReqBuilder) updates) =>
+  GgetCategoryByIdReq rebuild(
+          void Function(GgetCategoryByIdReqBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GgetProductDetailsReqBuilder toBuilder() =>
-      new GgetProductDetailsReqBuilder()..replace(this);
+  GgetCategoryByIdReqBuilder toBuilder() =>
+      new GgetCategoryByIdReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     final dynamic _$dynamicOther = other;
-    return other is GgetProductDetailsReq &&
+    return other is GgetCategoryByIdReq &&
         vars == other.vars &&
         operation == other.operation &&
         requestId == other.requestId &&
@@ -223,7 +222,7 @@ class _$GgetProductDetailsReq extends GgetProductDetailsReq {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'GgetProductDetailsReq')
+    return (newBuiltValueToStringHelper(r'GgetCategoryByIdReq')
           ..add('vars', vars)
           ..add('operation', operation)
           ..add('requestId', requestId)
@@ -238,14 +237,14 @@ class _$GgetProductDetailsReq extends GgetProductDetailsReq {
   }
 }
 
-class GgetProductDetailsReqBuilder
-    implements Builder<GgetProductDetailsReq, GgetProductDetailsReqBuilder> {
-  _$GgetProductDetailsReq? _$v;
+class GgetCategoryByIdReqBuilder
+    implements Builder<GgetCategoryByIdReq, GgetCategoryByIdReqBuilder> {
+  _$GgetCategoryByIdReq? _$v;
 
-  _i3.GgetProductDetailsVarsBuilder? _vars;
-  _i3.GgetProductDetailsVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GgetProductDetailsVarsBuilder();
-  set vars(_i3.GgetProductDetailsVarsBuilder? vars) => _$this._vars = vars;
+  _i3.GgetCategoryByIdVarsBuilder? _vars;
+  _i3.GgetCategoryByIdVarsBuilder get vars =>
+      _$this._vars ??= new _i3.GgetCategoryByIdVarsBuilder();
+  set vars(_i3.GgetCategoryByIdVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
   _i4.Operation? get operation => _$this._operation;
@@ -255,22 +254,21 @@ class GgetProductDetailsReqBuilder
   String? get requestId => _$this._requestId;
   set requestId(String? requestId) => _$this._requestId = requestId;
 
-  _i2.GgetProductDetailsData? Function(
-      _i2.GgetProductDetailsData?, _i2.GgetProductDetailsData?)? _updateResult;
-  _i2.GgetProductDetailsData? Function(
-          _i2.GgetProductDetailsData?, _i2.GgetProductDetailsData?)?
+  _i2.GgetCategoryByIdData? Function(
+      _i2.GgetCategoryByIdData?, _i2.GgetCategoryByIdData?)? _updateResult;
+  _i2.GgetCategoryByIdData? Function(
+          _i2.GgetCategoryByIdData?, _i2.GgetCategoryByIdData?)?
       get updateResult => _$this._updateResult;
   set updateResult(
-          _i2.GgetProductDetailsData? Function(
-                  _i2.GgetProductDetailsData?, _i2.GgetProductDetailsData?)?
+          _i2.GgetCategoryByIdData? Function(
+                  _i2.GgetCategoryByIdData?, _i2.GgetCategoryByIdData?)?
               updateResult) =>
       _$this._updateResult = updateResult;
 
-  _i2.GgetProductDetailsDataBuilder? _optimisticResponse;
-  _i2.GgetProductDetailsDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GgetProductDetailsDataBuilder();
-  set optimisticResponse(
-          _i2.GgetProductDetailsDataBuilder? optimisticResponse) =>
+  _i2.GgetCategoryByIdDataBuilder? _optimisticResponse;
+  _i2.GgetCategoryByIdDataBuilder get optimisticResponse =>
+      _$this._optimisticResponse ??= new _i2.GgetCategoryByIdDataBuilder();
+  set optimisticResponse(_i2.GgetCategoryByIdDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
 
   String? _updateCacheHandlerKey;
@@ -299,11 +297,11 @@ class GgetProductDetailsReqBuilder
   _i4.Context? get context => _$this._context;
   set context(_i4.Context? context) => _$this._context = context;
 
-  GgetProductDetailsReqBuilder() {
-    GgetProductDetailsReq._initializeBuilder(this);
+  GgetCategoryByIdReqBuilder() {
+    GgetCategoryByIdReq._initializeBuilder(this);
   }
 
-  GgetProductDetailsReqBuilder get _$this {
+  GgetCategoryByIdReqBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _vars = $v.vars.toBuilder();
@@ -322,27 +320,27 @@ class GgetProductDetailsReqBuilder
   }
 
   @override
-  void replace(GgetProductDetailsReq other) {
+  void replace(GgetCategoryByIdReq other) {
     ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$GgetProductDetailsReq;
+    _$v = other as _$GgetCategoryByIdReq;
   }
 
   @override
-  void update(void Function(GgetProductDetailsReqBuilder)? updates) {
+  void update(void Function(GgetCategoryByIdReqBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  GgetProductDetailsReq build() => _build();
+  GgetCategoryByIdReq build() => _build();
 
-  _$GgetProductDetailsReq _build() {
-    _$GgetProductDetailsReq _$result;
+  _$GgetCategoryByIdReq _build() {
+    _$GgetCategoryByIdReq _$result;
     try {
       _$result = _$v ??
-          new _$GgetProductDetailsReq._(
+          new _$GgetCategoryByIdReq._(
               vars: vars.build(),
               operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GgetProductDetailsReq', 'operation'),
+                  operation, r'GgetCategoryByIdReq', 'operation'),
               requestId: requestId,
               updateResult: updateResult,
               optimisticResponse: _optimisticResponse?.build(),
@@ -350,7 +348,7 @@ class GgetProductDetailsReqBuilder
               updateCacheHandlerContext: updateCacheHandlerContext,
               fetchPolicy: fetchPolicy,
               executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen, r'GgetProductDetailsReq', 'executeOnListen'),
+                  executeOnListen, r'GgetCategoryByIdReq', 'executeOnListen'),
               context: context);
     } catch (_) {
       late String _$failedField;
@@ -362,7 +360,7 @@ class GgetProductDetailsReqBuilder
         _optimisticResponse?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'GgetProductDetailsReq', _$failedField, e.toString());
+            r'GgetCategoryByIdReq', _$failedField, e.toString());
       }
       rethrow;
     }

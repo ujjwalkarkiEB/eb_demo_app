@@ -42,14 +42,13 @@ class AppRouter extends _$AppRouter {
           initial: true,
           page: MainNavRoute.page,
           children: [
-            AutoRoute(page: HomeNavRoute.page, maintainState: false, children: [
+            AutoRoute(initial: true, page: HomeNavRoute.page, children: [
               AutoRoute(initial: true, page: HomeRoute.page),
               AutoRoute(page: CartRoute.page),
             ]),
             AutoRoute(page: StoreRoute.page),
             AutoRoute(page: WishlistRoute.page),
             AutoRoute(
-                initial: true,
                 page: PersonalizationRoute.page,
                 maintainState: false,
                 children: [
