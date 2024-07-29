@@ -8,7 +8,9 @@ import '../../../../../../../core/utils/constants/images.dart';
 class ProductDetailSiverAppBar extends StatelessWidget {
   const ProductDetailSiverAppBar({
     super.key,
+    required this.image,
   });
+  final String image;
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +69,8 @@ class ProductDetailSiverAppBar extends StatelessWidget {
       ),
       expandedHeight: 300,
       flexibleSpace: FlexibleSpaceBar(
-        background: Image.asset(
-          AppImages.productImg3,
+        background: Image.network(
+          image,
           fit: BoxFit.cover,
         ),
       ),

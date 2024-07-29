@@ -16,7 +16,7 @@ class SearchContainer extends StatefulWidget {
 
 class _SearchContainerState extends State<SearchContainer> {
   final searchTextController = TextEditingController();
-  bool isLoading = false;
+  final focus = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -32,54 +32,58 @@ class _SearchContainerState extends State<SearchContainer> {
         borderRadius: BorderRadius.circular(12),
       ),
       child: BlocBuilder<HomeBloc, HomeState>(
+        buildWhen: (previous, current) =>
+            previous != current && current is! SearchLoadingMore,
         builder: (context, state) {
-          final suggestions = (state is SearchLoaded) ? state.suggestions : [];
-          final isLoadingMore = state is SearchLoadingMore;
-          print(isLoadingMore);
+          final List<ProductSummary> suggestions =
+              (state is SearchLoaded) ? state.suggestions : [];
 
-          return SearchField(
-            controller: searchTextController,
-            showEmpty: isLoadingMore,
+          return SearchField<ProductSummary>(
+            showEmpty: context.read<HomeBloc>().isFetching,
             emptyWidget: Container(
                 decoration: suggestionDecoration,
-                // item*maxItems
+                height: 200, // item*maxItems
                 child: const Center(
                     child: CircularProgressIndicator(
                   color: Colors.black,
                 ))),
+            controller: searchTextController,
             key: const Key('SearchField'),
             itemHeight: 50,
-            maxSuggestionsInViewPort: 3,
-            suggestions:
-                suggestions.map((e) => SearchFieldListItem(e.title)).toList(),
+            maxSuggestionsInViewPort: 4,
+            inputType: TextInputType.text,
+            suggestions: suggestions
+                .map((e) => SearchFieldListItem<ProductSummary>(e.id,
+                    child: ListTile(
+                      leading: Image.network(e.images[0]),
+                      minTileHeight: 10,
+                      title: Text(e.title),
+                    )))
+                .toList(),
             scrollbarDecoration: ScrollbarDecoration(),
-            searchInputDecoration: const InputDecoration(
-              fillColor: Colors.white,
-              prefixIcon: Icon(Icons.search, color: Colors.grey),
-              hintText: "Search",
-              hintStyle: TextStyle(color: Colors.grey),
-              border: InputBorder.none,
+            searchInputDecoration: InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              labelText: 'Search Products',
+              floatingLabelBehavior: FloatingLabelBehavior.never,
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              border: InputBorder.none,
+              fillColor: Colors.white,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 20),
             ),
             suggestionsDecoration: suggestionDecoration,
             suggestionItemDecoration: const BoxDecoration(
               color: Colors.white,
             ),
-            onSuggestionTap: (x) {
-              context.router.push(const ProductDetailRoute());
+            onSuggestionTap: (SearchFieldListItem<ProductSummary> item) {
+              context.router
+                  .push(ProductDetailRoute(productID: item.searchKey));
+
               searchTextController.clear();
-              Focus.of(context).unfocus();
+              focus.unfocus();
             },
             onScroll: (offset, maxOffset) {
-              if (offset >= maxOffset) {
-                setState(() {
-                  isLoading = true;
-                });
+              if (offset >= maxOffset && !context.read<HomeBloc>().isFetching) {
                 context.read<HomeBloc>().add(
                       LoadMoreSuggestionsEvent(
                         searchTextController.text,
@@ -87,14 +91,17 @@ class _SearchContainerState extends State<SearchContainer> {
                     );
               }
             },
+            animationDuration: Duration(milliseconds: 500),
             onSearchTextChanged: (query) {
-              // if searched query is empty by clearing show empty suggestions
               if (query.trim() == '') {
                 return [];
               }
               context.read<HomeBloc>().add(SearchProductsByTitleEvent(query));
               return suggestions
-                  .map((e) => SearchFieldListItem(e.title))
+                  .map((e) => SearchFieldListItem<ProductSummary>(e.title,
+                      child: ListTile(
+                        title: Text(e.title),
+                      )))
                   .toList();
             },
           );

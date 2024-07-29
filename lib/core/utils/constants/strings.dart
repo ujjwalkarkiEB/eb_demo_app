@@ -8,7 +8,7 @@ const String ecommercerBaseUrl = "https://api.escuelajs.co/graphql";
 
 // database
 const String authBoxName = "authBox";
-const String cacheBoxName = "cacheBox";
+const String cartBoxName = "cartBox";
 const String settingsBoxName = "settingsBox";
 
 // keys

@@ -93,7 +93,6 @@ abstract class GgetProductDetailsData_product_category
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
-  String get id;
   String get name;
   static Serializer<GgetProductDetailsData_product_category> get serializer =>
       _$ggetProductDetailsDataProductCategorySerializer;

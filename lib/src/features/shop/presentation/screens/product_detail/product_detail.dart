@@ -1,24 +1,52 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:eb_demo_app/core/config/injection/injection.dart';
+import 'package:eb_demo_app/src/features/shop/presentation/blocs/product_detail/product_detail_bloc.dart';
 
 import 'package:eb_demo_app/src/features/shop/presentation/screens/product_detail/widgets/product_detaul_silver_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'widgets/add_cart_bar.dart';
 import 'widgets/product_info.dart';
 
 @RoutePage()
 class ProductDetailScreen extends StatelessWidget {
-  const ProductDetailScreen({super.key});
+  const ProductDetailScreen({super.key, required this.productID});
+  final String productID;
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      bottomNavigationBar: AddCartBar(),
-      body: CustomScrollView(
-        slivers: [
-          ProductDetailSiverAppBar(),
-          ProductInfo(),
-        ],
+    return BlocProvider(
+      create: (context) =>
+          getIt<ProductDetailBloc>()..add(ProductDetailFetchEvent(productID)),
+      child: BlocConsumer<ProductDetailBloc, ProductDetailState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          if (state is ProductDetailFetchLoading || state is ProductInitial) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (state is ProductDetailFetchSuccess) {
+            return Scaffold(
+              bottomNavigationBar: AddCartBar(),
+              body: CustomScrollView(
+                slivers: [
+                  ProductDetailSiverAppBar(image: state.detail.images[0]),
+                  ProductInfo(
+                    product: state.detail,
+                  ),
+                ],
+              ),
+            );
+          }
+          return Center(
+            child: Text('Something Went Wrong1'),
+          );
+        },
       ),
     );
   }

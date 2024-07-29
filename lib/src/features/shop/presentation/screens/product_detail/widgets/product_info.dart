@@ -1,14 +1,19 @@
+import 'package:eb_demo_app/src/features/shop/data/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:read_more_text/read_more_text.dart';
 
 import '../../../../../../../core/common/widgets/custom_shapes/container/circular_container.dart';
 import '../../../../../../../core/common/widgets/listile/section_header.dart';
+import 'qr_preview.dart';
 
 class ProductInfo extends StatelessWidget {
   const ProductInfo({
     super.key,
+    required this.product,
   });
+
+  final ProductDetail product;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,9 @@ class ProductInfo extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // QrPreviewTile(),
+            QrPreviewTile(
+              data: product.toQrData(),
+            ),
             Row(
               children: [
                 CircularContainer(
@@ -30,93 +37,22 @@ class ProductInfo extends StatelessWidget {
                 ),
                 Gap(20),
                 Text(
-                  '\$250',
+                  '\$${product.price * 1.25}',
                   style: TextStyle(decoration: TextDecoration.lineThrough),
                 ),
                 Gap(20),
-                Text('\$175')
+                Text('\$${product.price}')
               ],
             ),
-            Text('Green Nike Sports'),
+            Text(product.title.toUpperCase()),
             Text('Status:  In Stock'),
-            SizedBox(
-                width: double.infinity,
-                child:
-                    ElevatedButton(onPressed: () {}, child: Text('Checkout'))),
             Text('Description'),
             ReadMoreText(
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package',
+              product.description,
               numLines: 2,
               readMoreText: 'Read more',
               readLessText: 'Read less',
             ),
-            ReadMoreText(
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package',
-              numLines: 2,
-              readMoreText: 'Read more',
-              readLessText: 'Read less',
-            ),
-            ReadMoreText(
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package',
-              numLines: 2,
-              readMoreText: 'Read more',
-              readLessText: 'Read less',
-            ),
-            ReadMoreText(
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package',
-              numLines: 2,
-              readMoreText: 'Read more',
-              readLessText: 'Read less',
-            ),
-            ReadMoreText(
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package',
-              numLines: 2,
-              readMoreText: 'Read more',
-              readLessText: 'Read less',
-            ),
-            ReadMoreText(
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package',
-              numLines: 2,
-              readMoreText: 'Read more',
-              readLessText: 'Read less',
-            ),
-            ReadMoreText(
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package',
-              numLines: 2,
-              readMoreText: 'Read more',
-              readLessText: 'Read less',
-            ),
-            ReadMoreText(
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package\n'
-              'This is a very long text to demo the usages of this package',
-              numLines: 2,
-              readMoreText: 'Read more',
-              readLessText: 'Read less',
-            ),
-
             Divider(),
             SectionHeader(
               title: 'Reviews(100)',

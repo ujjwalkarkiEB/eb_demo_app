@@ -54,7 +54,8 @@ class ShopRemoteSourceImpl extends BaseGraphQLRemoteSource
       request: (client) => client.request(req).first,
       onResponse: (data) {
         if (data is GgetProductDetailsData) {
-          return ProductDetail.fromModel(data);
+          final res = ProductDetail.fromModel(data);
+          return res;
         }
         throw Exception('Unexpected data type ');
       },
@@ -64,7 +65,9 @@ class ShopRemoteSourceImpl extends BaseGraphQLRemoteSource
   @override
   Future<List<ProductSummary>> getTrendingProducts() {
     final GsearchProductsReq req = GsearchProductsReq(
-      (b) => b..vars.limit = 5,
+      (b) => b
+        ..vars.limit = 10
+        ..vars.offset = 20,
     );
     return graphqlRequest(
       request: (client) => client.request(req).first,
@@ -89,7 +92,6 @@ class ShopRemoteSourceImpl extends BaseGraphQLRemoteSource
   @override
   Future<List<ProductSummary>> searchProductsByTitle(
       String query, int limit, int offset) {
-    print('query: $query, limit $limit, offset: $offset');
     final GsearchProductsReq req = GsearchProductsReq(
       (b) => b
         ..vars.title = query

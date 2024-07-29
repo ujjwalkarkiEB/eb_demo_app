@@ -14,24 +14,47 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final ShopRepository _shopRepository;
   int offset = 0;
-  final int _limit = 5; // Define the limit of items to fetch each time
+  final int _limit = 5; // limit of items to fetch per API request
+  bool isFetching = false;
 
   HomeBloc(this._shopRepository) : super(HomeInitial()) {
-    on<HomeDataFetchEvent>(_onHomeDataFech);
+    on<FetchCategoriesEvent>(_onFetchCategories);
+    on<FetchTrendingProductsEvent>(_onFetchTrendingProducts);
     on<SearchProductsByTitleEvent>(_onSearchProduct, transformer: debounce());
     on<LoadMoreSuggestionsEvent>(_onLoadMoreSuggestions);
   }
 
   List<ProductSummary> suggestions = [];
 
-  void _onHomeDataFech(
-      HomeDataFetchEvent event, Emitter<HomeState> emit) async {
-    emit(HomeDataLoaded([], const []));
+  void _onFetchCategories(
+      FetchCategoriesEvent event, Emitter<HomeState> emit) async {
+    emit(HomeDataLoading());
+    final categoriesResult = await _shopRepository.getCategories();
+
+    categoriesResult.fold(
+      (l) => emit(HomeDataLoadError()),
+      (categories) {
+        print('c: ${categories.length}');
+        emit(CategoriesLoaded(categories));
+      },
+    );
+  }
+
+  void _onFetchTrendingProducts(
+      FetchTrendingProductsEvent event, Emitter<HomeState> emit) async {
+    emit(HomeDataLoading());
+    final productsResult = await _shopRepository.getTrendingProducts();
+
+    productsResult.fold(
+      (l) => emit(HomeDataLoadError()),
+      (products) {
+        emit(TrendingProductsLoaded(products));
+      },
+    );
   }
 
   void _onSearchProduct(
       SearchProductsByTitleEvent event, Emitter<HomeState> emit) async {
-    // Reset offset for new search query
     offset = 0;
     emit(SearchLoading());
     final result = await _shopRepository.searchProductsByTitle(
@@ -51,6 +74,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void _onLoadMoreSuggestions(
       LoadMoreSuggestionsEvent event, Emitter<HomeState> emit) async {
+    if (isFetching) return; // Prevent multiple fetches
+    isFetching = true;
     emit(SearchLoadingMore());
     final result = await _shopRepository.searchProductsByTitle(
         query: event.query, offset: offset, limit: _limit);
@@ -62,9 +87,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           offset += _limit;
           suggestions.addAll(r);
         }
+        isFetching = false;
         emit(SearchLoaded(suggestions));
       },
     );
+  }
+
+  @override
+  void onTransition(Transition<HomeEvent, HomeState> transition) {
+    // TODO: implement onTransition
+    super.onTransition(transition);
+    print(transition);
   }
 }
 

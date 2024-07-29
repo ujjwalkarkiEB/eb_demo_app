@@ -33,12 +33,22 @@ import '../../../src/features/personalization/data/repository/profile_repositior
     as _i46;
 import '../../../src/features/personalization/presentation/bloc/personalization_bloc.dart'
     as _i905;
+import '../../../src/features/shop/data/data_source/local/shop_database_service.dart'
+    as _i554;
 import '../../../src/features/shop/data/data_source/remote/shop_remote_source.dart'
     as _i760;
+import '../../../src/features/shop/data/repository/cart_repository.dart'
+    as _i354;
+import '../../../src/features/shop/data/repository/product_repository.dart'
+    as _i572;
 import '../../../src/features/shop/data/repository/shop_repository.dart'
     as _i67;
+import '../../../src/features/shop/presentation/blocs/cart/cart_bloc.dart'
+    as _i773;
 import '../../../src/features/shop/presentation/blocs/home/home_bloc.dart'
     as _i553;
+import '../../../src/features/shop/presentation/blocs/product_detail/product_detail_bloc.dart'
+    as _i222;
 import '../../utils/helpers/token_services.dart' as _i863;
 import '../../utils/local_storage/database_helper.dart' as _i752;
 import '../../utils/network/auth_interceptor/auth_interceptor.dart' as _i752;
@@ -56,14 +66,19 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
+    gh.factory<_i773.CartBloc>(() => _i773.CartBloc());
     gh.lazySingleton<_i752.AuthInterceptor>(() => _i752.AuthInterceptor());
     gh.lazySingleton<_i752.DatabaseHelper>(() => _i752.DatabaseHelper());
+    gh.lazySingleton<_i554.ShopDatabaseService>(
+        () => _i554.ShopDatabaseServiceImpl(gh<_i752.DatabaseHelper>()));
     gh.lazySingleton<_i590.DioClient>(
         () => _i590.DioClient(gh<_i752.AuthInterceptor>()));
     gh.lazySingleton<_i457.AuthDatabaseService>(() =>
         _i457.AuthDatabaseService(databaseHelper: gh<_i752.DatabaseHelper>()));
     gh.lazySingleton<_i322.GraphqlClient>(
         () => _i322.GraphqlClient(dioClient: gh<_i590.DioClient>()));
+    gh.lazySingleton<_i354.CartRepository>(
+        () => _i354.CartRepositoryImpl(gh<_i554.ShopDatabaseService>()));
     gh.lazySingleton<_i863.TokenService>(() => _i863.TokenServiceImpl(
           gh<_i457.AuthDatabaseService>(),
           gh<_i590.DioClient>(),
@@ -74,6 +89,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i574.ProfileRemoteSourceImpl(gh<_i590.DioClient>()));
     gh.lazySingleton<_i760.ShopRemoteSource>(
         () => _i760.ShopRemoteSourceImpl(gh<_i322.GraphqlClient>()));
+    gh.lazySingleton<_i572.ProductRepository>(
+        () => _i572.ProductRepositoryImpl(gh<_i760.ShopRemoteSource>()));
     gh.lazySingleton<_i819.AuthRepository>(() => _i819.AuthReposeitoryImpl(
           authRemoteSource: gh<_i849.AuthRemoteSource>(),
           authDatabaseService: gh<_i457.AuthDatabaseService>(),
@@ -86,6 +103,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i67.ShopRepositoryImpl(gh<_i760.ShopRemoteSource>()));
     gh.factory<_i124.SignupBloc>(
         () => _i124.SignupBloc(gh<_i819.AuthRepository>()));
+    gh.factory<_i222.ProductDetailBloc>(
+        () => _i222.ProductDetailBloc(gh<_i572.ProductRepository>()));
     gh.factory<_i772.LoginBloc>(
         () => _i772.LoginBloc(gh<_i819.AuthRepository>()));
     gh.factory<_i205.OnboardingBloc>(

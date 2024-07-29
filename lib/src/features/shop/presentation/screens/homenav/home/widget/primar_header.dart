@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 
@@ -30,7 +32,7 @@ class PrimaryHeader extends StatelessWidget {
           )
         ],
       ),
-      trailing: const SizedBox(
+      trailing: SizedBox(
         width: 40,
         height: 40,
         child: Stack(
@@ -43,16 +45,21 @@ class PrimaryHeader extends StatelessWidget {
             Positioned(
               top: -1,
               right: 0,
-              child: badges.Badge(
-                badgeContent: Text(
-                  '100',
-                  style: TextStyle(
-                      fontSize: 10, color: Colors.white), // Adjust font size
-                ),
-                badgeStyle: badges.BadgeStyle(
-                  badgeColor: Colors.red,
-                  padding:
-                      EdgeInsets.all(4), // Adjust padding to change badge size
+              child: InkWell(
+                onTap: () {
+                  context.router.push(CartRoute());
+                },
+                child: badges.Badge(
+                  badgeContent: Text(
+                    '100',
+                    style: TextStyle(
+                        fontSize: 10, color: Colors.white), // Adjust font size
+                  ),
+                  badgeStyle: badges.BadgeStyle(
+                    badgeColor: Colors.red,
+                    padding: EdgeInsets.all(
+                        4), // Adjust padding to change badge size
+                  ),
                 ),
               ),
             ),

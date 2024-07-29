@@ -1,3 +1,4 @@
+import 'package:eb_demo_app/src/features/shop/data/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:shimmer/shimmer.dart';
@@ -47,11 +48,9 @@ Widget buildShimmerProducts() {
       return Shimmer.fromColors(
         baseColor: Colors.grey[300]!,
         highlightColor: Colors.grey[100]!,
-        child: const VerticalProductCard(
-          productTitle: '',
-          price: '',
-          createdAt: '',
-          image: '',
+        child: VerticalProductCard(
+          productSummary:
+              ProductSummary(id: '', price: 0, title: '', images: []),
         ),
       );
     },

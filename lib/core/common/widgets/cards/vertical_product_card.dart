@@ -1,46 +1,25 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/core/common/widgets/custom_shapes/container/circular_container.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
+import 'package:eb_demo_app/src/features/shop/data/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../../utils/constants/images.dart';
-
 class VerticalProductCard extends StatelessWidget {
-  const VerticalProductCard({
-    super.key,
-    required this.productTitle,
-    required this.createdAt,
-    required this.price,
-    required this.image,
-  });
-
-  final String productTitle;
-  final String createdAt;
-  final String price;
-  final String image;
+  const VerticalProductCard({super.key, required this.productSummary});
+  final ProductSummary productSummary;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.router.push(ProductDetailRoute());
-        print('clicked');
+        context.router.push(ProductDetailRoute(productID: productSummary.id));
       },
       child: Container(
-        width: 180,
-        height: 250,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: const Color.fromARGB(255, 173, 201, 174),
-          // boxShadow: [
-          //   BoxShadow(
-          //       color: Colors.black.withOpacity(0.1),
-          //       blurRadius: 50,
-          //       spreadRadius: 7,
-          //       offset: const Offset(0, 2))
-          // ],
+          color: Color.fromARGB(255, 198, 221, 199),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,11 +33,19 @@ class VerticalProductCard extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: Colors.white),
-                  child: Image.network(
-                    image,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
+                  child: productSummary.images.isNotEmpty
+                      ? Image.network(
+                          productSummary.images[0],
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        )
+                      : const Center(
+                          child: Icon(
+                            Icons.image,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
+                        ),
                 ),
                 Positioned(
                     top: 2,
@@ -82,12 +69,10 @@ class VerticalProductCard extends StatelessWidget {
             // attributes
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(productTitle),
-                  Text(createdAt),
-                ],
+              child: Text(
+                productSummary.title,
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
             const Spacer(),
@@ -97,7 +82,7 @@ class VerticalProductCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('$price\$'),
+                  Text('${productSummary.price}\$'),
                   Container(
                     decoration: const BoxDecoration(
                       color: Colors.black,

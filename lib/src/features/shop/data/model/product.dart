@@ -1,9 +1,20 @@
-import 'package:eb_demo_app/graphql/query/product/g.files/get_product_by_id.data.gql.dart';
+import 'dart:convert';
 
-class ProductSummary {
+import 'package:eb_demo_app/core/utils/mixins/quantity_mixin.dart';
+import 'package:eb_demo_app/graphql/query/product/g.files/get_product_by_id.data.gql.dart';
+import 'package:hive/hive.dart';
+
+part 'product.g.dart';
+
+@HiveType(typeId: 1)
+class ProductSummary extends HiveObject with QuantityMixin {
+  @HiveField(0)
   final String id;
+  @HiveField(1)
   final String title;
-  final double price;
+  @HiveField(2)
+  double price;
+  @HiveField(3)
   final List<String> images;
 
   ProductSummary({
@@ -16,7 +27,7 @@ class ProductSummary {
 
 class ProductDetail extends ProductSummary {
   final String description;
-  final String categoryID;
+  final String categoryName;
   final DateTime creationAt;
   final DateTime updatedAt;
 
@@ -26,7 +37,7 @@ class ProductDetail extends ProductSummary {
     required super.price,
     required super.images,
     required this.description,
-    required this.categoryID,
+    required this.categoryName,
     required this.creationAt,
     required this.updatedAt,
   });
@@ -38,11 +49,20 @@ class ProductDetail extends ProductSummary {
       id: product.id,
       title: product.title,
       price: product.price,
-      images: List<String>.from(product.images),
+      images: product.images.toList(),
       description: product.description,
-      categoryID: product.category.id,
-      creationAt: DateTime.parse(product.creationAt.toString()),
-      updatedAt: DateTime.parse(product.updatedAt.toString()),
+      categoryName: product.category.name,
+      creationAt: DateTime.parse(product.creationAt.value.toString()),
+      updatedAt: DateTime.parse(product.updatedAt.value.toString()),
     );
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'price': price,
+    };
+  }
+
+  String toQrData() {
+    return json.encode(toJson());
   }
 }

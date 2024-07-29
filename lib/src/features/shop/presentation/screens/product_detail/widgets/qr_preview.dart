@@ -5,7 +5,9 @@ import 'package:qr_flutter/qr_flutter.dart';
 class QrPreviewTile extends StatelessWidget {
   const QrPreviewTile({
     super.key,
+    required this.data,
   });
+  final String data;
 
   @override
   Widget build(BuildContext context) {
@@ -18,29 +20,26 @@ class QrPreviewTile extends StatelessWidget {
             builder: (BuildContext context) {
               return Dialog(
                 child: Container(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       QrImageView(
-                        data: 'This QR c',
-                        embeddedImage: AssetImage(AppImages.productImg1),
+                        data: data,
                         version: 1,
-                        size: 320,
+                        size: 250,
                         gapless: false,
                         errorStateBuilder: (cxt, err) {
-                          return Container(
-                            child: Center(
-                              child: Text(
-                                'Uh oh! Something went wrong...',
-                                textAlign: TextAlign.center,
-                              ),
+                          return const Center(
+                            child: Text(
+                              'Uh oh! Something went wrong...',
+                              textAlign: TextAlign.center,
                             ),
                           );
                         },
                       ),
-                      SizedBox(height: 20),
-                      Text('Scan to get all product details at once!')
+                      const SizedBox(height: 20),
+                      const Text('Scan to get all product details at once!')
                     ],
                   ),
                 ),
@@ -49,28 +48,27 @@ class QrPreviewTile extends StatelessWidget {
           );
         },
         child: SizedBox(
-          height: 50,
-          width: 50,
+          height: 80,
+          width: 80,
           child: QrImageView(
-            data: 'This QR c',
+            data: data,
             version: 1,
+            semanticsLabel: 'Product',
             size: 320,
             gapless: false,
             errorStateBuilder: (cxt, err) {
-              return Container(
-                child: Center(
-                  child: Text(
-                    'Uh oh! Something went wrong...',
-                    textAlign: TextAlign.center,
-                  ),
+              return const Center(
+                child: Text(
+                  'Uh oh! Something went wrong...',
+                  textAlign: TextAlign.center,
                 ),
               );
             },
           ),
         ),
       ),
-      title: Text('QR CODE'),
-      subtitle: Text('Tap to preview the QR code.'),
+      title: const Text('QR CODE'),
+      subtitle: const Text('Tap to preview the QR code.'),
     );
   }
 }

@@ -5,7 +5,7 @@ class GridLayout extends StatelessWidget {
     super.key,
     required this.itemBuilder,
     required this.itemCount,
-    this.mainAxisExtent = 280,
+    this.mainAxisExtent = 250,
   });
   final Widget? Function(BuildContext, int) itemBuilder;
   final int itemCount;

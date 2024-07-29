@@ -13,11 +13,16 @@ final class HomeDataLoading extends HomeState {}
 
 final class HomeDataLoadError extends HomeState {}
 
-final class HomeDataLoaded extends HomeState {
-  final List<ProductSummary> trendingProducts;
-  final List<CategorySummary>? categories;
+final class CategoriesLoaded extends HomeState {
+  final List<CategorySummary> categories;
 
-  const HomeDataLoaded(this.trendingProducts, this.categories);
+  const CategoriesLoaded(this.categories);
+}
+
+final class TrendingProductsLoaded extends HomeState {
+  final List<ProductSummary> trendingProducts;
+
+  const TrendingProductsLoaded(this.trendingProducts);
 }
 
 class SearchLoading extends HomeState {}

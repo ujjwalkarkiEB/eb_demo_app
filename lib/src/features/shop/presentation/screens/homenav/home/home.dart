@@ -34,10 +34,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return BlocProvider(
-      create: (context) => getIt<HomeBloc>()..add(HomeDataFetchEvent()),
+      create: (context) => getIt<HomeBloc>()
+        ..add(FetchCategoriesEvent())
+        ..add(FetchTrendingProductsEvent()),
       child: Scaffold(
         backgroundColor: AppColors.buttonColor,
         body: BlocBuilder<HomeBloc, HomeState>(
+          buildWhen: (previous, current) => previous != current,
           builder: (context, state) {
             if (state is HomeDataLoadError) {
               return const Center(
@@ -45,86 +48,100 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(color: Colors.red)));
             }
 
-            if (state is HomeDataLoaded) {
-              trendingProducts = state.trendingProducts;
-              categories = state.categories!;
+            if (state is CategoriesLoaded) {
+              print('here');
+
+              categories = state.categories;
             }
-            return Column(
-              children: [
-                SafeArea(
-                  child: SizedBox(
-                    height: screenSize.height * 0.36,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
+
+            if (state is TrendingProductsLoaded) {
+              trendingProducts = state.trendingProducts;
+              print(trendingProducts.length);
+            }
+
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<HomeBloc>()..add(FetchCategoriesEvent());
+                await Future.delayed(Duration(milliseconds: 500));
+                context.read<HomeBloc>()..add(FetchTrendingProductsEvent());
+              },
+              child: Column(
+                children: [
+                  SafeArea(
+                    child: SizedBox(
+                      height: screenSize.height * 0.36,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // Primary header
+                            const PrimaryHeader(),
+                            const Gap(10),
+                            // Search Container
+                            const SearchContainer(),
+                            const SectionHeader(
+                              title: 'Popular Categories',
+                            ),
+
+                            // category lists
+                            BlocBuilder<HomeBloc, HomeState>(
+                                builder: (context, state) {
+                              if (state is HomeDataLoading ||
+                                  state is HomeInitial) {
+                                return buildShimmerCategories();
+                              }
+
+                              return _buildCategories(categories);
+                            }),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      clipBehavior: Clip.hardEdge,
+                      decoration: const BoxDecoration(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(40)),
+                        color: Colors.white,
+                      ),
+                      child: ListView(
                         children: [
-                          // Primary header
-                          const PrimaryHeader(),
-                          const Gap(10),
-                          // Search Container
-                          const SearchContainer(),
-                          const SectionHeader(
-                            title: 'Popular Categories',
+                          // promo carousel slider
+                          const PromoSlider(
+                            promoBanners: [
+                              AppImages.productImg1,
+                              AppImages.productImg2,
+                              AppImages.productImg3,
+                              AppImages.productImg4,
+                            ],
                           ),
-
-                          // category lists
-                          BlocBuilder<HomeBloc, HomeState>(
+                          const SectionHeader(
+                            title: 'Top 10 Products',
+                            isViewAll: true,
+                            textColor: Colors.black,
+                          ),
+                          // top products grid view
+                          Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: BlocBuilder<HomeBloc, HomeState>(
                               builder: (context, state) {
-                            if (state is HomeDataLoading ||
-                                state is HomeInitial) {
-                              return buildShimmerCategories();
-                            }
-
-                            return _buildCategories(categories);
-                          }),
+                                if (state is HomeDataLoading ||
+                                    state is HomeInitial) {
+                                  return buildShimmerProducts();
+                                }
+                                return _buildProducts(trendingProducts);
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Container(
-                    clipBehavior: Clip.hardEdge,
-                    decoration: const BoxDecoration(
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(40)),
-                      color: Colors.white,
-                    ),
-                    child: ListView(
-                      children: [
-                        // promo carousel slider
-                        const PromoSlider(
-                          promoBanners: [
-                            AppImages.productImg1,
-                            AppImages.productImg2,
-                            AppImages.productImg3,
-                            AppImages.productImg4,
-                          ],
-                        ),
-                        const SectionHeader(
-                          title: 'Products',
-                          isViewAll: true,
-                          textColor: Colors.black,
-                        ),
-                        // top products grid view
-                        Padding(
-                          padding: const EdgeInsets.all(18.0),
-                          child: BlocBuilder<HomeBloc, HomeState>(
-                            builder: (context, state) {
-                              if (state is HomeDataLoading ||
-                                  state is HomeInitial) {
-                                return buildShimmerProducts();
-                              }
-                              return _buildProducts(trendingProducts);
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             );
           },
         ),
@@ -137,19 +154,20 @@ class _HomeScreenState extends State<HomeScreen> {
       height: 80,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        itemCount: 10,
+        itemCount: categories.length,
         separatorBuilder: (__, _) => const Gap(20),
         itemBuilder: (context, index) {
-          // final category = categories[index];
+          final category = categories[index];
           return Column(
             children: [
-              const CircleAvatar(
+              CircleAvatar(
+                backgroundImage: NetworkImage(category.image),
                 backgroundColor: Colors.white,
                 radius: 30,
               ),
               Spacer(),
               Text(
-                'category',
+                category.name,
                 style: TextStyle(color: Colors.white),
               ),
             ],
@@ -165,10 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
       itemBuilder: (context, index) {
         final product = trendingProducts[index];
         return VerticalProductCard(
-          productTitle: product.title,
-          price: product.price.toString(),
-          createdAt: '',
-          image: product.images[0],
+          productSummary: product,
         );
       },
     );

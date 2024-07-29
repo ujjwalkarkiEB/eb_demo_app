@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 class HelperFunctions {
@@ -18,4 +20,10 @@ class HelperFunctions {
       return 'Good evening!';
     }
   }
+
+//   String compressData(Map<String, dynamic> data) {
+//   List<int> encodedData = utf8.encode(jsonEncode(data));
+//   List<int> compressedData = GZipEncoder().encode(encodedData)!;
+//   return base64Encode(compressedData);
+// }
 }

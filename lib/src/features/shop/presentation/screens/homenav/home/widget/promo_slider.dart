@@ -40,6 +40,9 @@ class _PromoSliderState extends State<PromoSlider> {
                   ))
               .toList(),
           options: CarouselOptions(
+            autoPlay: true,
+            autoPlayInterval: const Duration(milliseconds: 3000),
+            autoPlayCurve: Curves.easeIn,
             viewportFraction: 2,
             onPageChanged: (index, _) {
               setState(() {
@@ -47,6 +50,7 @@ class _PromoSliderState extends State<PromoSlider> {
               });
             },
           ),
+
           carouselController: carouselController, // Set the controller here
         ),
         const SizedBox(height: AppSizes.spaceBetweenSections),
