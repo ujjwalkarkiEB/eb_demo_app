@@ -9,6 +9,9 @@ abstract class CartRepository {
   Future<void> addProductToCart({required ProductSummary product});
   Future<void> removeProductFromCart({required ProductSummary product});
   Future<Either<Failure, List<ProductSummary>>> getAllProductCarts();
+  Future<int> getCartProductQuantityCount({required ProductSummary product});
+  Future<int> getCartItemsCount();
+  Future<void> checkoutCartItems();
 }
 
 @LazySingleton(as: CartRepository)
@@ -21,6 +24,7 @@ class CartRepositoryImpl implements CartRepository {
     try {
       await _localStorageService.addProduct(product: product);
     } catch (e) {
+      print('error: ${e.toString()}');
       throw Exception(const LocalStorageFailure('Error to save item to cart'));
     }
   }
@@ -43,5 +47,21 @@ class CartRepositoryImpl implements CartRepository {
       throw Exception(
           const LocalStorageFailure('Error to delete item from cart'));
     }
+  }
+
+  @override
+  Future<int> getCartProductQuantityCount(
+      {required ProductSummary product}) async {
+    return await _localStorageService.getCartProductQuantityCount(product);
+  }
+
+  @override
+  Future<int> getCartItemsCount() async {
+    return await _localStorageService.getCartItemsCount();
+  }
+
+  @override
+  Future<void> checkoutCartItems() async {
+    await _localStorageService.clearCart();
   }
 }

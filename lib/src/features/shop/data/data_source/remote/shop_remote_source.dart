@@ -67,7 +67,7 @@ class ShopRemoteSourceImpl extends BaseGraphQLRemoteSource
     final GsearchProductsReq req = GsearchProductsReq(
       (b) => b
         ..vars.limit = 10
-        ..vars.offset = 20,
+        ..vars.offset = 0,
     );
     return graphqlRequest(
       request: (client) => client.request(req).first,

@@ -12,9 +12,8 @@ import '../../../src/features/authentication/presentation/screens/signup/signup_
 import '../../../src/features/personalization/presentation/screens/personalization.dart';
 import '../../../src/features/personalization/presentation/screens/profile/profile.dart';
 import '../../../src/features/personalization/presentation/screens/settings/settings.dart';
-import '../../../src/features/shop/presentation/screens/homenav/cart/cart.dart';
-import '../../../src/features/shop/presentation/screens/homenav/home/home.dart';
-import '../../../src/features/shop/presentation/screens/homenav/home_nav.dart';
+import '../../../src/features/shop/presentation/screens/cart/cart.dart';
+import '../../../src/features/shop/presentation/screens/home/home.dart';
 import '../../../src/features/shop/presentation/screens/product_detail/product_detail.dart';
 import '../../../src/features/shop/presentation/screens/product_review/product_review.dart';
 import '../../../src/features/shop/presentation/screens/store/store.dart';
@@ -42,10 +41,8 @@ class AppRouter extends _$AppRouter {
           initial: true,
           page: MainNavRoute.page,
           children: [
-            AutoRoute(initial: true, page: HomeNavRoute.page, children: [
-              AutoRoute(initial: true, page: HomeRoute.page),
-              AutoRoute(page: CartRoute.page),
-            ]),
+            AutoRoute(initial: true, page: HomeRoute.page),
+
             AutoRoute(page: StoreRoute.page),
             AutoRoute(page: WishlistRoute.page),
             AutoRoute(
@@ -61,5 +58,6 @@ class AppRouter extends _$AppRouter {
         ),
         AutoRoute(page: ProductDetailRoute.page),
         AutoRoute(page: ProductReviewRoute.page),
+        AutoRoute(page: CartRoute.page),
       ];
 }

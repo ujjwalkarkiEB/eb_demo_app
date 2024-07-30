@@ -36,8 +36,6 @@ class AuthDatabaseService {
 
   Future<void> storeToken({String? refreshToken, String? accessToken}) async {
     try {
-      print('access: $accessToken');
-      print('refresh: $refreshToken');
       final Box<String> authBox = _databaseHelper.authBox;
 
       if (refreshToken != null) {

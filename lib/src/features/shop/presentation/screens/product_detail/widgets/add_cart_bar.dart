@@ -1,60 +1,45 @@
+import 'package:eb_demo_app/src/features/shop/presentation/blocs/cart/cart_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../../core/common/widgets/custom_shapes/container/circular_container.dart';
 import '../../../../../../../core/utils/constants/colors.dart';
+import 'package:eb_demo_app/src/features/shop/data/model/product.dart';
 
-class AddCartBar extends StatelessWidget {
+class AddCartBar extends StatefulWidget {
+  final ProductSummary product;
+
   const AddCartBar({
     super.key,
+    required this.product,
   });
 
+  @override
+  State<AddCartBar> createState() => _AddCartBarState();
+}
+
+class _AddCartBarState extends State<AddCartBar> {
+  int count = 0;
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 70,
+      alignment: Alignment.centerRight,
       decoration: const BoxDecoration(
-          color: AppColors.whiteSmoke,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+        color: AppColors.whiteSmoke,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const SizedBox(
-              width: 120,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  CircularContainer(
-                    backgroundColor: Colors.green,
-                    child: Center(
-                        child: Icon(
-                      Iconsax.minus,
-                      color: Colors.white,
-                    )),
-                  ),
-                  Text('4'),
-                  CircularContainer(
-                    backgroundColor: Colors.green,
-                    child: Center(
-                        child: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    )),
-                  )
-                ],
-              ),
+        child: ElevatedButton(
+          onPressed: () {
+            context.read<CartBloc>().add(AddProductToCartEvent(widget.product));
+          },
+          child: const Text(
+            'Add to cart',
+            style: TextStyle(
+              color: Colors.white,
             ),
-            ElevatedButton(
-                onPressed: () {},
-                child: const Text(
-                  'Add to cart',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ))
-          ],
+          ),
         ),
       ),
     );

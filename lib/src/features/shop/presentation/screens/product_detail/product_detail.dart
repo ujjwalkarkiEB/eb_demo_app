@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/core/config/injection/injection.dart';
+import 'package:eb_demo_app/src/features/shop/data/model/product.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/blocs/product_detail/product_detail_bloc.dart';
 
 import 'package:eb_demo_app/src/features/shop/presentation/screens/product_detail/widgets/product_detaul_silver_appbar.dart';
@@ -20,19 +21,24 @@ class ProductDetailScreen extends StatelessWidget {
       create: (context) =>
           getIt<ProductDetailBloc>()..add(ProductDetailFetchEvent(productID)),
       child: BlocConsumer<ProductDetailBloc, ProductDetailState>(
-        listener: (context, state) {
-          // TODO: implement listener
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           if (state is ProductDetailFetchLoading || state is ProductInitial) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
 
           if (state is ProductDetailFetchSuccess) {
+            final product = state.detail;
             return Scaffold(
-              bottomNavigationBar: AddCartBar(),
+              bottomNavigationBar: AddCartBar(
+                product: ProductSummary(
+                    id: state.detail.id,
+                    title: product.title,
+                    price: product.price,
+                    images: product.images),
+              ),
               body: CustomScrollView(
                 slivers: [
                   ProductDetailSiverAppBar(image: state.detail.images[0]),
@@ -43,7 +49,7 @@ class ProductDetailScreen extends StatelessWidget {
               ),
             );
           }
-          return Center(
+          return const Center(
             child: Text('Something Went Wrong1'),
           );
         },

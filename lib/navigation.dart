@@ -18,48 +18,44 @@ class MainNavScreen extends StatefulWidget {
 class _MainScreenState extends State<MainNavScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<CartBloc>(),
-      child: AutoTabsScaffold(
-        routes: const [
-          HomeNavRoute(),
-          StoreRoute(),
-          WishlistRoute(),
-          PersonalizationRoute(),
-        ],
-        bottomNavigationBuilder: (_, tabsRouter) {
-          return BottomNavigationBar(
-            type: BottomNavigationBarType.shifting,
+    return AutoTabsScaffold(
+      routes: const [
+        HomeRoute(),
+        StoreRoute(),
+        WishlistRoute(),
+        PersonalizationRoute(),
+      ],
+      bottomNavigationBuilder: (_, tabsRouter) {
+        return BottomNavigationBar(
+          type: BottomNavigationBarType.shifting,
 
-            unselectedItemColor: Colors.grey,
-            elevation: 14,
-            currentIndex: tabsRouter.activeIndex,
-            onTap: (index) {
-              // if (tabsRouter.activeIndex != index) {
-              //   if (tabsRouter.activeIndex == 0) {
-              //     tabsRouter.stack.first;
-              //   }
-              tabsRouter.setActiveIndex(index);
-              // }
-            },
-            selectedIconTheme:
-                const IconThemeData(color: AppColors.buttonColor),
-            // selectedItemColor: .buttonColor,
-            iconSize: 25,
-            items: const [
-              BottomNavigationBarItem(
-                label: 'Home',
-                icon: Icon(Icons.home),
-              ),
-              BottomNavigationBarItem(label: 'Store', icon: Icon(Icons.store)),
-              BottomNavigationBarItem(
-                  label: 'Wishlist', icon: Icon(Icons.favorite)),
-              BottomNavigationBarItem(
-                  label: 'Profile', icon: Icon(Iconsax.profile_2user)),
-            ],
-          );
-        },
-      ),
+          unselectedItemColor: Colors.grey,
+          elevation: 14,
+          currentIndex: tabsRouter.activeIndex,
+          onTap: (index) {
+            // if (tabsRouter.activeIndex != index) {
+            //   if (tabsRouter.activeIndex == 0) {
+            //     tabsRouter.stack.first;
+            //   }
+            tabsRouter.setActiveIndex(index);
+            // }
+          },
+          selectedIconTheme: const IconThemeData(color: AppColors.buttonColor),
+          // selectedItemColor: .buttonColor,
+          iconSize: 25,
+          items: const [
+            BottomNavigationBarItem(
+              label: 'Home',
+              icon: Icon(Icons.home),
+            ),
+            BottomNavigationBarItem(label: 'Store', icon: Icon(Icons.store)),
+            BottomNavigationBarItem(
+                label: 'Wishlist', icon: Icon(Icons.favorite)),
+            BottomNavigationBarItem(
+                label: 'Profile', icon: Icon(Iconsax.profile_2user)),
+          ],
+        );
+      },
     );
   }
 }

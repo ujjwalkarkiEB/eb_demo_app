@@ -41,29 +41,29 @@ class AuthInterceptor extends QueuedInterceptorsWrapper {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    final tokenService = getIt<TokenService>();
-    final token = await tokenService.getAccessToken();
-    if (token != null) {
-      final bool hasSession = await tokenService.hasSession();
+    // final tokenService = getIt<TokenService>();
+    // final token = await tokenService.getAccessToken();
+    // if (token != null) {
+    //   final bool hasSession = await tokenService.hasSession();
 
-      if (!hasSession) {
-        final isRefreshed = await tokenService.refreshToken();
-        if (!isRefreshed) {
-          return handler.reject(DioException(
-              requestOptions: options,
-              error: 'Token refresh failed',
-              type: DioExceptionType.cancel,
-              response: Response(
-                requestOptions: options,
-                statusCode: 401, // Unauthorized
-                statusMessage: 'Unauthorized',
-              )));
-        }
-        final String? token = await tokenService.getAccessToken();
+    //   if (!hasSession) {
+    //     final isRefreshed = await tokenService.refreshToken();
+    //     if (!isRefreshed) {
+    //       return handler.reject(DioException(
+    //           requestOptions: options,
+    //           error: 'Token refresh failed',
+    //           type: DioExceptionType.cancel,
+    //           response: Response(
+    //             requestOptions: options,
+    //             statusCode: 401, // Unauthorized
+    //             statusMessage: 'Unauthorized',
+    //           )));
+    //     }
+    //     final String? token = await tokenService.getAccessToken();
 
-        options.headers['Authorization'] = 'Bearer $token!';
-      }
-    }
+    //     options.headers['Authorization'] = 'Bearer $token!';
+    //   }
+    // }
 
     handler.next(options);
   }

@@ -3,18 +3,17 @@ import 'package:eb_demo_app/core/common/widgets/layout/grid_layout.dart';
 import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
 import 'package:eb_demo_app/core/utils/constants/images.dart';
-import 'package:eb_demo_app/core/utils/helpers/helper_functions.dart';
+import 'package:eb_demo_app/src/features/shop/presentation/blocs/cart/cart_bloc.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/blocs/home/home_bloc.dart';
-import 'package:eb_demo_app/src/features/shop/presentation/screens/homenav/home/widget/promo_slider.dart';
+import 'package:eb_demo_app/src/features/shop/presentation/screens/home/widget/promo_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:shimmer/shimmer.dart';
 
-import '../../../../../../../core/common/widgets/cards/vertical_product_card.dart';
-import '../../../../../../../core/common/widgets/listile/section_header.dart';
-import '../../../../data/model/category.dart';
-import '../../../../data/model/product.dart';
+import '../../../../../../core/common/widgets/cards/vertical_product_card.dart';
+import '../../../../../../core/common/widgets/listile/section_header.dart';
+import '../../../data/model/category.dart';
+import '../../../data/model/product.dart';
 import 'widget/primar_header.dart';
 import 'widget/search_container.dart';
 import 'widget/shimmers.dart';
@@ -30,9 +29,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<CategorySummary> categories = [];
   List<ProductSummary> trendingProducts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    print("called");
+    context.read<CartBloc>().add(GetCartItemsCount());
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+
     return BlocProvider(
       create: (context) => getIt<HomeBloc>()
         ..add(FetchCategoriesEvent())
@@ -49,14 +57,11 @@ class _HomeScreenState extends State<HomeScreen> {
             }
 
             if (state is CategoriesLoaded) {
-              print('here');
-
               categories = state.categories;
             }
 
             if (state is TrendingProductsLoaded) {
               trendingProducts = state.trendingProducts;
-              print(trendingProducts.length);
             }
 
             return RefreshIndicator(
@@ -69,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   SafeArea(
                     child: SizedBox(
-                      height: screenSize.height * 0.36,
+                      height: screenSize.height * 0.35,
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Column(
@@ -161,11 +166,12 @@ class _HomeScreenState extends State<HomeScreen> {
           return Column(
             children: [
               CircleAvatar(
-                backgroundImage: NetworkImage(category.image),
-                backgroundColor: Colors.white,
+                backgroundImage: category.image.trim().isEmpty
+                    ? AssetImage(AppImages.productImg1)
+                    : NetworkImage(category.image),
                 radius: 30,
               ),
-              Spacer(),
+              const Spacer(),
               Text(
                 category.name,
                 style: TextStyle(color: Colors.white),

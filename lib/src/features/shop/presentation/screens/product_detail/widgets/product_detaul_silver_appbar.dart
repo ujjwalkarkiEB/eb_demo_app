@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ class ProductDetailSiverAppBar extends StatelessWidget {
         children: [
           InkWell(
             onTap: () {
-              context.router.popForced();
+              context.router.popAndPush(HomeRoute());
             },
             child: const CircularContainer(
               height: 40,

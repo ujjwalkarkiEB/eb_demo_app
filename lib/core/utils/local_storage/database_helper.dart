@@ -12,9 +12,9 @@ class DatabaseHelper {
     final Directory databaseDir = await getApplicationDocumentsDirectory();
     Hive.init(databaseDir.path);
     Hive.registerAdapter(ProductSummaryAdapter());
-    Hive.openBox<String>(authBoxName);
-    await Hive.openLazyBox<ProductSummary>(cartBoxName);
-    Hive.openBox<String>(settingsBoxName);
+    await Hive.openBox<String>(authBoxName);
+    await Hive.openBox<ProductSummary>(cartBoxName);
+    await Hive.openBox<String>(settingsBoxName);
   }
 
   Box<String> get authBox => Hive.box(authBoxName);

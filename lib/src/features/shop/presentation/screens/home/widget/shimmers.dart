@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../../../../../core/common/widgets/cards/vertical_product_card.dart';
-import '../../../../../../../../core/common/widgets/layout/grid_layout.dart';
+import '../../../../../../../core/common/widgets/cards/vertical_product_card.dart';
+import '../../../../../../../core/common/widgets/layout/grid_layout.dart';
 
 Widget buildShimmerCategories() {
   return SizedBox(

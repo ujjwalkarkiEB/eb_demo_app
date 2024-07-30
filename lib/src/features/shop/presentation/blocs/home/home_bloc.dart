@@ -13,8 +13,9 @@ part 'home_state.dart';
 @injectable
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final ShopRepository _shopRepository;
+
   int offset = 0;
-  final int _limit = 5; // limit of items to fetch per API request
+  final int _limit = 5;
   bool isFetching = false;
 
   HomeBloc(this._shopRepository) : super(HomeInitial()) {

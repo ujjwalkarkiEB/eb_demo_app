@@ -66,9 +66,8 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    gh.factory<_i773.CartBloc>(() => _i773.CartBloc());
-    gh.lazySingleton<_i752.AuthInterceptor>(() => _i752.AuthInterceptor());
     gh.lazySingleton<_i752.DatabaseHelper>(() => _i752.DatabaseHelper());
+    gh.lazySingleton<_i752.AuthInterceptor>(() => _i752.AuthInterceptor());
     gh.lazySingleton<_i554.ShopDatabaseService>(
         () => _i554.ShopDatabaseServiceImpl(gh<_i752.DatabaseHelper>()));
     gh.lazySingleton<_i590.DioClient>(
@@ -87,6 +86,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i849.AuthRemoteSourceImpl(gh<_i590.DioClient>()));
     gh.lazySingleton<_i574.ProfileRemoteSource>(
         () => _i574.ProfileRemoteSourceImpl(gh<_i590.DioClient>()));
+    gh.factory<_i773.CartBloc>(
+        () => _i773.CartBloc(gh<_i354.CartRepository>()));
     gh.lazySingleton<_i760.ShopRemoteSource>(
         () => _i760.ShopRemoteSourceImpl(gh<_i322.GraphqlClient>()));
     gh.lazySingleton<_i572.ProductRepository>(
@@ -105,13 +106,13 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i124.SignupBloc(gh<_i819.AuthRepository>()));
     gh.factory<_i222.ProductDetailBloc>(
         () => _i222.ProductDetailBloc(gh<_i572.ProductRepository>()));
-    gh.factory<_i772.LoginBloc>(
-        () => _i772.LoginBloc(gh<_i819.AuthRepository>()));
     gh.factory<_i205.OnboardingBloc>(
         () => _i205.OnboardingBloc(gh<_i819.AuthRepository>()));
     gh.factory<_i839.AuthBloc>(
         () => _i839.AuthBloc(gh<_i819.AuthRepository>()));
     gh.factory<_i155.OtpBloc>(() => _i155.OtpBloc(gh<_i819.AuthRepository>()));
+    gh.factory<_i772.LoginBloc>(
+        () => _i772.LoginBloc(gh<_i819.AuthRepository>()));
     gh.factory<_i553.HomeBloc>(() => _i553.HomeBloc(gh<_i67.ShopRepository>()));
     return this;
   }

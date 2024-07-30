@@ -53,7 +53,7 @@ class OtpScreen extends StatelessWidget {
           showFlashError(context, 'Unknown Error. Wait for few minutes!');
         }
         if (state is OtpResendSuccess) {
-          showSuccessSnackbar(context, 'Otp is sent successfully!', () {});
+          showSuccessSnackbar(context, 'Otp is sent successfully!');
         }
       },
       child: Scaffold(

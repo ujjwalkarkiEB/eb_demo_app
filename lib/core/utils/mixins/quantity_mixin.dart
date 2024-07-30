@@ -10,7 +10,7 @@ mixin QuantityMixin on HiveObject {
   }
 
   void decrementQuantity() {
-    if (quantity > 1) {
+    if (quantity > 0) {
       quantity--;
       save();
     }

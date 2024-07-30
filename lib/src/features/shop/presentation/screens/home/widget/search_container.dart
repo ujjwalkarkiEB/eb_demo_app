@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:searchfield/searchfield.dart';
 
-import '../../../../../data/model/product.dart';
+import '../../../../data/model/product.dart';
 
 class SearchContainer extends StatefulWidget {
   const SearchContainer({super.key});
@@ -39,14 +39,6 @@ class _SearchContainerState extends State<SearchContainer> {
               (state is SearchLoaded) ? state.suggestions : [];
 
           return SearchField<ProductSummary>(
-            showEmpty: context.read<HomeBloc>().isFetching,
-            emptyWidget: Container(
-                decoration: suggestionDecoration,
-                height: 200, // item*maxItems
-                child: const Center(
-                    child: CircularProgressIndicator(
-                  color: Colors.black,
-                ))),
             controller: searchTextController,
             key: const Key('SearchField'),
             itemHeight: 50,
@@ -55,13 +47,17 @@ class _SearchContainerState extends State<SearchContainer> {
             suggestions: suggestions
                 .map((e) => SearchFieldListItem<ProductSummary>(e.id,
                     child: ListTile(
-                      leading: Image.network(e.images[0]),
+                      leading: Image.network(
+                        e.images[0],
+                        errorBuilder: (context, error, stackTrace) =>
+                            Image.asset("assets/images/image.jpg"),
+                      ),
                       minTileHeight: 10,
                       title: Text(e.title),
                     )))
                 .toList(),
             scrollbarDecoration: ScrollbarDecoration(),
-            searchInputDecoration: InputDecoration(
+            searchInputDecoration: const InputDecoration(
               prefixIcon: Icon(Icons.search),
               labelText: 'Search Products',
               floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -69,7 +65,7 @@ class _SearchContainerState extends State<SearchContainer> {
               focusedBorder: InputBorder.none,
               border: InputBorder.none,
               fillColor: Colors.white,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+              contentPadding: EdgeInsets.symmetric(horizontal: 20),
             ),
             suggestionsDecoration: suggestionDecoration,
             suggestionItemDecoration: const BoxDecoration(
@@ -91,7 +87,6 @@ class _SearchContainerState extends State<SearchContainer> {
                     );
               }
             },
-            animationDuration: Duration(milliseconds: 500),
             onSearchTextChanged: (query) {
               if (query.trim() == '') {
                 return [];

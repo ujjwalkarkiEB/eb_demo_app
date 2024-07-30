@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-Future<void> showSuccessSnackbar(
-    BuildContext context, String text, VoidCallback onPressed) async {
+Future<void> showSuccessSnackbar(BuildContext context, String text,
+    {VoidCallback? onPressed}) async {
   final snackBar = SnackBar(
     content: Text(text),
     backgroundColor: Colors.green,
@@ -10,7 +10,7 @@ Future<void> showSuccessSnackbar(
     action: SnackBarAction(
       label: 'OK',
       textColor: Colors.white,
-      onPressed: onPressed,
+      onPressed: onPressed ?? () {},
     ),
   );
 
