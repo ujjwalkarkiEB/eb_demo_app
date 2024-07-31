@@ -30,9 +30,6 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => getIt<OtpBloc>(),
         ),
-        BlocProvider(
-          create: (context) => getIt<CartBloc>(),
-        ),
       ],
       child: MaterialApp.router(
         title: 'EBP DEMO APP',

@@ -12,6 +12,7 @@ abstract class CartRepository {
   Future<int> getCartProductQuantityCount({required ProductSummary product});
   Future<int> getCartItemsCount();
   Future<void> checkoutCartItems();
+  Future<bool> isProductInCart({required String productID});
 }
 
 @LazySingleton(as: CartRepository)
@@ -63,5 +64,10 @@ class CartRepositoryImpl implements CartRepository {
   @override
   Future<void> checkoutCartItems() async {
     await _localStorageService.clearCart();
+  }
+
+  @override
+  Future<bool> isProductInCart({required String productID}) async {
+    return await _localStorageService.isProductInCart(productID: productID);
   }
 }

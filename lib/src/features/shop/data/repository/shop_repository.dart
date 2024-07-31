@@ -52,7 +52,7 @@ class ShopRepositoryImpl implements ShopRepository {
   Future<Either<Failure, List<CategorySummary>>> getCategories() async {
     try {
       final result = await _shopRemoteSource.getAllCategories();
-      return right(result);
+      return right(result.sublist(0, 6));
     } on ApiException {
       return left(const ServerFailure('Server Error'));
     } catch (e) {

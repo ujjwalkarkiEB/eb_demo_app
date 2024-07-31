@@ -11,6 +11,7 @@ abstract class ShopDatabaseService {
   Future<int> getCartProductQuantityCount(ProductSummary product);
   Future<int> getCartItemsCount();
   Future<void> clearCart();
+  Future<bool> isProductInCart({required String productID});
 }
 
 @LazySingleton(as: ShopDatabaseService)
@@ -105,5 +106,19 @@ class ShopDatabaseServiceImpl extends ShopDatabaseService {
   Future<void> clearCart() async {
     final box = _databaseHelper.cartBox;
     await box.clear();
+  }
+
+  @override
+  Future<bool> isProductInCart({required String productID}) async {
+    try {
+      final box = _databaseHelper.cartBox;
+      final existingProduct = box.values.cast<ProductSummary?>().firstWhere(
+            (p) => p?.id == productID,
+            orElse: () => null,
+          );
+      return existingProduct != null;
+    } catch (e) {
+      throw Exception('Local storage access error: ${e.toString()}');
+    }
   }
 }

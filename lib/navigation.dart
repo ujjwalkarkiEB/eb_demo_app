@@ -3,6 +3,7 @@ import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/blocs/cart/cart_bloc.dart';
+import 'package:eb_demo_app/src/features/shop/presentation/blocs/store/store_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
@@ -18,44 +19,56 @@ class MainNavScreen extends StatefulWidget {
 class _MainScreenState extends State<MainNavScreen> {
   @override
   Widget build(BuildContext context) {
-    return AutoTabsScaffold(
-      routes: const [
-        HomeRoute(),
-        StoreRoute(),
-        WishlistRoute(),
-        PersonalizationRoute(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              getIt<StoreBloc>()..add(FetchCategoryProducts(categoryID: 1)),
+        ),
+        BlocProvider(
+          create: (context) => getIt<CartBloc>()..add(GetCartItemsCount()),
+        ),
       ],
-      bottomNavigationBuilder: (_, tabsRouter) {
-        return BottomNavigationBar(
-          type: BottomNavigationBarType.shifting,
+      child: AutoTabsScaffold(
+        routes: const [
+          HomeRoute(),
+          StoreRoute(),
+          WishlistRoute(),
+          PersonalizationRoute(),
+        ],
+        bottomNavigationBuilder: (_, tabsRouter) {
+          return BottomNavigationBar(
+            type: BottomNavigationBarType.shifting,
 
-          unselectedItemColor: Colors.grey,
-          elevation: 14,
-          currentIndex: tabsRouter.activeIndex,
-          onTap: (index) {
-            // if (tabsRouter.activeIndex != index) {
-            //   if (tabsRouter.activeIndex == 0) {
-            //     tabsRouter.stack.first;
-            //   }
-            tabsRouter.setActiveIndex(index);
-            // }
-          },
-          selectedIconTheme: const IconThemeData(color: AppColors.buttonColor),
-          // selectedItemColor: .buttonColor,
-          iconSize: 25,
-          items: const [
-            BottomNavigationBarItem(
-              label: 'Home',
-              icon: Icon(Icons.home),
-            ),
-            BottomNavigationBarItem(label: 'Store', icon: Icon(Icons.store)),
-            BottomNavigationBarItem(
-                label: 'Wishlist', icon: Icon(Icons.favorite)),
-            BottomNavigationBarItem(
-                label: 'Profile', icon: Icon(Iconsax.profile_2user)),
-          ],
-        );
-      },
+            unselectedItemColor: Colors.grey,
+            elevation: 14,
+            currentIndex: tabsRouter.activeIndex,
+            onTap: (index) {
+              // if (tabsRouter.activeIndex != index) {
+              //   if (tabsRouter.activeIndex == 0) {
+              //     tabsRouter.stack.first;
+              //   }
+              tabsRouter.setActiveIndex(index);
+              // }
+            },
+            selectedIconTheme:
+                const IconThemeData(color: AppColors.buttonColor),
+            // selectedItemColor: .buttonColor,
+            iconSize: 25,
+            items: const [
+              BottomNavigationBarItem(
+                label: 'Home',
+                icon: Icon(Icons.home),
+              ),
+              BottomNavigationBarItem(label: 'Store', icon: Icon(Icons.store)),
+              BottomNavigationBarItem(
+                  label: 'Wishlist', icon: Icon(Icons.favorite)),
+              BottomNavigationBarItem(
+                  label: 'Profile', icon: Icon(Iconsax.profile_2user)),
+            ],
+          );
+        },
+      ),
     );
   }
 }

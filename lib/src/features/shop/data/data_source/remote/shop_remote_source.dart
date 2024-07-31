@@ -18,6 +18,12 @@ abstract class ShopRemoteSource {
   Future<List<ProductSummary>> searchProductsByTitle(
       String query, int offset, int limit);
   Future<ProductDetail> getProductDetails(String productID);
+  Future<List<ProductSummary>> fetchCategoryProducts(
+      {required double categoryID, required int offset});
+  Future<List<ProductSummary>> applyPriceFilter(
+      {required double categoryID,
+      required int minPrice,
+      required int maxPrice});
 }
 
 @LazySingleton(as: ShopRemoteSource)
@@ -96,6 +102,66 @@ class ShopRemoteSourceImpl extends BaseGraphQLRemoteSource
       (b) => b
         ..vars.title = query
         ..vars.limit = limit
+        ..vars.offset = offset,
+    );
+    return graphqlRequest(
+      request: (client) => client.request(req).first,
+      onResponse: (data) {
+        if (data is GsearchProductsData) {
+          final products = data.products;
+          return products
+              .map(
+                (product) => ProductSummary(
+                    id: product.id,
+                    title: product.title,
+                    price: product.price,
+                    images: product.images.toList()),
+              )
+              .toList();
+        }
+        throw Exception('Unexpected data type ');
+      },
+    );
+  }
+
+  @override
+  Future<List<ProductSummary>> applyPriceFilter(
+      {required double categoryID,
+      required int minPrice,
+      required int maxPrice}) {
+    final GsearchProductsReq req = GsearchProductsReq(
+      (b) => b
+        ..vars.categoryId = categoryID
+        ..vars.price_max = maxPrice
+        ..vars.price_min = minPrice,
+    );
+    return graphqlRequest(
+      request: (client) => client.request(req).first,
+      onResponse: (data) {
+        if (data is GsearchProductsData) {
+          final products = data.products;
+          return products
+              .map(
+                (product) => ProductSummary(
+                    id: product.id,
+                    title: product.title,
+                    price: product.price,
+                    images: product.images.toList()),
+              )
+              .toList();
+        }
+        throw Exception('Unexpected data type ');
+      },
+    );
+  }
+
+  @override
+  Future<List<ProductSummary>> fetchCategoryProducts(
+      {required double categoryID, required int offset}) {
+    final GsearchProductsReq req = GsearchProductsReq(
+      (b) => b
+        ..vars.categoryId = categoryID
+        ..vars.limit = 10
         ..vars.offset = offset,
     );
     return graphqlRequest(

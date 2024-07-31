@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/core/common/widgets/layout/grid_layout.dart';
+import 'package:eb_demo_app/core/common/widgets/snackbars/error_snackbar.dart';
+import 'package:eb_demo_app/core/common/widgets/snackbars/sucess_snackbar.dart';
 import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
 import 'package:eb_demo_app/core/utils/constants/images.dart';
@@ -9,6 +11,7 @@ import 'package:eb_demo_app/src/features/shop/presentation/screens/home/widget/p
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:quickalert/quickalert.dart';
 
 import '../../../../../../core/common/widgets/cards/vertical_product_card.dart';
 import '../../../../../../core/common/widgets/listile/section_header.dart';
@@ -31,13 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
   List<ProductSummary> trendingProducts = [];
 
   @override
-  void initState() {
-    super.initState();
-    print("called");
-    context.read<CartBloc>().add(GetCartItemsCount());
-  }
-
-  @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
@@ -47,108 +43,118 @@ class _HomeScreenState extends State<HomeScreen> {
         ..add(FetchTrendingProductsEvent()),
       child: Scaffold(
         backgroundColor: AppColors.buttonColor,
-        body: BlocBuilder<HomeBloc, HomeState>(
-          buildWhen: (previous, current) => previous != current,
-          builder: (context, state) {
-            if (state is HomeDataLoadError) {
-              return const Center(
-                  child: Text('Something went wrong',
-                      style: TextStyle(color: Colors.red)));
-            }
-
-            if (state is CategoriesLoaded) {
-              categories = state.categories;
-            }
-
-            if (state is TrendingProductsLoaded) {
-              trendingProducts = state.trendingProducts;
-            }
-
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<HomeBloc>()..add(FetchCategoriesEvent());
-                await Future.delayed(Duration(milliseconds: 500));
-                context.read<HomeBloc>()..add(FetchTrendingProductsEvent());
+        body: MultiBlocListener(
+          listeners: [
+            BlocListener<CartBloc, CartState>(
+              listener: (context, state) {
+                if (state is CartProductAdded) {
+                  showSuccessSnackbar(
+                    context,
+                    '${state.productTitle} has been added to your cart list!',
+                  );
+                }
+                if (state is CartProductAddFailed) {
+                  showFlashError(context, state.msg);
+                }
               },
-              child: Column(
-                children: [
-                  SafeArea(
-                    child: SizedBox(
-                      height: screenSize.height * 0.35,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
+            ),
+          ],
+          child: BlocBuilder<HomeBloc, HomeState>(
+            buildWhen: (previous, current) => previous != current,
+            builder: (context, state) {
+              if (state is HomeDataLoadError) {
+                return const Center(
+                    child: Text('Something went wrong',
+                        style: TextStyle(color: Colors.red)));
+              }
+
+              if (state is CategoriesLoaded) {
+                categories = state.categories;
+              }
+
+              if (state is TrendingProductsLoaded) {
+                trendingProducts = state.trendingProducts;
+              }
+
+              return RefreshIndicator(
+                onRefresh: () async {
+                  context.read<HomeBloc>()..add(FetchCategoriesEvent());
+                  await Future.delayed(Duration(milliseconds: 500));
+                  context.read<HomeBloc>()..add(FetchTrendingProductsEvent());
+                },
+                child: Column(
+                  children: [
+                    SafeArea(
+                      child: SizedBox(
+                        height: screenSize.height * 0.35,
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const PrimaryHeader(),
+                              const Gap(10),
+                              const SearchContainer(),
+                              const SectionHeader(
+                                title: 'Popular Categories',
+                              ),
+                              BlocBuilder<HomeBloc, HomeState>(
+                                  builder: (context, state) {
+                                if (state is HomeDataLoading ||
+                                    state is HomeInitial) {
+                                  return buildShimmerCategories();
+                                }
+                                return _buildCategories(categories);
+                              }),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        clipBehavior: Clip.hardEdge,
+                        decoration: const BoxDecoration(
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(40)),
+                          color: Colors.white,
+                        ),
+                        child: ListView(
                           children: [
-                            // Primary header
-                            const PrimaryHeader(),
-                            const Gap(10),
-                            // Search Container
-                            const SearchContainer(),
-                            const SectionHeader(
-                              title: 'Popular Categories',
+                            const PromoSlider(
+                              promoBanners: [
+                                AppImages.productImg1,
+                                AppImages.productImg2,
+                                AppImages.productImg3,
+                                AppImages.productImg4,
+                              ],
                             ),
-
-                            // category lists
-                            BlocBuilder<HomeBloc, HomeState>(
+                            const SectionHeader(
+                              title: 'Top 10 Products',
+                              isViewAll: true,
+                              textColor: Colors.black,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: BlocBuilder<HomeBloc, HomeState>(
                                 builder: (context, state) {
-                              if (state is HomeDataLoading ||
-                                  state is HomeInitial) {
-                                return buildShimmerCategories();
-                              }
-
-                              return _buildCategories(categories);
-                            }),
+                                  if (state is HomeDataLoading ||
+                                      state is HomeInitial) {
+                                    return buildShimmerProducts();
+                                  }
+                                  return _buildProducts(trendingProducts);
+                                },
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      clipBehavior: Clip.hardEdge,
-                      decoration: const BoxDecoration(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(40)),
-                        color: Colors.white,
-                      ),
-                      child: ListView(
-                        children: [
-                          // promo carousel slider
-                          const PromoSlider(
-                            promoBanners: [
-                              AppImages.productImg1,
-                              AppImages.productImg2,
-                              AppImages.productImg3,
-                              AppImages.productImg4,
-                            ],
-                          ),
-                          const SectionHeader(
-                            title: 'Top 10 Products',
-                            isViewAll: true,
-                            textColor: Colors.black,
-                          ),
-                          // top products grid view
-                          Padding(
-                            padding: const EdgeInsets.all(18.0),
-                            child: BlocBuilder<HomeBloc, HomeState>(
-                              builder: (context, state) {
-                                if (state is HomeDataLoading ||
-                                    state is HomeInitial) {
-                                  return buildShimmerProducts();
-                                }
-                                return _buildProducts(trendingProducts);
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -168,7 +174,9 @@ class _HomeScreenState extends State<HomeScreen> {
               CircleAvatar(
                 backgroundImage: category.image.trim().isEmpty
                     ? AssetImage(AppImages.productImg1)
-                    : NetworkImage(category.image),
+                    : NetworkImage(
+                        category.image,
+                      ),
                 radius: 30,
               ),
               const Spacer(),
@@ -188,8 +196,18 @@ class _HomeScreenState extends State<HomeScreen> {
       itemCount: trendingProducts.length,
       itemBuilder: (context, index) {
         final product = trendingProducts[index];
-        return VerticalProductCard(
-          productSummary: product,
+        return GestureDetector(
+          onTap: () {
+            QuickAlert.show(
+              context: context,
+              type: QuickAlertType.info,
+              title: 'Product Selected',
+              text: '${product.title} selected!',
+            );
+          },
+          child: VerticalProductCard(
+            productSummary: product,
+          ),
         );
       },
     );

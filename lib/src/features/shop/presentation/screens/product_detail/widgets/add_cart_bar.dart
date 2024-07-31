@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../../core/utils/constants/colors.dart';
 import 'package:eb_demo_app/src/features/shop/data/model/product.dart';
 
-class AddCartBar extends StatefulWidget {
+class AddCartBar extends StatelessWidget {
   final ProductSummary product;
 
   const AddCartBar({
@@ -13,12 +13,6 @@ class AddCartBar extends StatefulWidget {
     required this.product,
   });
 
-  @override
-  State<AddCartBar> createState() => _AddCartBarState();
-}
-
-class _AddCartBarState extends State<AddCartBar> {
-  int count = 0;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,7 +26,7 @@ class _AddCartBarState extends State<AddCartBar> {
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
         child: ElevatedButton(
           onPressed: () {
-            context.read<CartBloc>().add(AddProductToCartEvent(widget.product));
+            context.read<CartBloc>().add(AddProductToCartEvent(product));
           },
           child: const Text(
             'Add to cart',

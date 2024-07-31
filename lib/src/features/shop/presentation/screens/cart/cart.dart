@@ -1,13 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/core/common/widgets/snackbars/error_snackbar.dart';
+import 'package:eb_demo_app/core/config/injection/injection.dart';
+import 'package:eb_demo_app/core/utils/notification/notification_service.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/blocs/cart/cart_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:quickalert/quickalert.dart';
 
 import '../../../../../../core/common/widgets/cart/cart_item.dart';
-import '../../../../../../core/common/widgets/snackbars/sucess_snackbar.dart';
 import '../../../data/model/product.dart';
 
 @RoutePage()
@@ -30,17 +30,13 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<CartBloc, CartState>(
       buildWhen: (previous, current) {
-        // Only rebuild when CartFetchSuccess state is emitted
         return current is CartFetchSuccess;
       },
-      listener: (context, state) async {
+      listener: (context, state) {
         if (state is CartActionSuccess) {
-          await QuickAlert.show(
-            context: context,
-            type: QuickAlertType.success,
-            text: 'Successfully placed your items!',
-            width: 50,
-          );
+          getIt<NotificationService>().showNotification(
+              body: 'Your orders have been placed!',
+              title: 'Cart Items Shipped');
           context.read<CartBloc>().add(FetchCartProductsEvent());
         }
 
@@ -66,20 +62,20 @@ class _CartScreenState extends State<CartScreen> {
                           ..add(CheckoutCartItems())
                           ..add(GetCartItemsCount());
                       },
-                child: Text('Checkout \$${checkoutPrice}'),
+                child: Text('Checkout \$$checkoutPrice'),
               ),
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14),
               child: cartProducts.isEmpty
-                  ? Center(
+                  ? const Center(
                       child: Text('Currently there are no products added!'),
                     )
                   : ListView.separated(
                       separatorBuilder: (context, index) => const Gap(10),
                       itemCount: cartProducts.length,
                       itemBuilder: (context, index) {
-                        final product = cartProducts[index];
+                        final product = cartProducts.reversed.toList()[index];
 
                         return CartItem(
                           product: product,
@@ -92,7 +88,7 @@ class _CartScreenState extends State<CartScreen> {
 
         return Scaffold(
           appBar: AppBar(),
-          body: Center(
+          body: const Center(
             child: Text('Something went wrong!'),
           ),
         );

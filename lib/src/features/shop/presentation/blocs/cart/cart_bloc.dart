@@ -39,11 +39,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   void _onAddToCartEvent(
       AddProductToCartEvent event, Emitter<CartState> emit) async {
     try {
-      await _cartRepository.addProductToCart(product: event.product);
-
-      emit(CartActionSuccess(successMsg: 'Product is added successfully!'));
+      final isProductInCart =
+          await _cartRepository.isProductInCart(productID: event.product.id);
+      if (isProductInCart) {
+        emit(CartProductAddFailed(msg: 'This product has been added already!'));
+      } else {
+        await _cartRepository.addProductToCart(product: event.product);
+        emit(CartProductAdded(productTitle: event.product.title));
+        add(GetCartItemsCount());
+      }
     } catch (e) {
-      emit(CartActionError('Failed to add product!'));
+      emit(CartProductAddFailed(msg: 'Failed to add product!'));
     }
   }
 
@@ -52,7 +58,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     try {
       await _cartRepository.removeProductFromCart(product: event.product);
 
-      emit(CartActionSuccess(successMsg: 'Products is removed successfully!'));
+      emit(CartProductRemoved());
+      add(GetCartItemsCount());
     } catch (e) {
       emit(CartActionError('Failed to remove product!'));
     }
@@ -68,10 +75,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   void _onIncrementQuantityEvent(
       IncrementProductQuantityEvent event, Emitter<CartState> emit) async {
     event.product.incrementQuantity();
-    print('inc: ${event.product.quantity}');
 
     checkoutPrice += event.product.price * event.product.quantity;
-    print('inc checkoutprice: $checkoutPrice');
 
     emit(ProductCartCount(
       count: event.product.quantity,
@@ -83,10 +88,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   void _onDecrementQuantityEvent(
       DecrementProductQuantityEvent event, Emitter<CartState> emit) async {
     event.product.decrementQuantity();
-    print('dec: ${event.product.quantity}');
     if (event.product.quantity > 1) {
       checkoutPrice -= event.product.price * event.product.quantity;
-      print('dec checkoutprice: $checkoutPrice');
     }
 
     emit(ProductCartCount(
@@ -106,6 +109,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     try {
       await _cartRepository.checkoutCartItems();
       emit(CartActionSuccess(successMsg: 'You orders are placed!'));
+      add(GetCartItemsCount());
     } catch (e) {
       emit(CartActionError('Failed to place orders'));
     }
@@ -113,7 +117,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   @override
   void onTransition(Transition<CartEvent, CartState> transition) {
-    // TODO: implement
     super.onTransition(transition);
     print(transition);
   }

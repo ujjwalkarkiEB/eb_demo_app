@@ -10,6 +10,20 @@ final class CartItemsCount extends CartState {
   CartItemsCount({required this.count});
 }
 
+final class CartProductAdded extends CartState {
+  final String productTitle;
+
+  CartProductAdded({required this.productTitle});
+}
+
+final class CartProductAddFailed extends CartState {
+  final String msg;
+
+  CartProductAddFailed({required this.msg});
+}
+
+final class CartProductRemoved extends CartState {}
+
 final class CartFetchError extends CartState {}
 
 final class CartActionError extends CartState {

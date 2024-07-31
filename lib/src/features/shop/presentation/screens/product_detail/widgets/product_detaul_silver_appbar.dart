@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../../core/common/widgets/custom_shapes/container/circular_container.dart';
-import '../../../../../../../core/utils/constants/images.dart';
 
 class ProductDetailSiverAppBar extends StatelessWidget {
   const ProductDetailSiverAppBar({
@@ -70,9 +70,15 @@ class ProductDetailSiverAppBar extends StatelessWidget {
       ),
       expandedHeight: 300,
       flexibleSpace: FlexibleSpaceBar(
-        background: Image.network(
-          image,
+        background: CachedNetworkImage(
+          imageUrl: image,
           fit: BoxFit.cover,
+          placeholder: (context, url) => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          errorWidget: (context, url, error) => const Center(
+            child: Icon(Icons.error),
+          ),
         ),
       ),
     );

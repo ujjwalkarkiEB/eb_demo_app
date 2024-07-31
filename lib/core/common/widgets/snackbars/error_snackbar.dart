@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 void showFlashError(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).clearSnackBars();
+
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: SizedBox(
-        height: 30, // Adjust the height as needed
+        height: 30,
         child: Row(
           children: [
             const Icon(Icons.error, color: Colors.white),
@@ -19,12 +21,12 @@ void showFlashError(BuildContext context, String message) {
           ],
         ),
       ),
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.red,
       duration: const Duration(seconds: 3),
       action: SnackBarAction(
         label: 'Dismiss',
-        textColor: Colors.white,
-        backgroundColor: Colors.black,
+        textColor: Colors.red,
+        backgroundColor: Colors.white,
         onPressed: () {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
         },

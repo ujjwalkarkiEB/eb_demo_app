@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
 
@@ -49,7 +48,6 @@ class NotificationService {
     String? body,
     String? payload,
   }) async {
-    print('Showing notification: $id, $title, $body, $payload');
     await notificationPlugin.show(
       id,
       title,
@@ -71,34 +69,3 @@ class NotificationService {
     );
   }
 }
-
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   final NotificationService notificationService = NotificationService();
-//   await notificationService.initNotification();
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Local Notification',
-//       theme: ThemeData(
-//         appBarTheme: const AppBarTheme(
-//             backgroundColor: Colors.deepPurple,
-//             centerTitle: true,
-//             titleTextStyle: TextStyle(
-//               fontSize: 18,
-//               color: Colors.white,
-//             )),
-//         primaryColor: Colors.deepPurple,
-//         scaffoldBackgroundColor: Colors.deepPurple.shade200,
-//         useMaterial3: true,
-//       ),
-//       home: HomePage(),
-//     );
-//   }
-// }
