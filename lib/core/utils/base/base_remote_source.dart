@@ -19,6 +19,7 @@ abstract class BaseRemoteSource {
   }) async {
     try {
       final response = await request(_dio);
+      print('response: $response');
 
       if (response.statusCode! >= 200 || response.statusCode! < 300) {
         if (responseType && onResponse != null) {
@@ -30,6 +31,7 @@ abstract class BaseRemoteSource {
         throw ServerException('Something went wrong');
       }
     } on DioException catch (e) {
+      print('Api ERROR: ${e.message}');
       throw ApiException.fromDioError(e);
     } catch (e) {
       throw UnknownException(e.toString());

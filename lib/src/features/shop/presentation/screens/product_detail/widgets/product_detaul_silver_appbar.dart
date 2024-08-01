@@ -22,7 +22,7 @@ class ProductDetailSiverAppBar extends StatelessWidget {
         children: [
           InkWell(
             onTap: () {
-              context.router.popAndPush(HomeRoute());
+              context.router.back();
             },
             child: const CircularContainer(
               height: 40,

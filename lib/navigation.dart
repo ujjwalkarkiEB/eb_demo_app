@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
+import 'package:eb_demo_app/src/features/personalization/presentation/bloc/personalization_bloc.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/blocs/cart/cart_bloc.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/blocs/store/store_bloc.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,8 @@ class _MainScreenState extends State<MainNavScreen> {
               getIt<StoreBloc>()..add(FetchCategoryProducts(categoryID: 1)),
         ),
         BlocProvider(
-          create: (context) => getIt<CartBloc>()..add(GetCartItemsCount()),
+          create: (context) =>
+              getIt<PersonalizationBloc>()..add(ProfileFetchRequestEvent()),
         ),
       ],
       child: AutoTabsScaffold(

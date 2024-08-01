@@ -23,7 +23,6 @@ class StoreScreenState extends State<StoreScreen> {
   final scrollController = ScrollController();
   int _selectedCategoryId = 1;
   List<ProductSummary> products = [];
-  bool _isLoadingMore = false;
 
   @override
   void initState() {
@@ -37,8 +36,7 @@ class StoreScreenState extends State<StoreScreen> {
 
   void _onScroll() {
     if (scrollController.offset == scrollController.position.maxScrollExtent &&
-        !_isLoadingMore) {
-      _isLoadingMore = true;
+        context.read<StoreBloc>().hasLoadingMore) {
       context
           .read<StoreBloc>()
           .add(LoadMoreEvent(categoryID: _selectedCategoryId.toDouble()));
@@ -108,10 +106,6 @@ class StoreScreenState extends State<StoreScreen> {
                       products = state.loadedProducts;
                     }
 
-                    if (state is FetchedLoadMoreProducts) {
-                      _isLoadingMore = false;
-                    }
-
                     return ListView.builder(
                       controller: scrollController,
                       itemCount: products.length +
@@ -143,7 +137,7 @@ class StoreScreenState extends State<StoreScreen> {
                     );
                   }
 
-                  return Center(child: Text('No products available'));
+                  return const Center(child: Text('No products available'));
                 },
               ),
             ),

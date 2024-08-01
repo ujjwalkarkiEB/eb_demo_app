@@ -20,6 +20,7 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Profile {
+  @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
   User get user => throw _privateConstructorUsedError;
   dynamic get avatar => throw _privateConstructorUsedError;
@@ -37,7 +38,11 @@ abstract class $ProfileCopyWith<$Res> {
       _$ProfileCopyWithImpl<$Res, Profile>;
   @useResult
   $Res call(
-      {String id, User user, dynamic avatar, dynamic bio, String createdAt});
+      {@JsonKey(name: '_id') String id,
+      User user,
+      dynamic avatar,
+      dynamic bio,
+      String createdAt});
 
   $UserCopyWith<$Res> get user;
 }
@@ -102,7 +107,11 @@ abstract class _$$ProfileImplCopyWith<$Res> implements $ProfileCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String id, User user, dynamic avatar, dynamic bio, String createdAt});
+      {@JsonKey(name: '_id') String id,
+      User user,
+      dynamic avatar,
+      dynamic bio,
+      String createdAt});
 
   @override
   $UserCopyWith<$Res> get user;
@@ -154,7 +163,7 @@ class __$$ProfileImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ProfileImpl implements _Profile {
   const _$ProfileImpl(
-      {required this.id,
+      {@JsonKey(name: '_id') required this.id,
       required this.user,
       required this.avatar,
       required this.bio,
@@ -164,6 +173,7 @@ class _$ProfileImpl implements _Profile {
       _$$ProfileImplFromJson(json);
 
   @override
+  @JsonKey(name: '_id')
   final String id;
   @override
   final User user;
@@ -218,7 +228,7 @@ class _$ProfileImpl implements _Profile {
 
 abstract class _Profile implements Profile {
   const factory _Profile(
-      {required final String id,
+      {@JsonKey(name: '_id') required final String id,
       required final User user,
       required final dynamic avatar,
       required final dynamic bio,
@@ -227,6 +237,7 @@ abstract class _Profile implements Profile {
   factory _Profile.fromJson(Map<String, dynamic> json) = _$ProfileImpl.fromJson;
 
   @override
+  @JsonKey(name: '_id')
   String get id;
   @override
   User get user;

@@ -16,21 +16,21 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    Profile userProfile;
 
-    return BlocProvider(
-      create: (context) =>
-          getIt<PersonalizationBloc>()..add(ProfileFetchRequestEvent()),
-      child: BlocBuilder<PersonalizationBloc, PersonalizationState>(
-        builder: (context, state) {
-          if (state is PersonalizationInitial || state is ProfileFetchLoading) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (state is ProfileFetched) {
-            userProfile = state.currentUser;
-          }
+    return BlocBuilder<PersonalizationBloc, PersonalizationState>(
+      buildWhen: (previous, current) => current is ProfileFetched,
+      builder: (context, state) {
+        if (state is PersonalizationInitial || state is ProfileFetchLoading) {
+          return Scaffold(
+            appBar: AppBar(
+              flexibleSpace: const LinearProgressIndicator(
+                backgroundColor: Colors.green,
+                minHeight: 10,
+              ),
+            ),
+          );
+        }
+        if (state is ProfileFetched) {
           return Scaffold(
             appBar: AppBar(
               title: const Text('Account'),
@@ -51,10 +51,7 @@ class SettingScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    UserTile(
-                      email: '',
-                      name: '',
-                    ),
+                    const UserTile(),
                     const Gap(20),
                     const Text('App Settings'),
                     const Gap(20),
@@ -89,8 +86,11 @@ class SettingScreen extends StatelessWidget {
               ),
             ),
           );
-        },
-      ),
+        }
+        return const Center(
+          child: Text('Something went wrong!'),
+        );
+      },
     );
   }
 }

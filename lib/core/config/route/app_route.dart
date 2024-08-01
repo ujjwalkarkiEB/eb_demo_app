@@ -9,6 +9,7 @@ import '../../../src/features/authentication/presentation/screens/password_confi
 import '../../../src/features/authentication/presentation/screens/signin/signin_screen.dart';
 import '../../../src/features/authentication/presentation/screens/signup/signup_screen.dart';
 
+import '../../../src/features/personalization/data/model/profile.dart';
 import '../../../src/features/personalization/presentation/screens/personalization.dart';
 import '../../../src/features/personalization/presentation/screens/profile/profile.dart';
 import '../../../src/features/personalization/presentation/screens/settings/settings.dart';
@@ -43,9 +44,10 @@ class AppRouter extends _$AppRouter {
           children: [
             AutoRoute(page: HomeRoute.page),
 
-            AutoRoute(initial: true, page: StoreRoute.page),
+            AutoRoute(page: StoreRoute.page),
             AutoRoute(page: WishlistRoute.page),
             AutoRoute(
+                initial: true,
                 page: PersonalizationRoute.page,
                 maintainState: false,
                 children: [

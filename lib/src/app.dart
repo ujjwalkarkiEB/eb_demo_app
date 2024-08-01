@@ -9,11 +9,13 @@ import 'package:eb_demo_app/src/features/authentication/presentation/screens/pas
 import 'package:eb_demo_app/src/features/authentication/presentation/screens/password_config/reset_password/rest_password.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/screens/password_config/widget/psw_config_form.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/screens/signin/signin_screen.dart';
+import 'package:eb_demo_app/src/features/personalization/presentation/bloc/personalization_bloc.dart';
 import 'package:eb_demo_app/src/features/personalization/presentation/screens/profile/profile.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/screens/cart/cart.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/screens/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'features/shop/presentation/blocs/cart/cart_bloc.dart';
 
@@ -30,6 +32,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => getIt<OtpBloc>(),
         ),
+        BlocProvider(
+          create: (context) => getIt<CartBloc>(),
+        ),
       ],
       child: MaterialApp.router(
         title: 'EBP DEMO APP',
@@ -38,6 +43,7 @@ class MyApp extends StatelessWidget {
         darkTheme: AppTheme.darkThemeData,
         theme: AppTheme.lightThemeData,
         routerConfig: AppRouter().config(),
+        builder: EasyLoading.init(),
       ),
       // child: MaterialApp(
       //   title: 'EBP DEMO APP',

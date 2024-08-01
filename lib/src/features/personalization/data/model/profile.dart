@@ -6,7 +6,7 @@ part 'profile.g.dart';
 @freezed
 class Profile with _$Profile {
   const factory Profile({
-    required String id,
+    @JsonKey(name: '_id') required String id,
     required User user,
     required dynamic avatar,
     required dynamic bio,

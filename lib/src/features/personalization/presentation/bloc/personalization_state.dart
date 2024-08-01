@@ -7,6 +7,7 @@ sealed class PersonalizationState extends Equatable {
   List<Object> get props => [];
 }
 
+// fetch states
 final class PersonalizationInitial extends PersonalizationState {}
 
 final class ProfileFetchLoading extends PersonalizationState {}
@@ -19,6 +20,9 @@ final class ProfileFetched extends PersonalizationState {
 
 final class ProfileFetchingError extends PersonalizationState {}
 
+// update states
 final class ProfileUpdateSuccessful extends PersonalizationState {}
 
 final class ProfileUpdateFailure extends PersonalizationState {}
+
+final class ProfileUpdateLoading extends PersonalizationState {}

@@ -12,6 +12,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc(this._authRepository) : super(AppStarted()) {
     on<AppStartedEvent>(_onAppStarted);
+    on<AuthLogoutReuqestEvenet>(_onLogout);
   }
 
   void _onAppStarted(AppStartedEvent event, Emitter<AuthState> emit) async {
@@ -28,4 +29,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     }
   }
+
+  void _onLogout(
+      AuthLogoutReuqestEvenet event, Emitter<AuthState> emit) async {}
 }

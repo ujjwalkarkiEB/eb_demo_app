@@ -15,3 +15,9 @@ final class ProfileUpdateEvent extends PersonalizationEvent {
 }
 
 final class ProfileFetchRequestEvent extends PersonalizationEvent {}
+
+final class ProfileDataFetchRequestEvent extends PersonalizationEvent {
+  final String profileId;
+
+  const ProfileDataFetchRequestEvent({required this.profileId});
+}

@@ -173,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               CircleAvatar(
                 backgroundImage: category.image.trim().isEmpty
-                    ? AssetImage(AppImages.productImg1)
+                    ? const AssetImage(AppImages.productImg1)
                     : NetworkImage(
                         category.image,
                       ),
@@ -182,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const Spacer(),
               Text(
                 category.name,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
             ],
           );

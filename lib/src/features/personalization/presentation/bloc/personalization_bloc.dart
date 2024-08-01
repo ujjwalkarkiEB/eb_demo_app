@@ -16,25 +16,41 @@ class PersonalizationBloc
       : super(PersonalizationInitial()) {
     on<ProfileFetchRequestEvent>(_profileFetch);
     on<ProfileUpdateEvent>(_profileUpdate);
+    on<ProfileDataFetchRequestEvent>(_onProfileDataFetch);
   }
 
   void _profileFetch(ProfileFetchRequestEvent event,
       Emitter<PersonalizationState> emit) async {
-    final result = await _profileRepositiory.getCurrentUserProfile();
+    emit(ProfileFetchLoading());
+    final result = await _profileRepositiory.getCurrentUserProfileId();
     result.fold(
       (l) => emit(ProfileFetchingError()),
-      (r) => emit(ProfileFetched(currentUser: r)),
+      (id) {
+        add(ProfileDataFetchRequestEvent(profileId: id));
+      },
     );
   }
 
   void _profileUpdate(
       ProfileUpdateEvent event, Emitter<PersonalizationState> emit) async {
+    emit(ProfileUpdateLoading());
+    await Future.delayed(const Duration(seconds: 1));
     final result = await _profileRepositiory.updateProfile(
         avatar: event.avatar, bio: event.bio);
 
     result.fold(
-      (l) => emit,
+      (l) => emit(ProfileUpdateFailure()),
       (r) => emit(ProfileUpdateSuccessful()),
+    );
+  }
+
+  void _onProfileDataFetch(ProfileDataFetchRequestEvent event,
+      Emitter<PersonalizationState> emit) async {
+    final result = await _profileRepositiory.getCurrentUserProfileData(
+        profileId: event.profileId);
+    result.fold(
+      (l) => emit(ProfileFetchingError()),
+      (profile) => emit(ProfileFetched(currentUser: profile)),
     );
   }
 }

@@ -8,7 +8,7 @@ part of 'profile.dart';
 
 _$ProfileImpl _$$ProfileImplFromJson(Map<String, dynamic> json) =>
     _$ProfileImpl(
-      id: json['id'] as String,
+      id: json['_id'] as String,
       user: User.fromJson(json['user'] as Map<String, dynamic>),
       avatar: json['avatar'],
       bio: json['bio'],
@@ -17,7 +17,7 @@ _$ProfileImpl _$$ProfileImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$ProfileImplToJson(_$ProfileImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'user': instance.user,
       'avatar': instance.avatar,
       'bio': instance.bio,

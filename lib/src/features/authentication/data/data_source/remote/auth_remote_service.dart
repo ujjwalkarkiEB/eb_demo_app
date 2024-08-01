@@ -44,19 +44,16 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
 
   @override
   Future<void> logout() {
-    // TODO: implement logout
     throw UnimplementedError();
   }
 
   @override
   Future<void> logoutFromAllDevices() {
-    // TODO: implement logoutFromAllDevices
     throw UnimplementedError();
   }
 
   @override
   Future<void> refreshToken({required String refreshToken}) {
-    // TODO: implement refreshToken
     throw UnimplementedError();
   }
 
@@ -114,8 +111,8 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
             ),
         onResponse: (data) {
           final tokens = {
-            "accessToken": data[accessTokenKey],
-            "refreshToken": data[refreshTokenKey],
+            "accessToken": data['data'][accessTokenKey],
+            "refreshToken": data['data'][refreshTokenKey],
           };
 
           return json.encode(tokens);
@@ -124,7 +121,6 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
 
   @override
   Future<void> verifyAuthenticatorOtp({required String otp}) {
-    // TODO: implement verifyAuthenticatorOtp
     throw UnimplementedError();
   }
 
@@ -135,7 +131,6 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
     required String password,
     required String repeatedPassword,
   }) async {
-    print('inside remet srvice');
     return networkRequest<String>(
       request: (dio) async {
         final formData = FormData.fromMap({
