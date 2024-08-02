@@ -52,10 +52,15 @@ class ShopRepositoryImpl implements ShopRepository {
   Future<Either<Failure, List<CategorySummary>>> getCategories() async {
     try {
       final result = await _shopRemoteSource.getAllCategories();
-      return right(result.sublist(0, 6));
-    } on ApiException {
+      print('categories result: $result');
+
+      return right(result.sublist(0, 5));
+    } on ApiException catch (e) {
+      print('All categories fetch error: ${e.toString()}');
       return left(const ServerFailure('Server Error'));
     } catch (e) {
+      print('unkown categories fetch error: ${e.toString()}');
+
       return left(const UnknownFailure('Something went wrong!'));
     }
   }

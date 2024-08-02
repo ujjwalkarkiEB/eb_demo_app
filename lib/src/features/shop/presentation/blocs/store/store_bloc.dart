@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
+import 'package:eb_demo_app/src/features/shop/data/model/category.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
@@ -17,6 +20,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     on<FetchCategoryProducts>(_onFetchCategoryProducts);
     on<ApplyPriceFilterEvent>(_onApplyPriceFilterEvent);
     on<LoadMoreEvent>(_onLoadMore);
+    on<CreateProductEvent>(_onCreatedProductEvent);
   }
 
   final int _limit = 10;
@@ -24,6 +28,12 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   // flag to represent if more items to load
   bool hasLoadingMore = true;
   List<ProductSummary> categoryProducts = [];
+
+  // ----- create products input
+  ProductCategory? selectedCategory;
+  List<String>? pickedProductImages;
+  // --------
+
   Future<void> _onFetchCategoryProducts(
     FetchCategoryProducts event,
     Emitter<StoreState> emit,
@@ -82,10 +92,25 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     );
   }
 
-  @override
-  void onTransition(Transition<StoreEvent, StoreState> transition) {
-    // TODO: implement onTransition
-    super.onTransition(transition);
-    print(transition);
+  void _onCreatedProductEvent(
+      CreateProductEvent event, Emitter<StoreState> emit) async {
+    try {
+      emit(ProductCreateLoading());
+      if (selectedCategory == null || pickedProductImages == null) {
+        emit(ProductInputFieldError(
+            field: 'Field', msg: 'Please provide all input details'));
+        return;
+      }
+      final categoryID = productCategoryInfo[selectedCategory]!['id'] as int;
+      await _storeRepository.createdProduct(
+          title: event.title,
+          description: event.description,
+          price: event.price,
+          categoryID: double.parse(categoryID.toString()),
+          images: pickedProductImages!);
+      emit(ProductCreateSuccessful());
+    } catch (e) {
+      emit(ProductCreateError());
+    }
   }
 }

@@ -15,7 +15,9 @@ class AppTheme {
       primaryColor: Colors.black,
       textTheme: AppTextTheme.lightTextTheme,
       elevatedButtonTheme: AppElevatedButtonTheme.lightElevatedButtonTheme,
-      inputDecorationTheme: AppTextFormFieldTheme.lightInputDecorationTheme
+      inputDecorationTheme: AppTextFormFieldTheme.lightInputDecorationTheme,
+      bottomSheetTheme:
+          const BottomSheetThemeData(backgroundColor: Colors.white)
 
       // appBarTheme: EAppBarTheme.lightAppBarTheme,
       // chipTheme: AppChipTheme.lightChipTheme,

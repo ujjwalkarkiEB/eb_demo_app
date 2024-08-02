@@ -23,7 +23,7 @@ class CartRepositoryImpl implements CartRepository {
   @override
   Future<void> addProductToCart({required ProductSummary product}) async {
     try {
-      await _localStorageService.addProduct(product: product);
+      await _localStorageService.addProductToCart(product: product);
     } catch (e) {
       print('error: ${e.toString()}');
       throw Exception(const LocalStorageFailure('Error to save item to cart'));
@@ -43,7 +43,7 @@ class CartRepositoryImpl implements CartRepository {
   @override
   Future<void> removeProductFromCart({required ProductSummary product}) async {
     try {
-      await _localStorageService.removeProduct(product: product);
+      await _localStorageService.removeProductFromCart(product: product);
     } catch (e) {
       throw Exception(
           const LocalStorageFailure('Error to delete item from cart'));

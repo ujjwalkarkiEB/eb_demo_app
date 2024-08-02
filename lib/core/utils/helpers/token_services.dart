@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:eb_demo_app/core/utils/constants/strings.dart';
+import 'package:eb_demo_app/core/utils/error/exception/api_exception.dart';
 import 'package:eb_demo_app/core/utils/network/client/dio_client.dart';
 import 'package:eb_demo_app/src/features/authentication/data/data_source/local/auth_database_service.dart';
 import 'package:injectable/injectable.dart';
@@ -59,6 +60,7 @@ class TokenServiceImpl implements TokenService {
         contentType: 'application/json'));
     try {
       final String? refreshToken = await getRefreshToken();
+      print('token is refershng.........');
       if (refreshToken == null) {
         return false;
       }
@@ -73,9 +75,14 @@ class TokenServiceImpl implements TokenService {
 
       if (token != null) {
         await storeToken(accessToken: token);
+        print('token is refershed.........');
+
         return true;
       }
       return false;
+    } on DioException catch (e) {
+      print('Api error: ${e.message}');
+      throw ApiException.fromDioError(e);
     } catch (e) {
       throw 'Error while refreshing token : ${e.toString()}';
     }

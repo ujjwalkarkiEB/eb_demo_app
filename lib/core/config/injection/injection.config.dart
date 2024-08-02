@@ -103,8 +103,10 @@ extension GetItInjectableX on _i174.GetIt {
           authRemoteSource: gh<_i849.AuthRemoteSource>(),
           authDatabaseService: gh<_i457.AuthDatabaseService>(),
         ));
-    gh.lazySingleton<_i866.StoreRepository>(
-        () => _i866.StoreRepositoryImpl(gh<_i760.ShopRemoteSource>()));
+    gh.lazySingleton<_i866.StoreRepository>(() => _i866.StoreRepositoryImpl(
+          gh<_i760.ShopRemoteSource>(),
+          gh<_i554.ShopDatabaseService>(),
+        ));
     gh.lazySingleton<_i46.ProfileRepositiory>(
         () => _i46.ProfileRepositioryImpl(gh<_i574.ProfileRemoteSource>()));
     gh.factory<_i905.PersonalizationBloc>(

@@ -35,7 +35,7 @@ class _MainScreenState extends State<MainNavScreen> {
         routes: const [
           HomeRoute(),
           StoreRoute(),
-          WishlistRoute(),
+          MyproductsRoute(),
           PersonalizationRoute(),
         ],
         bottomNavigationBuilder: (_, tabsRouter) {

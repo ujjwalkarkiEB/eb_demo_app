@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import 'package:ferry/ferry.dart';
 
 import '../error/exception/api_exception.dart' as apiexception;
@@ -31,7 +30,12 @@ abstract class BaseGraphQLRemoteSource {
       } else {
         return response.data as T;
       }
+    } on DioException catch (e) {
+      print('Graphql N/W Dio Error: ${e.message}');
+
+      throw apiexception.ApiException.fromDioError(e);
     } catch (e) {
+      print('Graphql N/W Error: ${e.toString()}');
       throw apiexception.UnknownException(e.toString());
     }
   }

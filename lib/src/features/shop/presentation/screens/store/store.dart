@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
+import 'package:eb_demo_app/src/features/shop/presentation/screens/store/widget/modal/add_product_modal.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/screens/store/widget/filter_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,10 +29,6 @@ class StoreScreenState extends State<StoreScreen> {
   void initState() {
     super.initState();
     scrollController.addListener(_onScroll);
-    // Fetch initial category products
-    context
-        .read<StoreBloc>()
-        .add(FetchCategoryProducts(categoryID: _selectedCategoryId.toDouble()));
   }
 
   void _onScroll() {
@@ -106,42 +103,64 @@ class StoreScreenState extends State<StoreScreen> {
                       products = state.loadedProducts;
                     }
 
-                    return ListView.builder(
-                      controller: scrollController,
-                      itemCount: products.length +
-                          (context.read<StoreBloc>().hasLoadingMore
-                              ? 1
-                              : 0), // Add 1 for the loading indicator if more products are being loaded
-                      itemBuilder: (context, index) {
-                        if (index == products.length) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
+                    return products.isEmpty
+                        ? Center(
+                            child: Text('No products available!'),
+                          )
+                        : ListView.builder(
+                            controller: scrollController,
+                            itemCount: products.length +
+                                (context.read<StoreBloc>().hasLoadingMore
+                                    ? 1
+                                    : 0), // Add 1 for the loading indicator if more products are being loaded
+                            itemBuilder: (context, index) {
+                              if (index == products.length) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
 
-                        final product = products[index];
-                        return ListTile(
-                          onTap: () {
-                            context.router.push(
-                                ProductDetailRoute(productID: product.id));
-                          },
-                          title: Text(product.title),
-                          subtitle: Text('\$${product.price}'),
-                          trailing: Image.network(
-                            product.images[0],
-                            errorBuilder: (context, error, stackTrace) =>
-                                Image.asset("assets/images/image.jpg"),
-                          ),
-                        );
-                      },
-                    );
+                              final product = products[index];
+                              return ListTile(
+                                onTap: () {
+                                  context.router.push(ProductDetailRoute(
+                                      productID: product.id));
+                                },
+                                title: Text(product.title),
+                                subtitle: Text('\$${product.price}'),
+                                trailing: Image.network(
+                                  product.images[0],
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Image.asset("assets/images/image.jpg"),
+                                ),
+                              );
+                            },
+                          );
                   }
 
-                  return const Center(child: Text('No products available'));
+                  return const Center(child: Text('Something went wrong!'));
                 },
               ),
             ),
           ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (_) => BlocProvider.value(
+                value: context.read<StoreBloc>(),
+                child: const ProductCreateScreen(),
+              ),
+            );
+          },
+          shape: const CircleBorder(),
+          backgroundColor: Colors.green,
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
         ),
       ),
     );

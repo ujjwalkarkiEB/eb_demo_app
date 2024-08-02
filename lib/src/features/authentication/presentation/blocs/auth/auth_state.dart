@@ -17,4 +17,8 @@ final class AuthUnAuthenticated extends AuthState {}
 
 final class FirstVisit extends AuthState {}
 
-final class LogOut extends AuthState {}
+final class LoggingOut extends AuthState {}
+
+final class LogOutSuccessful extends AuthState {}
+
+final class LogOutFailed extends AuthState {}

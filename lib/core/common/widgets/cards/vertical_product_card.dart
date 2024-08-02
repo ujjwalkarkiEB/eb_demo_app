@@ -51,8 +51,10 @@ class VerticalProductCard extends StatelessWidget {
                     placeholder: (context, url) => const Center(
                       child: CircularProgressIndicator(),
                     ),
-                    errorWidget: (context, url, error) => const Center(
-                      child: Icon(Icons.error),
+                    errorWidget: (context, url, error) => Image.asset(
+                      'assets/images/image.jpg',
+                      width: double.infinity,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),

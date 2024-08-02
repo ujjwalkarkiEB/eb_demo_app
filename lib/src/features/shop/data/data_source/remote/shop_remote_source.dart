@@ -1,6 +1,11 @@
-import 'package:dartz/dartz.dart';
+import 'dart:io';
+
+import 'package:built_collection/built_collection.dart';
 import 'package:eb_demo_app/core/utils/base/base_graphql_remote_source.dart';
+import 'package:eb_demo_app/core/utils/error/exception/api_exception.dart';
 import 'package:eb_demo_app/core/utils/network/client/graphql_client.dart';
+import 'package:eb_demo_app/graphql/mutation/g.files/add_product.data.gql.dart';
+import 'package:eb_demo_app/graphql/mutation/g.files/add_product.req.gql.dart';
 import 'package:eb_demo_app/graphql/query/category/g.files/get_all_categories.data.gql.dart';
 import 'package:eb_demo_app/graphql/query/category/g.files/get_all_categories.req.gql.dart';
 import 'package:eb_demo_app/graphql/query/product/g.files/get_product_by_id.data.gql.dart';
@@ -8,6 +13,7 @@ import 'package:eb_demo_app/graphql/query/product/g.files/get_product_by_id.req.
 import 'package:eb_demo_app/graphql/query/product/g.files/search_products.data.gql.dart';
 import 'package:eb_demo_app/graphql/query/product/g.files/search_products.req.gql.dart';
 import 'package:eb_demo_app/src/features/shop/data/model/product.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../model/category.dart';
@@ -24,6 +30,8 @@ abstract class ShopRemoteSource {
       {required double categoryID,
       required int minPrice,
       required int maxPrice});
+  Future<ProductSummary> createProduct(String title, double price,
+      String description, double categoryId, List<String> images);
 }
 
 @LazySingleton(as: ShopRemoteSource)
@@ -182,5 +190,83 @@ class ShopRemoteSourceImpl extends BaseGraphQLRemoteSource
         throw Exception('Unexpected data type ');
       },
     );
+  }
+
+  @override
+  Future<ProductSummary> createProduct(String title, double price,
+      String description, double categoryId, List<String> images) async {
+    try {
+      final productImages =
+          await _uploadImagesToFirestore(pickedImages: images);
+      final GAddProductReq req = GAddProductReq(
+        (b) => b
+          ..vars.categoryId = categoryId
+          ..vars.description = description
+          ..vars.images = ListBuilder<String>(productImages)
+          ..vars.title = title
+          ..vars.price = price,
+      );
+      return graphqlRequest<ProductSummary>(
+        request: (client) => client.request(req).first,
+        onResponse: (data) {
+          if (data is GAddProductData) {
+            final createdProduct = data.addProduct;
+            final product = ProductSummary(
+              id: createdProduct.id,
+              title: createdProduct.title,
+              price: createdProduct.price,
+              images: createdProduct.images.toList(),
+            );
+            return product;
+          }
+          throw Exception('Unexpected data type ');
+        },
+      );
+    } catch (e) {
+      final GAddProductReq req = GAddProductReq(
+        (b) => b
+          ..vars.categoryId = categoryId
+          ..vars.description = description
+          ..vars.images = ListBuilder<String>(images)
+          ..vars.title = title
+          ..vars.price = price,
+      );
+      return graphqlRequest<ProductSummary>(
+        request: (client) => client.request(req).first,
+        onResponse: (data) {
+          if (data is GAddProductData) {
+            final createdProduct = data.addProduct;
+            final product = ProductSummary(
+              id: createdProduct.id,
+              title: createdProduct.title,
+              price: createdProduct.price,
+              images: createdProduct.images.toList(),
+            );
+            return product;
+          }
+          throw Exception('Unexpected data type ');
+        },
+      );
+    }
+  }
+}
+
+Future<List<String>> _uploadImagesToFirestore(
+    {required List<String> pickedImages}) async {
+  try {
+    List<String> downloadUrls = [];
+    for (String imagePath in pickedImages) {
+      File imageFile = File(imagePath);
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      Reference ref =
+          FirebaseStorage.instance.ref().child('products/$fileName');
+      UploadTask uploadTask = ref.putFile(imageFile);
+      TaskSnapshot snapshot = await uploadTask;
+      String downloadUrl = await snapshot.ref.getDownloadURL();
+      downloadUrls.add(downloadUrl);
+    }
+    return downloadUrls;
+  } catch (e) {
+    throw UnknownException('Firebasestorage upload error!');
   }
 }

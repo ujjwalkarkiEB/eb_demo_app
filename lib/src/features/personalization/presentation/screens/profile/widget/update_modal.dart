@@ -34,11 +34,12 @@ class UpdateProfileModalState extends State<UpdateProfileModal> {
       showFlashError(context, "You are required to provide input!");
       return;
     }
+    print('bio: ${bio == null}');
 
-    context
-        .read<PersonalizationBloc>()
-        .add(ProfileUpdateEvent(avatar: _pickedImage?.path, bio: bio));
-    Navigator.of(context).pop();
+    // context.read<PersonalizationBloc>().add(
+    //       ProfileUpdateEvent(avatar: _pickedImage?.path, bio: bio),
+    //     );
+    // Navigator.of(context).pop();
   }
 
   void _pickAvatar({bool isgallery = true}) async {
@@ -99,54 +100,55 @@ class UpdateProfileModalState extends State<UpdateProfileModal> {
       padding: const EdgeInsets.all(16.0),
       child: Form(
         key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Edit Profile',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Column(
-              children: [
-                CircleAvatar(
-                  radius: 35,
-                  backgroundImage: _pickedImage == null
-                      ? const AssetImage(AppImages.userImage)
-                      : FileImage(_pickedImage!),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.camera),
-                    TextButton(
-                      onPressed: _showImagePickerOptions,
-                      child: const Text('Add picture'),
-                    )
-                  ],
-                )
-              ],
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _bioController,
-              decoration: const InputDecoration(labelText: 'Bio'),
-              maxLines: 3,
-              onSaved: (newValue) {
-                if (newValue != null) {
-                  bio = newValue;
-                }
-              },
-            ),
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerRight,
-              child: ElevatedButton(
-                onPressed: _saveProfile,
-                child: const Text('Save'),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Edit Profile',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            ),
-          ],
+              Column(
+                children: [
+                  CircleAvatar(
+                    radius: 35,
+                    backgroundImage: _pickedImage == null
+                        ? const AssetImage(AppImages.userImage)
+                        : FileImage(_pickedImage!),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.camera),
+                      TextButton(
+                        onPressed: _showImagePickerOptions,
+                        child: const Text('Add picture'),
+                      )
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _bioController,
+                decoration: const InputDecoration(labelText: 'Bio'),
+                maxLines: 3,
+                onSaved: (newValue) {
+                  print('new: ${newValue == null}');
+                  bio = newValue;
+                },
+              ),
+              const SizedBox(height: 16),
+              Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                  onPressed: _saveProfile,
+                  child: const Text('Save'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

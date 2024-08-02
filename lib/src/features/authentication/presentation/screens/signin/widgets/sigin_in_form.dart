@@ -92,7 +92,7 @@ class _SignInFormState extends State<SignInForm> {
           ),
           // login button
           SizedBox(
-            height: 80,
+            height: 60,
             width: double.infinity,
             child: ElevatedButton(
               onPressed: _submitForm,
@@ -108,7 +108,7 @@ class _SignInFormState extends State<SignInForm> {
                   }
                   return const Text(
                     'Login',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   );
                 },
               ),
@@ -116,24 +116,6 @@ class _SignInFormState extends State<SignInForm> {
           ),
           const Gap(10),
 
-          // login as admin
-          TextButton(
-            onPressed: _submitForm,
-            child: BlocBuilder<LoginBloc, LoginState>(
-              builder: (context, state) {
-                if (state is LoginLoading) {
-                  return const CupertinoActivityIndicator(
-                    color: Colors.white,
-                  );
-                }
-                return const Text(
-                  'Login as Admin',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                );
-              },
-            ),
-          ),
-          const Gap(10),
           const SocialButton(),
           const Spacer(),
           Row(

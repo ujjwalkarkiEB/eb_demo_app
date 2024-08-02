@@ -22,6 +22,7 @@ class PersonalizationBloc
   void _profileFetch(ProfileFetchRequestEvent event,
       Emitter<PersonalizationState> emit) async {
     emit(ProfileFetchLoading());
+    print('hrer');
     final result = await _profileRepositiory.getCurrentUserProfileId();
     result.fold(
       (l) => emit(ProfileFetchingError()),
@@ -52,5 +53,13 @@ class PersonalizationBloc
       (l) => emit(ProfileFetchingError()),
       (profile) => emit(ProfileFetched(currentUser: profile)),
     );
+  }
+
+  @override
+  void onTransition(
+      Transition<PersonalizationEvent, PersonalizationState> transition) {
+    // TODO: implement onTransition
+    super.onTransition(transition);
+    print(transition);
   }
 }

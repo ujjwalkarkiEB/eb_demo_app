@@ -8,6 +8,10 @@ part of 'serializers.gql.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(FetchPolicy.serializer)
+      ..add(GAddProductData.serializer)
+      ..add(GAddProductData_addProduct.serializer)
+      ..add(GAddProductReq.serializer)
+      ..add(GAddProductVars.serializer)
       ..add(GCreateCategoryDto.serializer)
       ..add(GCreateProductDto.serializer)
       ..add(GCreateUserDto.serializer)
@@ -46,6 +50,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(
               BuiltList, const [const FullType(GsearchProductsData_products)]),
           () => new ListBuilder<GsearchProductsData_products>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())

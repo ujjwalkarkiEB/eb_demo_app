@@ -32,6 +32,8 @@ class ProfileRemoteSourceImpl extends BaseRemoteSource
 
   @override
   Future<void> updateProfile({String? avatar, String? bio}) {
+    print('bio: ${bio.runtimeType}');
+    print('avatra: $avatar');
     final Map<String, dynamic> formData = {
       if (avatar != null) 'avatar': avatar,
       if (bio != null) 'bio': bio,

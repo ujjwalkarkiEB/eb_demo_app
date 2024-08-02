@@ -45,6 +45,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const MainNavScreen(),
       );
     },
+    MyproductsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const MyproductsScreen(),
+      );
+    },
     OnboardingRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -66,6 +72,12 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const PersonalizationScreen(),
+      );
+    },
+    ProductCreateRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ProductCreateScreen(),
       );
     },
     ProductDetailRoute.name: (routeData) {
@@ -124,12 +136,6 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const StoreScreen(),
-      );
-    },
-    WishlistRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const WishlistScreen(),
       );
     },
   };
@@ -206,6 +212,20 @@ class MainNavRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [MyproductsScreen]
+class MyproductsRoute extends PageRouteInfo<void> {
+  const MyproductsRoute({List<PageRouteInfo>? children})
+      : super(
+          MyproductsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MyproductsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [OnboardingScreen]
 class OnboardingRoute extends PageRouteInfo<void> {
   const OnboardingRoute({List<PageRouteInfo>? children})
@@ -271,6 +291,20 @@ class PersonalizationRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'PersonalizationRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ProductCreateScreen]
+class ProductCreateRoute extends PageRouteInfo<void> {
+  const ProductCreateRoute({List<PageRouteInfo>? children})
+      : super(
+          ProductCreateRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ProductCreateRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -421,20 +455,6 @@ class StoreRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'StoreRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [WishlistScreen]
-class WishlistRoute extends PageRouteInfo<void> {
-  const WishlistRoute({List<PageRouteInfo>? children})
-      : super(
-          WishlistRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'WishlistRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

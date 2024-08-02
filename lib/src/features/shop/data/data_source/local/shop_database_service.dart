@@ -5,8 +5,9 @@ import 'package:injectable/injectable.dart';
 import '../../model/product.dart';
 
 abstract class ShopDatabaseService {
-  Future<void> addProduct({required ProductSummary product});
-  Future<void> removeProduct({required ProductSummary product});
+  Future<void> addCreatedProduct({required ProductSummary product});
+  Future<void> addProductToCart({required ProductSummary product});
+  Future<void> removeProductFromCart({required ProductSummary product});
   Future<List<ProductSummary>> getAllProducts();
   Future<int> getCartProductQuantityCount(ProductSummary product);
   Future<int> getCartItemsCount();
@@ -21,7 +22,7 @@ class ShopDatabaseServiceImpl extends ShopDatabaseService {
   ShopDatabaseServiceImpl(this._databaseHelper);
 
   @override
-  Future<void> addProduct({required ProductSummary product}) async {
+  Future<void> addProductToCart({required ProductSummary product}) async {
     try {
       final box = _databaseHelper.cartBox;
       final existingProduct = box.values.cast<ProductSummary?>().firstWhere(
@@ -45,7 +46,7 @@ class ShopDatabaseServiceImpl extends ShopDatabaseService {
   }
 
   @override
-  Future<void> removeProduct({required ProductSummary product}) async {
+  Future<void> removeProductFromCart({required ProductSummary product}) async {
     try {
       final box = _databaseHelper.cartBox;
       final existingProduct = box.values.cast<ProductSummary?>().firstWhere(
@@ -117,6 +118,17 @@ class ShopDatabaseServiceImpl extends ShopDatabaseService {
             orElse: () => null,
           );
       return existingProduct != null;
+    } catch (e) {
+      throw Exception('Local storage access error: ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<void> addCreatedProduct({required ProductSummary product}) async {
+    try {
+      final box = _databaseHelper.cacheBox;
+      box.add(product);
+      product.save();
     } catch (e) {
       throw Exception('Local storage access error: ${e.toString()}');
     }

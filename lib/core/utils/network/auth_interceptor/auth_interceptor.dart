@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:eb_demo_app/core/config/injection/injection.dart';
+import 'package:eb_demo_app/core/utils/constants/strings.dart';
 import 'package:eb_demo_app/core/utils/helpers/token_services.dart';
 import 'package:injectable/injectable.dart';
 
@@ -43,16 +44,12 @@ class AuthInterceptor extends QueuedInterceptorsWrapper {
       RequestOptions options, RequestInterceptorHandler handler) async {
     final tokenService = getIt<TokenService>();
     final token = await tokenService.getAccessToken();
-    print(' acceess token: $token');
-    print(' acceess token: ${await tokenService.getRefreshToken()}');
 
     if (token != null) {
       final bool isExpired = await tokenService.hasSession(token);
-      // print('isExpired: $isExpired');
 
       if (isExpired) {
         final isRefreshed = await tokenService.refreshToken();
-        // print('refrsed: $isRefreshed');
 
         if (!isRefreshed) {
           return handler.reject(DioException(
@@ -66,6 +63,7 @@ class AuthInterceptor extends QueuedInterceptorsWrapper {
               )));
         }
         final String? newToken = await tokenService.getAccessToken();
+        print('newToken: $newToken');
 
         options.headers['Authorization'] = 'Bearer $newToken';
       }

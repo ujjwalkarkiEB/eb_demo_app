@@ -18,6 +18,8 @@ abstract class AuthRepository {
   Future<Either<Failure, String>> registerUser(
       String username, String email, String password, String repeatPassword);
   Future<Either<Failure, void>> login(String email, String password);
+  Future<void> logout();
+
   Future<Either<Failure, void>> verifyOtp(
       String userID, String otp, bool isRedirectedFromLogin);
   Future<Either<Failure, void>> resendOtp(String userID);
@@ -129,6 +131,20 @@ class AuthReposeitoryImpl extends AuthRepository {
       return const Left(ServerFailure('Something went wrong'));
     } catch (e) {
       return const Left(UnknownFailure('Something went wrong !'));
+    }
+  }
+
+  @override
+  Future<void> logout() async {
+    try {
+      final refreshKey =
+          await _authDatabaseService.getToken(isAccessToken: false);
+      await _authRemoteSource.logout(refershToken: refreshKey!);
+      await _authDatabaseService.clearToken();
+    } on ApiException catch (e) {
+      throw Exception('Logout Remote error: ${e.message}');
+    } catch (e) {
+      throw UnknownException('UnkownError while logingout: ${e.toString()}');
     }
   }
 }

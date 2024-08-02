@@ -15,9 +15,11 @@ class DatabaseHelper {
     await Hive.openBox<String>(authBoxName);
     await Hive.openBox<ProductSummary>(cartBoxName);
     await Hive.openBox<String>(settingsBoxName);
+    await Hive.openBox<ProductSummary>(cacheBoxName);
   }
 
   Box<String> get authBox => Hive.box(authBoxName);
   Box<ProductSummary> get cartBox => Hive.box(cartBoxName);
   Box<String> get settingsBox => Hive.box(settingsBoxName);
+  Box<ProductSummary> get cacheBox => Hive.box(cacheBoxName);
 }

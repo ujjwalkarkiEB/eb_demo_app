@@ -24,3 +24,12 @@ final class LoadMoreEvent extends StoreEvent {
 
   LoadMoreEvent({required this.categoryID});
 }
+
+final class CreateProductEvent extends StoreEvent {
+  final String title;
+  final String description;
+  final double price;
+
+  CreateProductEvent(
+      {required this.title, required this.description, required this.price});
+}

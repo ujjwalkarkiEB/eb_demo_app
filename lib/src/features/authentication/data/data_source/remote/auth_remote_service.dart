@@ -14,7 +14,7 @@ abstract class AuthRemoteSource {
       required String password,
       required String repeatedPassword});
   Future<void> refreshToken({required String refreshToken});
-  Future<void> logout();
+  Future<void> logout({required String refershToken});
   Future<void> logoutFromAllDevices();
   Future<void> changePassword(
       {required String oldPassword, required String newPassword});
@@ -43,8 +43,14 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
   }
 
   @override
-  Future<void> logout() {
-    throw UnimplementedError();
+  Future<void> logout({required String refershToken}) {
+    return networkRequest<void>(
+      request: (dio) async {
+        return await dio
+            .post('/account/logout', data: {refreshTokenKey: refershToken});
+      },
+      responseType: false,
+    );
   }
 
   @override

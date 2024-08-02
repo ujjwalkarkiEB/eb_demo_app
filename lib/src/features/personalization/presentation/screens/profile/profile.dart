@@ -36,6 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }
 
         if (state is ProfileFetched) {
+          print('avaatar: ${state.currentUser.avatar}');
           userProfile = state.currentUser;
         }
 
@@ -54,12 +55,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Column(
                     children: [
                       CircleAvatar(
-                        backgroundImage: userProfile?.avatar == null
+                        backgroundImage: userProfile!.avatar == null
                             ? const AssetImage(AppImages.userImage)
                             : FileImage(File(userProfile!.avatar)),
                         radius: 30,
                       ),
-                      Text(userProfile!.bio)
+                      Text(userProfile?.bio ?? '')
                     ],
                   ),
                   const Divider(),

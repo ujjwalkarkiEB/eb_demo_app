@@ -14,6 +14,7 @@ class GridLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
+        scrollDirection: Axis.vertical,
         itemCount: itemCount,
         shrinkWrap: true,
         padding: EdgeInsets.zero,

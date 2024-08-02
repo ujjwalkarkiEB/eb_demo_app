@@ -25,3 +25,17 @@ final class FetchedLoadMoreProducts extends StoreState {
 
   FetchedLoadMoreProducts({required this.loadedProducts});
 }
+
+// states for creating products
+final class ProductInputFieldError extends StoreState {
+  final String field;
+  final String msg;
+
+  ProductInputFieldError({required this.field, required this.msg});
+}
+
+final class ProductCreateSuccessful extends StoreState {}
+
+final class ProductCreateError extends StoreState {}
+
+final class ProductCreateLoading extends StoreState {}

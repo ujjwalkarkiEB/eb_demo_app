@@ -7,6 +7,7 @@ final String authServerBaseUrl = Platform.isAndroid
 const String ecommercerBaseUrl = "https://api.escuelajs.co/graphql";
 
 // database
+const String cacheBoxName = 'cacheBox';
 const String authBoxName = "authBox";
 const String cartBoxName = "cartBox";
 const String settingsBoxName = "settingsBox";
