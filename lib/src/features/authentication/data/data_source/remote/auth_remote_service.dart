@@ -156,7 +156,8 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
   Future<void> verifyOtp(
       {required String otp,
       required String userId,
-      required bool isOtpResentForRegister}) async {
+      required bool isOtpResentForRegister,
+      String? otpType}) async {
     return networkRequest<void>(
       request: (dio) async {
         return await dio.post(
@@ -164,7 +165,8 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
           data: {
             "userId": userId,
             "otp": otp,
-            "otpType": isOtpResentForRegister ? "ResendRegisterOtp" : "Register"
+            "otpType": otpType ??
+                (isOtpResentForRegister ? "ResendRegisterOtp" : "Register")
           },
         );
       },
