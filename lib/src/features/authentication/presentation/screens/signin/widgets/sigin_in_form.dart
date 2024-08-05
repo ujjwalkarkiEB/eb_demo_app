@@ -25,7 +25,6 @@ class _SignInFormState extends State<SignInForm> {
   bool rememberMe = false;
 
   void _submitForm() {
-    // context.router.pushAndPopUntil(MainNavRoute(), predicate: (route) => false);
     if (_formKey.currentState?.validate() ?? false) {
       _formKey.currentState?.save();
       context.read<LoginBloc>().add(LoginRequestEvent(
@@ -84,7 +83,7 @@ class _SignInFormState extends State<SignInForm> {
               ),
               GestureDetector(
                 onTap: () {
-                  context.router.push(ForgotPasswordRoute());
+                  context.router.push(const ForgotPasswordRoute());
                 },
                 child: const Text('Forgot Password?'),
               ),
