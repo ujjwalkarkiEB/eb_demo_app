@@ -17,6 +17,8 @@ import '../../../src/features/authentication/data/data_source/remote/auth_remote
     as _i849;
 import '../../../src/features/authentication/data/respository/auth_repository.dart'
     as _i819;
+import '../../../src/features/authentication/data/respository/password_config_repository.dart'
+    as _i50;
 import '../../../src/features/authentication/presentation/blocs/auth/auth_bloc.dart'
     as _i839;
 import '../../../src/features/authentication/presentation/blocs/login_bloc/login_bloc.dart'
@@ -25,6 +27,8 @@ import '../../../src/features/authentication/presentation/blocs/onbaording_bloc/
     as _i205;
 import '../../../src/features/authentication/presentation/blocs/otp/otp_bloc.dart'
     as _i155;
+import '../../../src/features/authentication/presentation/blocs/password_reset/password_reset_bloc.dart'
+    as _i1031;
 import '../../../src/features/authentication/presentation/blocs/signup_bloc/signup_bloc.dart'
     as _i124;
 import '../../../src/features/personalization/data/remote/profile_remote_source.dart'
@@ -39,6 +43,8 @@ import '../../../src/features/shop/data/data_source/remote/shop_remote_source.da
     as _i760;
 import '../../../src/features/shop/data/repository/cart_repository.dart'
     as _i354;
+import '../../../src/features/shop/data/repository/my_products_repository.dart'
+    as _i855;
 import '../../../src/features/shop/data/repository/product_repository.dart'
     as _i572;
 import '../../../src/features/shop/data/repository/shop_repository.dart'
@@ -49,6 +55,8 @@ import '../../../src/features/shop/presentation/blocs/cart/cart_bloc.dart'
     as _i773;
 import '../../../src/features/shop/presentation/blocs/home/home_bloc.dart'
     as _i553;
+import '../../../src/features/shop/presentation/blocs/myproducts/myproducts_bloc.dart'
+    as _i278;
 import '../../../src/features/shop/presentation/blocs/product_detail/product_detail_bloc.dart'
     as _i222;
 import '../../../src/features/shop/presentation/blocs/store/store_bloc.dart'
@@ -109,12 +117,23 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.lazySingleton<_i46.ProfileRepositiory>(
         () => _i46.ProfileRepositioryImpl(gh<_i574.ProfileRemoteSource>()));
+    gh.lazySingleton<_i855.MyProductsRepository>(
+        () => _i855.MyProductsRepositoryImpl(
+              gh<_i554.ShopDatabaseService>(),
+              gh<_i760.ShopRemoteSource>(),
+            ));
+    gh.lazySingleton<_i50.PasswordConfigRepository>(
+        () => _i50.PasswordConfigRepositoryImpl(gh<_i849.AuthRemoteSource>()));
     gh.factory<_i905.PersonalizationBloc>(
         () => _i905.PersonalizationBloc(gh<_i46.ProfileRepositiory>()));
     gh.lazySingleton<_i67.ShopRepository>(
         () => _i67.ShopRepositoryImpl(gh<_i760.ShopRemoteSource>()));
     gh.factory<_i591.StoreBloc>(
         () => _i591.StoreBloc(gh<_i866.StoreRepository>()));
+    gh.factory<_i278.MyproductsBloc>(
+        () => _i278.MyproductsBloc(gh<_i855.MyProductsRepository>()));
+    gh.factory<_i1031.PasswordResetBloc>(
+        () => _i1031.PasswordResetBloc(gh<_i50.PasswordConfigRepository>()));
     gh.factory<_i124.SignupBloc>(
         () => _i124.SignupBloc(gh<_i819.AuthRepository>()));
     gh.factory<_i222.ProductDetailBloc>(

@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
+import 'features/authentication/presentation/blocs/password_reset/password_reset_bloc.dart';
 import 'features/shop/presentation/blocs/cart/cart_bloc.dart';
 
 class MyApp extends StatelessWidget {
@@ -31,6 +32,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt<OtpBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<PasswordResetBloc>(),
         ),
         BlocProvider(
           create: (context) => getIt<CartBloc>(),

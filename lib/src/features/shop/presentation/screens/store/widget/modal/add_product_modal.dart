@@ -66,7 +66,10 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Create Product'),
+          title: const Text(
+            'Create Product',
+            style: TextStyle(color: Colors.white),
+          ),
           backgroundColor: AppColors.buttonColor,
         ),
         backgroundColor: Colors.white,

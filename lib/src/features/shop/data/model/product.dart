@@ -16,13 +16,14 @@ class ProductSummary extends HiveObject with QuantityMixin {
   double price;
   @HiveField(3)
   final List<String> images;
+  double? categoryID;
 
-  ProductSummary({
-    required this.id,
-    required this.title,
-    required this.price,
-    required this.images,
-  });
+  ProductSummary(
+      {required this.id,
+      required this.title,
+      required this.price,
+      required this.images,
+      this.categoryID});
 }
 
 class ProductDetail extends ProductSummary {
@@ -49,7 +50,9 @@ class ProductDetail extends ProductSummary {
       id: product.id,
       title: product.title,
       price: product.price,
-      images: product.images.toList(),
+      images: product.images
+          .map<String>((image) => image.replaceAll(RegExp(r'\[|\]|\"'), ''))
+          .toList(),
       description: product.description,
       categoryName: product.category.name,
       creationAt: DateTime.parse(product.creationAt.value.toString()),

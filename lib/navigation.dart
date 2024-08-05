@@ -3,7 +3,6 @@ import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
 import 'package:eb_demo_app/src/features/personalization/presentation/bloc/personalization_bloc.dart';
-import 'package:eb_demo_app/src/features/shop/presentation/blocs/cart/cart_bloc.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/blocs/store/store_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,8 +22,7 @@ class _MainScreenState extends State<MainNavScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) =>
-              getIt<StoreBloc>()..add(FetchCategoryProducts(categoryID: 1)),
+          create: (context) => getIt<StoreBloc>()..add(FetchCategoryProducts()),
         ),
         BlocProvider(
           create: (context) =>
@@ -35,7 +33,7 @@ class _MainScreenState extends State<MainNavScreen> {
         routes: const [
           HomeRoute(),
           StoreRoute(),
-          MyproductsRoute(),
+          MyProductsRoute(),
           PersonalizationRoute(),
         ],
         bottomNavigationBuilder: (_, tabsRouter) {

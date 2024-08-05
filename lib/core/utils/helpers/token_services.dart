@@ -60,7 +60,6 @@ class TokenServiceImpl implements TokenService {
         contentType: 'application/json'));
     try {
       final String? refreshToken = await getRefreshToken();
-      print('token is refershng.........');
       if (refreshToken == null) {
         return false;
       }
@@ -75,7 +74,6 @@ class TokenServiceImpl implements TokenService {
 
       if (token != null) {
         await storeToken(accessToken: token);
-        print('token is refershed.........');
 
         return true;
       }

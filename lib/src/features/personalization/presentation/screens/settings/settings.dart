@@ -7,9 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../../../core/utils/constants/colors.dart';
-import '../../../data/model/profile.dart';
 import 'widgets/profile_card.dart';
-import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/src/features/personalization/presentation/bloc/personalization_bloc.dart';
 
 @RoutePage()

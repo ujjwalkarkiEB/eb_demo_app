@@ -30,6 +30,7 @@ abstract class ShopRemoteSource {
       {required double categoryID,
       required int minPrice,
       required int maxPrice});
+
   Future<ProductSummary> createProduct(String title, double price,
       String description, double categoryId, List<String> images);
 }
@@ -169,7 +170,7 @@ class ShopRemoteSourceImpl extends BaseGraphQLRemoteSource
     final GsearchProductsReq req = GsearchProductsReq(
       (b) => b
         ..vars.categoryId = categoryID
-        ..vars.limit = 10
+        ..vars.limit = 8
         ..vars.offset = offset,
     );
     return graphqlRequest(
@@ -198,6 +199,8 @@ class ShopRemoteSourceImpl extends BaseGraphQLRemoteSource
     try {
       final productImages =
           await _uploadImagesToFirestore(pickedImages: images);
+      print('Uploaded product images: $productImages'); // Debug print
+
       final GAddProductReq req = GAddProductReq(
         (b) => b
           ..vars.categoryId = categoryId
@@ -206,47 +209,33 @@ class ShopRemoteSourceImpl extends BaseGraphQLRemoteSource
           ..vars.title = title
           ..vars.price = price,
       );
+
       return graphqlRequest<ProductSummary>(
         request: (client) => client.request(req).first,
         onResponse: (data) {
           if (data is GAddProductData) {
             final createdProduct = data.addProduct;
+
+            // Parse the images field
+            List<String> imagesList = createdProduct.images
+                .map<String>(
+                    (image) => image.replaceAll(RegExp(r'\[|\]|\"'), ''))
+                .toList();
+
             final product = ProductSummary(
               id: createdProduct.id,
               title: createdProduct.title,
               price: createdProduct.price,
-              images: createdProduct.images.toList(),
+              images: imagesList,
+              categoryID: categoryId,
             );
             return product;
           }
-          throw Exception('Unexpected data type ');
+          throw Exception('Unexpected data type');
         },
       );
     } catch (e) {
-      final GAddProductReq req = GAddProductReq(
-        (b) => b
-          ..vars.categoryId = categoryId
-          ..vars.description = description
-          ..vars.images = ListBuilder<String>(images)
-          ..vars.title = title
-          ..vars.price = price,
-      );
-      return graphqlRequest<ProductSummary>(
-        request: (client) => client.request(req).first,
-        onResponse: (data) {
-          if (data is GAddProductData) {
-            final createdProduct = data.addProduct;
-            final product = ProductSummary(
-              id: createdProduct.id,
-              title: createdProduct.title,
-              price: createdProduct.price,
-              images: createdProduct.images.toList(),
-            );
-            return product;
-          }
-          throw Exception('Unexpected data type ');
-        },
-      );
+      throw UnknownException('Create product error: ${e.toString()}');
     }
   }
 }
@@ -263,6 +252,7 @@ Future<List<String>> _uploadImagesToFirestore(
       UploadTask uploadTask = ref.putFile(imageFile);
       TaskSnapshot snapshot = await uploadTask;
       String downloadUrl = await snapshot.ref.getDownloadURL();
+      print('downlaodd url: $downloadUrl');
       downloadUrls.add(downloadUrl);
     }
     return downloadUrls;

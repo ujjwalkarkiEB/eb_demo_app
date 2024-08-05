@@ -7,9 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:eb_demo_app/core/common/widgets/cart/cart_badge.dart';
 import 'package:eb_demo_app/src/features/shop/data/model/product.dart';
-import 'package:eb_demo_app/src/features/shop/data/repository/store_repository.dart';
 
-import '../../../../../../core/config/injection/injection.dart';
 import '../../blocs/store/store_bloc.dart';
 
 @RoutePage()
@@ -22,7 +20,6 @@ class StoreScreen extends StatefulWidget {
 
 class StoreScreenState extends State<StoreScreen> {
   final scrollController = ScrollController();
-  int _selectedCategoryId = 1;
   List<ProductSummary> products = [];
 
   @override
@@ -32,18 +29,20 @@ class StoreScreenState extends State<StoreScreen> {
   }
 
   void _onScroll() {
+    // ensure controller is attached to list view builder
+    if (!scrollController.hasClients) {
+      return;
+    }
+    // check if user has scrolled bottom of the list and if more items are yet to be loaded! i.e. available
+
     if (scrollController.offset == scrollController.position.maxScrollExtent &&
         context.read<StoreBloc>().hasLoadingMore) {
-      context
-          .read<StoreBloc>()
-          .add(LoadMoreEvent(categoryID: _selectedCategoryId.toDouble()));
+      context.read<StoreBloc>().add(LoadMoreEvent());
     }
   }
 
-  void _fetchCategoryProducts(int categoryId) {
-    context
-        .read<StoreBloc>()
-        .add(FetchCategoryProducts(categoryID: categoryId.toDouble()));
+  void _fetchCategoryProducts() {
+    context.read<StoreBloc>().add(FetchCategoryProducts());
   }
 
   @override
@@ -55,7 +54,9 @@ class StoreScreenState extends State<StoreScreen> {
           backgroundColor: Colors.green,
           title:
               Text('Store', style: Theme.of(context).textTheme.headlineMedium),
-          actions: const [CartBadge()],
+          actions: const [
+            CartBadge(),
+          ],
           bottom: TabBar(
             isScrollable: true,
             labelColor: Colors.white,
@@ -69,22 +70,28 @@ class StoreScreenState extends State<StoreScreen> {
               Tab(text: 'Miscellaneous'),
             ],
             onTap: (index) {
-              _selectedCategoryId = index + 1; // Map tab index to category ID
-              _fetchCategoryProducts(_selectedCategoryId);
+              context.read<StoreBloc>().selectedTabCategory = index + 1;
+
+              _fetchCategoryProducts();
             },
           ),
         ),
         body: Column(
           children: [
-            FilterSection(
+            const FilterSection(
               initialMinPrice: 0,
               initialMaxPrice: 1000,
-              categoryID: _selectedCategoryId.toDouble(),
             ),
             Expanded(
               child: BlocBuilder<StoreBloc, StoreState>(
+                buildWhen: (previous, current) =>
+                    current is! ProductCreateSuccessful ||
+                    current is! ProductCreateError ||
+                    current is! ProductCreateLoading ||
+                    current is! ProductInputFieldError,
                 builder: (context, state) {
-                  if (state is CategoryProductsLoading) {
+                  if (state is CategoryProductsLoading ||
+                      state is StoreInitial) {
                     return const Center(child: CircularProgressIndicator());
                   }
 
@@ -104,7 +111,7 @@ class StoreScreenState extends State<StoreScreen> {
                     }
 
                     return products.isEmpty
-                        ? Center(
+                        ? const Center(
                             child: Text('No products available!'),
                           )
                         : ListView.builder(
@@ -112,7 +119,7 @@ class StoreScreenState extends State<StoreScreen> {
                             itemCount: products.length +
                                 (context.read<StoreBloc>().hasLoadingMore
                                     ? 1
-                                    : 0), // Add 1 for the loading indicator if more products are being loaded
+                                    : 0),
                             itemBuilder: (context, index) {
                               if (index == products.length) {
                                 return const Center(

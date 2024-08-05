@@ -15,10 +15,9 @@ abstract class AuthRemoteSource {
       required String repeatedPassword});
   Future<void> refreshToken({required String refreshToken});
   Future<void> logout({required String refershToken});
-  Future<void> logoutFromAllDevices();
   Future<void> changePassword(
       {required String oldPassword, required String newPassword});
-  Future<void> resetPasswordEmail({required String email});
+  Future<String?> resetPasswordEmail({required String email});
   Future<void> resetPassword(
       {required String token, required String newPassword});
   Future<void> verifyAuthenticatorOtp({required String otp});
@@ -54,11 +53,6 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
   }
 
   @override
-  Future<void> logoutFromAllDevices() {
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> refreshToken({required String refreshToken}) {
     throw UnimplementedError();
   }
@@ -86,7 +80,7 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
   }
 
   @override
-  Future<void> resetPasswordEmail({required String email}) {
+  Future<String?> resetPasswordEmail({required String email}) {
     return networkRequest<String?>(
       request: (dio) async {
         return await dio.post(
@@ -101,6 +95,7 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
         if (sucessData != null) {
           return sucessData['userId'];
         }
+        return null;
       },
     );
   }

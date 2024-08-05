@@ -10,6 +10,9 @@ Serializer<GAddProductData> _$gAddProductDataSerializer =
     new _$GAddProductDataSerializer();
 Serializer<GAddProductData_addProduct> _$gAddProductDataAddProductSerializer =
     new _$GAddProductData_addProductSerializer();
+Serializer<GAddProductData_addProduct_category>
+    _$gAddProductDataAddProductCategorySerializer =
+    new _$GAddProductData_addProduct_categorySerializer();
 
 class _$GAddProductDataSerializer
     implements StructuredSerializer<GAddProductData> {
@@ -91,6 +94,9 @@ class _$GAddProductData_addProductSerializer
       serializers.serialize(object.images,
           specifiedType:
               const FullType(BuiltList, const [const FullType(String)])),
+      'category',
+      serializers.serialize(object.category,
+          specifiedType: const FullType(GAddProductData_addProduct_category)),
     ];
 
     return result;
@@ -129,6 +135,64 @@ class _$GAddProductData_addProductSerializer
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(String)]))!
               as BuiltList<Object?>);
+          break;
+        case 'category':
+          result.category.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(GAddProductData_addProduct_category))!
+              as GAddProductData_addProduct_category);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAddProductData_addProduct_categorySerializer
+    implements StructuredSerializer<GAddProductData_addProduct_category> {
+  @override
+  final Iterable<Type> types = const [
+    GAddProductData_addProduct_category,
+    _$GAddProductData_addProduct_category
+  ];
+  @override
+  final String wireName = 'GAddProductData_addProduct_category';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GAddProductData_addProduct_category object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'id',
+      serializers.serialize(object.id, specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  GAddProductData_addProduct_category deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAddProductData_addProduct_categoryBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'id':
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
           break;
       }
     }
@@ -265,6 +329,8 @@ class _$GAddProductData_addProduct extends GAddProductData_addProduct {
   final double price;
   @override
   final BuiltList<String> images;
+  @override
+  final GAddProductData_addProduct_category category;
 
   factory _$GAddProductData_addProduct(
           [void Function(GAddProductData_addProductBuilder)? updates]) =>
@@ -275,7 +341,8 @@ class _$GAddProductData_addProduct extends GAddProductData_addProduct {
       required this.id,
       required this.title,
       required this.price,
-      required this.images})
+      required this.images,
+      required this.category})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         G__typename, r'GAddProductData_addProduct', 'G__typename');
@@ -287,6 +354,8 @@ class _$GAddProductData_addProduct extends GAddProductData_addProduct {
         price, r'GAddProductData_addProduct', 'price');
     BuiltValueNullFieldError.checkNotNull(
         images, r'GAddProductData_addProduct', 'images');
+    BuiltValueNullFieldError.checkNotNull(
+        category, r'GAddProductData_addProduct', 'category');
   }
 
   @override
@@ -306,7 +375,8 @@ class _$GAddProductData_addProduct extends GAddProductData_addProduct {
         id == other.id &&
         title == other.title &&
         price == other.price &&
-        images == other.images;
+        images == other.images &&
+        category == other.category;
   }
 
   @override
@@ -317,6 +387,7 @@ class _$GAddProductData_addProduct extends GAddProductData_addProduct {
     _$hash = $jc(_$hash, title.hashCode);
     _$hash = $jc(_$hash, price.hashCode);
     _$hash = $jc(_$hash, images.hashCode);
+    _$hash = $jc(_$hash, category.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -328,7 +399,8 @@ class _$GAddProductData_addProduct extends GAddProductData_addProduct {
           ..add('id', id)
           ..add('title', title)
           ..add('price', price)
-          ..add('images', images))
+          ..add('images', images)
+          ..add('category', category))
         .toString();
   }
 }
@@ -359,6 +431,12 @@ class GAddProductData_addProductBuilder
       _$this._images ??= new ListBuilder<String>();
   set images(ListBuilder<String>? images) => _$this._images = images;
 
+  GAddProductData_addProduct_categoryBuilder? _category;
+  GAddProductData_addProduct_categoryBuilder get category =>
+      _$this._category ??= new GAddProductData_addProduct_categoryBuilder();
+  set category(GAddProductData_addProduct_categoryBuilder? category) =>
+      _$this._category = category;
+
   GAddProductData_addProductBuilder() {
     GAddProductData_addProduct._initializeBuilder(this);
   }
@@ -371,6 +449,7 @@ class GAddProductData_addProductBuilder
       _title = $v.title;
       _price = $v.price;
       _images = $v.images.toBuilder();
+      _category = $v.category.toBuilder();
       _$v = null;
     }
     return this;
@@ -403,18 +482,133 @@ class GAddProductData_addProductBuilder
                   title, r'GAddProductData_addProduct', 'title'),
               price: BuiltValueNullFieldError.checkNotNull(
                   price, r'GAddProductData_addProduct', 'price'),
-              images: images.build());
+              images: images.build(),
+              category: category.build());
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'images';
         images.build();
+        _$failedField = 'category';
+        category.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GAddProductData_addProduct', _$failedField, e.toString());
       }
       rethrow;
     }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAddProductData_addProduct_category
+    extends GAddProductData_addProduct_category {
+  @override
+  final String G__typename;
+  @override
+  final String id;
+
+  factory _$GAddProductData_addProduct_category(
+          [void Function(GAddProductData_addProduct_categoryBuilder)?
+              updates]) =>
+      (new GAddProductData_addProduct_categoryBuilder()..update(updates))
+          ._build();
+
+  _$GAddProductData_addProduct_category._(
+      {required this.G__typename, required this.id})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        G__typename, r'GAddProductData_addProduct_category', 'G__typename');
+    BuiltValueNullFieldError.checkNotNull(
+        id, r'GAddProductData_addProduct_category', 'id');
+  }
+
+  @override
+  GAddProductData_addProduct_category rebuild(
+          void Function(GAddProductData_addProduct_categoryBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAddProductData_addProduct_categoryBuilder toBuilder() =>
+      new GAddProductData_addProduct_categoryBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GAddProductData_addProduct_category &&
+        G__typename == other.G__typename &&
+        id == other.id;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GAddProductData_addProduct_category')
+          ..add('G__typename', G__typename)
+          ..add('id', id))
+        .toString();
+  }
+}
+
+class GAddProductData_addProduct_categoryBuilder
+    implements
+        Builder<GAddProductData_addProduct_category,
+            GAddProductData_addProduct_categoryBuilder> {
+  _$GAddProductData_addProduct_category? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
+
+  GAddProductData_addProduct_categoryBuilder() {
+    GAddProductData_addProduct_category._initializeBuilder(this);
+  }
+
+  GAddProductData_addProduct_categoryBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _id = $v.id;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAddProductData_addProduct_category other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAddProductData_addProduct_category;
+  }
+
+  @override
+  void update(
+      void Function(GAddProductData_addProduct_categoryBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAddProductData_addProduct_category build() => _build();
+
+  _$GAddProductData_addProduct_category _build() {
+    final _$result = _$v ??
+        new _$GAddProductData_addProduct_category._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
+                r'GAddProductData_addProduct_category', 'G__typename'),
+            id: BuiltValueNullFieldError.checkNotNull(
+                id, r'GAddProductData_addProduct_category', 'id'));
     replace(_$result);
     return _$result;
   }

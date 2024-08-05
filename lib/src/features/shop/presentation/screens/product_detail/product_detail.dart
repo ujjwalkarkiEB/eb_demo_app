@@ -37,6 +37,9 @@ class ProductDetailScreen extends StatelessWidget {
         },
         child: BlocBuilder<ProductDetailBloc, ProductDetailState>(
           builder: (context, state) {
+            if (state is ProductDetailFetchSuccess) {
+              print('lsiasdasd: ${state.detail.images}');
+            }
             return Scaffold(
               bottomNavigationBar: state is ProductDetailFetchSuccess
                   ? AddCartBar(
@@ -52,7 +55,7 @@ class ProductDetailScreen extends StatelessWidget {
                 slivers: [
                   if (state is ProductDetailFetchLoading ||
                       state is ProductInitial)
-                    SliverAppBar(
+                    const SliverAppBar(
                       pinned: true,
                       automaticallyImplyLeading: false,
                       toolbarHeight: 10,

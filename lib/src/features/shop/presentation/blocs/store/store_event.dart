@@ -3,26 +3,18 @@ part of 'store_bloc.dart';
 sealed class StoreEvent {}
 
 final class FetchCategoryProducts extends StoreEvent {
-  final double categoryID;
-
-  FetchCategoryProducts({required this.categoryID});
+  FetchCategoryProducts();
 }
 
 final class ApplyPriceFilterEvent extends StoreEvent {
-  final double categoryId;
   final double maxPrice;
   final double minPrice;
 
-  ApplyPriceFilterEvent(
-      {required this.categoryId,
-      required this.maxPrice,
-      required this.minPrice});
+  ApplyPriceFilterEvent({required this.maxPrice, required this.minPrice});
 }
 
 final class LoadMoreEvent extends StoreEvent {
-  final double categoryID;
-
-  LoadMoreEvent({required this.categoryID});
+  LoadMoreEvent();
 }
 
 final class CreateProductEvent extends StoreEvent {

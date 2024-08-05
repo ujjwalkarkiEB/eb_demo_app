@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:eb_demo_app/core/config/injection/injection.dart';
-import 'package:eb_demo_app/core/utils/constants/strings.dart';
 import 'package:eb_demo_app/core/utils/helpers/token_services.dart';
 import 'package:injectable/injectable.dart';
 
@@ -63,12 +60,11 @@ class AuthInterceptor extends QueuedInterceptorsWrapper {
               )));
         }
         final String? newToken = await tokenService.getAccessToken();
-        print('newToken: $newToken');
 
         options.headers['Authorization'] = 'Bearer $newToken';
+      } else {
+        options.headers['Authorization'] = 'Bearer $token';
       }
-
-      options.headers['Authorization'] = 'Bearer $token';
     }
 
     handler.next(options);

@@ -6,13 +6,11 @@ import '../../../blocs/store/store_bloc.dart';
 class FilterSection extends StatefulWidget {
   final double initialMinPrice;
   final double initialMaxPrice;
-  final double categoryID;
 
   const FilterSection({
     super.key,
     required this.initialMinPrice,
     required this.initialMaxPrice,
-    required this.categoryID,
   });
 
   @override
@@ -57,7 +55,6 @@ class FilterSectionState extends State<FilterSection> {
           ElevatedButton(
             onPressed: () {
               context.read<StoreBloc>().add(ApplyPriceFilterEvent(
-                    categoryId: widget.categoryID,
                     minPrice: _minPrice,
                     maxPrice: _maxPrice,
                   ));

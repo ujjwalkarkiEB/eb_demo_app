@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/core/utils/constants/sizes.dart';
+import 'package:eb_demo_app/src/features/authentication/presentation/blocs/password_reset/password_reset_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../../../../core/utils/constants/colors.dart';
@@ -50,9 +52,9 @@ class PasswordConfigWidget extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () {
-                        context.router.popForced();
+                        context.router.back();
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.arrow_back_ios_outlined,
                       ),
                       color: Colors.white,
@@ -60,7 +62,7 @@ class PasswordConfigWidget extends StatelessWidget {
                     Gap(screenSize.width * 0.18),
                     Text(
                       screenTitle,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.white,
                           fontSize: 25,
                           fontWeight: FontWeight.bold),
@@ -115,7 +117,20 @@ class PasswordConfigWidget extends StatelessWidget {
                   SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                          onPressed: onButtonPressed, child: Text(buttonTitle)))
+                          onPressed: onButtonPressed,
+                          child: BlocBuilder<PasswordResetBloc,
+                              PasswordResetState>(
+                            builder: (context, state) {
+                              if (state is PasswordResetActionLoading) {
+                                return const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                );
+                              }
+                              return Text(buttonTitle);
+                            },
+                          )))
                 ],
               ),
             ),

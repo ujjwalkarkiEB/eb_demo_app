@@ -15,7 +15,10 @@ import 'package:eb_demo_app/graphql/g.files/schema.schema.gql.dart'
         GUpdateProductDto,
         GUpdateUserDto;
 import 'package:eb_demo_app/graphql/mutation/g.files/add_product.data.gql.dart'
-    show GAddProductData, GAddProductData_addProduct;
+    show
+        GAddProductData,
+        GAddProductData_addProduct,
+        GAddProductData_addProduct_category;
 import 'package:eb_demo_app/graphql/mutation/g.files/add_product.req.gql.dart'
     show GAddProductReq;
 import 'package:eb_demo_app/graphql/mutation/g.files/add_product.var.gql.dart'
@@ -62,6 +65,7 @@ final SerializersBuilder _serializersBuilder = _$serializers.toBuilder()
 @SerializersFor([
   GAddProductData,
   GAddProductData_addProduct,
+  GAddProductData_addProduct_category,
   GAddProductReq,
   GAddProductVars,
   GCreateCategoryDto,

@@ -15,6 +15,7 @@ class ProductDetailSiverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('image: $image');
     return SliverAppBar(
       automaticallyImplyLeading: false,
       title: Row(

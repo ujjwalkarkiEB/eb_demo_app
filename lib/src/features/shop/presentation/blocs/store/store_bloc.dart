@@ -25,6 +25,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
 
   final int _limit = 10;
   int _offset = 0;
+  double selectedTabCategory = 1.0;
   // flag to represent if more items to load
   bool hasLoadingMore = true;
   List<ProductSummary> categoryProducts = [];
@@ -43,12 +44,15 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     _offset = 0;
     hasLoadingMore = true;
     final result = await _storeRepository.fetchCategoryProducts(
-        categoryID: event.categoryID, offset: _offset);
+        categoryID: selectedTabCategory, offset: _offset);
 
     result.fold(
       (failure) => emit(CategoryProductsFetchError()),
       (products) {
         categoryProducts = products;
+        if (categoryProducts.length < 8) {
+          hasLoadingMore = false;
+        }
         emit(CategoryProductsFetched(categoryProducts));
       },
     );
@@ -61,7 +65,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     emit(CategoryProductsLoading());
     hasLoadingMore = false;
     final result = await _storeRepository.applyPriceFilter(
-      categoryID: event.categoryId,
+      categoryID: selectedTabCategory,
       minPrice: event.minPrice.toInt(),
       maxPrice: event.maxPrice.toInt(),
     );
@@ -78,7 +82,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     }
     await Future.delayed(const Duration(seconds: 1));
     final result = await _storeRepository.fetchCategoryProducts(
-        categoryID: event.categoryID, offset: _offset + _limit);
+        categoryID: selectedTabCategory, offset: _offset + _limit);
 
     result.fold(
       (failure) => emit(CategoryProductsFetchError()),

@@ -5,6 +5,7 @@ query getProductDetails($id: ID!) {
     price
     description
     category {
+      id
       name
     }
     images

@@ -20,8 +20,6 @@ class ProductRepositoryImpl implements ProductRepository {
   Future<Either<Failure, ProductDetail>> getProductDetail(
       {required String id}) async {
     try {
-      print('id: $id');
-      print('resp: ${await _remoteSource.getProductDetails(id)}');
       final result = await _remoteSource.getProductDetails(id);
       return right(result);
     } on ApiException {

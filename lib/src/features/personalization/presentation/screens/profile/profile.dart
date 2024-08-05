@@ -36,7 +36,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }
 
         if (state is ProfileFetched) {
-          print('avaatar: ${state.currentUser.avatar}');
           userProfile = state.currentUser;
         }
 

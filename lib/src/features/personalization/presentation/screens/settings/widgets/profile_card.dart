@@ -52,7 +52,7 @@ class UserTile extends StatelessWidget {
           subtitle: Text(userProfile!.user.email),
           trailing: IconButton(
               onPressed: () {
-                context.router.push(ProfileRoute());
+                context.router.push(const ProfileRoute());
               },
               icon: const Icon(
                 Iconsax.edit,

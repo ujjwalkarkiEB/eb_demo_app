@@ -13,6 +13,11 @@ abstract class ShopDatabaseService {
   Future<int> getCartItemsCount();
   Future<void> clearCart();
   Future<bool> isProductInCart({required String productID});
+  Future<List<ProductSummary>> fetchMyProducts();
+  Future<void> storeMyProduct({required ProductSummary product});
+  Future<void> deleteMyProduct({required ProductSummary product});
+  Future<List<ProductSummary>> applyCategoryFilterToCreatedProducts(
+      {required double categoryID});
 }
 
 @LazySingleton(as: ShopDatabaseService)
@@ -131,6 +136,51 @@ class ShopDatabaseServiceImpl extends ShopDatabaseService {
       product.save();
     } catch (e) {
       throw Exception('Local storage access error: ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<List<ProductSummary>> fetchMyProducts() async {
+    try {
+      final box = _databaseHelper.cacheBox;
+      return box.values.toList();
+    } catch (e) {
+      throw Exception('fetchmyproducts error: ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<void> deleteMyProduct({required ProductSummary product}) async {
+    try {
+      final box = _databaseHelper.cacheBox;
+      return box.delete(product.key);
+    } catch (e) {
+      throw Exception('fetchmyproducts error: ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<void> storeMyProduct({required ProductSummary product}) async {
+    try {
+      final box = _databaseHelper.cacheBox;
+      box.add(product);
+      product.save();
+    } catch (e) {
+      throw Exception('fetchmyproducts error: ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<List<ProductSummary>> applyCategoryFilterToCreatedProducts(
+      {required double categoryID}) async {
+    try {
+      final box = _databaseHelper.cacheBox;
+      return box.values
+          .toList()
+          .where((p) => p.categoryID == categoryID)
+          .toList();
+    } catch (e) {
+      throw Exception('fetchmyproducts error: ${e.toString()}');
     }
   }
 }

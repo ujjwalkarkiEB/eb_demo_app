@@ -45,10 +45,10 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const MainNavScreen(),
       );
     },
-    MyproductsRoute.name: (routeData) {
+    MyProductsRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const MyproductsScreen(),
+        child: const MyProductsScreen(),
       );
     },
     OnboardingRoute.name: (routeData) {
@@ -212,15 +212,15 @@ class MainNavRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [MyproductsScreen]
-class MyproductsRoute extends PageRouteInfo<void> {
-  const MyproductsRoute({List<PageRouteInfo>? children})
+/// [MyProductsScreen]
+class MyProductsRoute extends PageRouteInfo<void> {
+  const MyProductsRoute({List<PageRouteInfo>? children})
       : super(
-          MyproductsRoute.name,
+          MyProductsRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'MyproductsRoute';
+  static const String name = 'MyProductsRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

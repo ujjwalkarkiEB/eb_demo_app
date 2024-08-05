@@ -20,7 +20,6 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
       ProductDetailFetchEvent event, Emitter<ProductDetailState> emit) async {
     final result =
         await _productRepository.getProductDetail(id: event.productID);
-    print('rs: ${result}');
     result.fold(
       (l) => emit(ProductDetailFetchError()),
       (r) => emit(ProductDetailFetchSuccess(detail: r)),

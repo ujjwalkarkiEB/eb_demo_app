@@ -34,12 +34,18 @@ class UpdateProfileModalState extends State<UpdateProfileModal> {
       showFlashError(context, "You are required to provide input!");
       return;
     }
-    print('bio: ${bio == null}');
+    final bioValue = _bioController.text.trim();
 
-    // context.read<PersonalizationBloc>().add(
-    //       ProfileUpdateEvent(avatar: _pickedImage?.path, bio: bio),
-    //     );
-    // Navigator.of(context).pop();
+    if (bioValue.isEmpty) {
+      bio = null;
+    } else {
+      bio = bioValue;
+    }
+
+    context.read<PersonalizationBloc>().add(
+          ProfileUpdateEvent(avatar: _pickedImage?.path, bio: bio),
+        );
+    Navigator.of(context).pop();
   }
 
   void _pickAvatar({bool isgallery = true}) async {
