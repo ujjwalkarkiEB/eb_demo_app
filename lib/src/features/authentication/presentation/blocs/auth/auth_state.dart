@@ -22,3 +22,17 @@ final class LoggingOut extends AuthState {}
 final class LogOutSuccessful extends AuthState {}
 
 final class LogOutFailed extends AuthState {}
+
+class BiometricEnabled extends AuthState {}
+
+class BiometricDisabled extends AuthState {}
+
+class BiometricAvailable extends AuthState {}
+
+class BiometricUnAvailable extends AuthState {}
+
+class BiometricAuthenticated extends AuthState {}
+
+class BiometricUnauthenticated extends AuthState {}
+
+class BiometricCheckFailed extends AuthState {}

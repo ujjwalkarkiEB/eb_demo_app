@@ -16,3 +16,4 @@ const String settingsBoxName = "settingsBox";
 const String accessTokenKey = "accessToken";
 const String refreshTokenKey = "refreshToken";
 const String isFirstVisitKey = "isFirstVisitKey";
+const String biometricEnabledKey = "biometric_enabled";

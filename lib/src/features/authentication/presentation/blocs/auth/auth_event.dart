@@ -14,3 +14,13 @@ class AuthCheckEvent extends AuthEvent {}
 class FirstVisitCheckEvent extends AuthEvent {}
 
 class AuthLogoutReuqestEvenet extends AuthEvent {}
+
+class CheckIfBiometricEnabled extends AuthEvent {}
+
+class AuthBiometricLoginEvent extends AuthEvent {}
+
+class ToggleBiometricLogin extends AuthEvent {
+  final bool enbale;
+
+  const ToggleBiometricLogin({required this.enbale});
+}
