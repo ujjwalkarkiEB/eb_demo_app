@@ -2,6 +2,7 @@ import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/config/theme/theme.dart';
 import 'package:eb_demo_app/core/global_bloc/session/session_bloc.dart';
+import 'package:eb_demo_app/core/utils/session/session_config.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/blocs/auth/auth_bloc.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/blocs/login_bloc/login_bloc.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/blocs/otp/otp_bloc.dart';
@@ -14,12 +15,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:local_session_timeout/local_session_timeout.dart';
 
-import 'features/authentication/presentation/blocs/password_reset/password_reset_bloc.dart';
 import 'features/shop/presentation/blocs/cart/cart_bloc.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.sessionConfig});
-  final SessionConfig sessionConfig;
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,7 @@ class MyApp extends StatelessWidget {
           create: (context) => getIt<CartBloc>(),
         ),
         BlocProvider(
-          create: (context) => SessionBloc(sessionConfig),
+          create: (context) => getIt<SessionBloc>(),
         ),
       ],
       child: MaterialApp.router(

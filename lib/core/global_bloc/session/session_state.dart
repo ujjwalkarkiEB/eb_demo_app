@@ -1,15 +1,13 @@
 part of 'session_bloc.dart';
 
-enum SessionStateEnum { active, expired, paused, resumed, inactive }
+sealed class BlocSessionState {}
 
-sealed class SessionState {}
+class SessionInactive extends BlocSessionState {}
 
-class SessionInactive extends SessionState {}
+class SessionActive extends BlocSessionState {}
 
-class SessionActive extends SessionState {}
+class SessionExpired extends BlocSessionState {}
 
-class SessionExpired extends SessionState {}
+class SessionPaused extends BlocSessionState {}
 
-class SessionPaused extends SessionState {}
-
-class SessionResumed extends SessionState {}
+class SessionResumed extends BlocSessionState {}

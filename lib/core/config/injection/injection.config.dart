@@ -17,6 +17,8 @@ import '../../../src/features/authentication/data/data_source/remote/auth_remote
     as _i849;
 import '../../../src/features/authentication/data/respository/auth_repository.dart'
     as _i819;
+import '../../../src/features/authentication/data/respository/local_auth_repository.dart'
+    as _i4;
 import '../../../src/features/authentication/data/respository/password_config_repository.dart'
     as _i50;
 import '../../../src/features/authentication/presentation/blocs/auth/auth_bloc.dart'
@@ -61,12 +63,15 @@ import '../../../src/features/shop/presentation/blocs/product_detail/product_det
     as _i222;
 import '../../../src/features/shop/presentation/blocs/store/store_bloc.dart'
     as _i591;
+import '../../global_bloc/session/session_bloc.dart' as _i696;
 import '../../utils/helpers/token_services.dart' as _i863;
+import '../../utils/local_auth/local_auth_services.dart' as _i329;
 import '../../utils/local_storage/database_helper.dart' as _i752;
 import '../../utils/network/auth_interceptor/auth_interceptor.dart' as _i752;
 import '../../utils/network/client/dio_client.dart' as _i590;
 import '../../utils/network/client/graphql_client.dart' as _i322;
 import '../../utils/notification/notification_service.dart' as _i857;
+import '../../utils/session/session_config.dart' as _i220;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -83,6 +88,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i857.NotificationService>(
         () => _i857.NotificationService());
     gh.lazySingleton<_i752.AuthInterceptor>(() => _i752.AuthInterceptor());
+    gh.lazySingleton<_i220.SessionManager>(() => _i220.SessionManager());
+    gh.factory<_i696.SessionBloc>(
+        () => _i696.SessionBloc(gh<_i220.SessionManager>()));
+    gh.lazySingleton<_i329.LocalAuthService>(
+        () => _i329.LocalAuthService(gh<_i752.DatabaseHelper>()));
     gh.lazySingleton<_i554.ShopDatabaseService>(
         () => _i554.ShopDatabaseServiceImpl(gh<_i752.DatabaseHelper>()));
     gh.lazySingleton<_i590.DioClient>(
@@ -91,6 +101,8 @@ extension GetItInjectableX on _i174.GetIt {
         _i457.AuthDatabaseService(databaseHelper: gh<_i752.DatabaseHelper>()));
     gh.lazySingleton<_i322.GraphqlClient>(
         () => _i322.GraphqlClient(dioClient: gh<_i590.DioClient>()));
+    gh.lazySingleton<_i4.LocalAuthRepository>(
+        () => _i4.LocalAuthRepositoryImpl(gh<_i329.LocalAuthService>()));
     gh.lazySingleton<_i354.CartRepository>(
         () => _i354.CartRepositoryImpl(gh<_i554.ShopDatabaseService>()));
     gh.lazySingleton<_i863.TokenService>(() => _i863.TokenServiceImpl(
@@ -140,12 +152,14 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i222.ProductDetailBloc(gh<_i572.ProductRepository>()));
     gh.factory<_i205.OnboardingBloc>(
         () => _i205.OnboardingBloc(gh<_i819.AuthRepository>()));
-    gh.factory<_i839.AuthBloc>(
-        () => _i839.AuthBloc(gh<_i819.AuthRepository>()));
     gh.factory<_i155.OtpBloc>(() => _i155.OtpBloc(gh<_i819.AuthRepository>()));
     gh.factory<_i772.LoginBloc>(
         () => _i772.LoginBloc(gh<_i819.AuthRepository>()));
     gh.factory<_i553.HomeBloc>(() => _i553.HomeBloc(gh<_i67.ShopRepository>()));
+    gh.factory<_i839.AuthBloc>(() => _i839.AuthBloc(
+          gh<_i819.AuthRepository>(),
+          gh<_i4.LocalAuthRepository>(),
+        ));
     return this;
   }
 }

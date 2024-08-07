@@ -1,49 +1,69 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 import 'package:local_session_timeout/local_session_timeout.dart';
+
+import '../../utils/session/session_config.dart';
 
 part 'session_event.dart';
 part 'session_state.dart';
 
-class SessionBloc extends Bloc<SessionEvent, SessionState> {
-  final SessionConfig _sessionConfig;
-  StreamSubscription? _sessionSubscription;
+@injectable
+class SessionBloc extends Bloc<SessionEvent, BlocSessionState> {
+  final SessionManager _sessionManager;
+  late final StreamSubscription<SessionState> _sessionStateSubscription;
 
-  SessionBloc(this._sessionConfig) : super(SessionInactive()) {
+  SessionBloc(this._sessionManager) : super(SessionInactive()) {
+    // Handle the stream subscription and event addition
+    _sessionStateSubscription =
+        _sessionManager.sessionStateStream.listen((state) {
+      if (state == SessionState.stopListening) {
+        add(SessionExpiredEvent());
+      } else {
+        // Add other states if needed
+        add(SessionActiveEvent()); // Assuming you have such an event
+      }
+    });
+
     on<StartListeningEvent>(_onStartListening);
     on<StopListeningEvent>(_onStopListening);
     on<PauseSessionEvent>(_onPauseSession);
     on<ResumeSessionEvent>(_onResumeSession);
+    on<SessionExpiredEvent>(_onSessionExpiredEvent);
   }
 
   void _onStartListening(
-      StartListeningEvent event, Emitter<SessionState> emit) {
-    _sessionSubscription?.cancel();
-    _sessionSubscription = _sessionConfig.stream.listen((timeoutEvent) {
-      if (timeoutEvent == SessionTimeoutState.userInactivityTimeout ||
-          timeoutEvent == SessionTimeoutState.appFocusTimeout) {
-        add(StopListeningEvent());
-      }
-    });
-    emit(SessionResumed()); // Start with the session resumed
+      StartListeningEvent event, Emitter<BlocSessionState> emit) {
+    _sessionManager.startListening();
+    emit(SessionResumed());
   }
 
-  void _onStopListening(StopListeningEvent event, Emitter<SessionState> emit) {
+  void _onStopListening(
+      StopListeningEvent event, Emitter<BlocSessionState> emit) {
+    _sessionManager.stopListening();
     emit(SessionExpired());
   }
 
-  void _onPauseSession(PauseSessionEvent event, Emitter<SessionState> emit) {
+  void _onPauseSession(
+      PauseSessionEvent event, Emitter<BlocSessionState> emit) {
     emit(SessionPaused());
   }
 
-  void _onResumeSession(ResumeSessionEvent event, Emitter<SessionState> emit) {
+  void _onResumeSession(
+      ResumeSessionEvent event, Emitter<BlocSessionState> emit) {
     emit(SessionResumed());
+  }
+
+  void _onSessionExpiredEvent(
+      SessionExpiredEvent event, Emitter<BlocSessionState> emit) {
+    emit(SessionExpired());
   }
 
   @override
   Future<void> close() {
-    _sessionSubscription?.cancel();
+    _sessionStateSubscription.cancel(); // Cancel the subscription
+    _sessionManager.dispose();
     return super.close();
   }
 }
