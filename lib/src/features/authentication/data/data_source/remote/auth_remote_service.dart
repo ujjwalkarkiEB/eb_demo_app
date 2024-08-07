@@ -13,7 +13,7 @@ abstract class AuthRemoteSource {
       required String username,
       required String password,
       required String repeatedPassword});
-  Future<void> refreshToken({required String refreshToken});
+
   Future<void> logout({required String refershToken});
   Future<void> resetPassword(
       {required String oid,
@@ -65,11 +65,6 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
       },
       responseType: false,
     );
-  }
-
-  @override
-  Future<void> refreshToken({required String refreshToken}) {
-    throw UnimplementedError();
   }
 
   @override

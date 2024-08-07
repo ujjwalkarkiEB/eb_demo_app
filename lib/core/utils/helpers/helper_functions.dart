@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
 class HelperFunctions {
   HelperFunctions._();
@@ -26,4 +29,10 @@ class HelperFunctions {
 //   List<int> compressedData = GZipEncoder().encode(encodedData)!;
 //   return base64Encode(compressedData);
 // }
+  static Uint8List getEncryptionKey() {
+    // Generate a 256-bit key using SHA-256 hash algorithm
+    final key = utf8.encode('your-secure-key-here');
+    final hash = sha256.convert(key);
+    return Uint8List.fromList(hash.bytes);
+  }
 }

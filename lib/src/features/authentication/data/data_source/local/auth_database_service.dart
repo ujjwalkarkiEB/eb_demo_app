@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:eb_demo_app/core/utils/local_auth/local_auth_services.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 
@@ -12,6 +13,7 @@ class AuthDatabaseService {
       : _databaseHelper = databaseHelper;
 
   final DatabaseHelper _databaseHelper;
+  final LocalAuthService _localAuthService;
 
   Future<void> setAppVisitFlag() async {
     try {
@@ -24,8 +26,8 @@ class AuthDatabaseService {
 
   bool chechIfFirstVisit() {
     try {
-      final Box<String> authBox = _databaseHelper.settingsBox;
-      if (authBox.get(isFirstVisitKey) == 'true') {
+      final Box<String> settingsBox = _databaseHelper.settingsBox;
+      if (settingsBox.get(isFirstVisitKey) == 'true') {
         return false;
       }
       return true;
@@ -65,6 +67,13 @@ class AuthDatabaseService {
   Future<void> clearToken() async {
     try {
       final Box<String> authBox = _databaseHelper.authBox;
+      final isBiometricEnabled = await _localAuthService.isBiometricEnabled();
+      if (isBiometricEnabled) {
+        authBox.delete(accessTokenKey);
+      } else {
+        authBox.clear();
+      }
+
       await authBox.clear();
     } catch (e) {
       throw Exception('Error Clearing Token: ${e.toString()}');
@@ -73,7 +82,6 @@ class AuthDatabaseService {
 
   bool chechIfTokenExist() {
     final Box<String> authBox = _databaseHelper.authBox;
-    print(authBox.get(accessTokenKey));
     if (authBox.get(accessTokenKey) != null) {
       return true;
     }

@@ -74,13 +74,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _onAuthBiometricLoginEvent(
       AuthBiometricLoginEvent event, Emitter<AuthState> emit) async {
-    final authResult = await _localAuthRepository.authenticateUser();
+    final authResult = await _localAuthRepository.loginWithBiometric();
     authResult.fold(
       (failure) => emit(BiometricCheckFailed()),
-      (isAuthenticated) {
-        if (isAuthenticated) {
-          emit(BiometricAuthenticated());
-        }
+      (success) {
+        emit(BiometricAuthenticated());
       },
     );
   }

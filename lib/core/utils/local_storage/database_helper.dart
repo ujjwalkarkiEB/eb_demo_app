@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:eb_demo_app/core/utils/constants/strings.dart';
+import 'package:eb_demo_app/core/utils/helpers/helper_functions.dart';
 import 'package:eb_demo_app/src/features/shop/data/model/product.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
@@ -12,7 +13,8 @@ class DatabaseHelper {
     final Directory databaseDir = await getApplicationDocumentsDirectory();
     Hive.init(databaseDir.path);
     Hive.registerAdapter(ProductSummaryAdapter());
-    await Hive.openBox<String>(authBoxName);
+    await Hive.openBox<String>(authBoxName,
+        encryptionCipher: HiveAesCipher(HelperFunctions.getEncryptionKey()));
     await Hive.openBox<ProductSummary>(cartBoxName);
     await Hive.openBox<String>(settingsBoxName);
     await Hive.openBox<ProductSummary>(cacheBoxName);

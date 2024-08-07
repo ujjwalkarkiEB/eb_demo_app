@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
+import 'package:eb_demo_app/core/config/injection/injection.dart';
+import 'package:eb_demo_app/core/utils/helpers/token_services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:local_auth/local_auth.dart';
 
@@ -10,7 +12,7 @@ import '../../../../../core/utils/local_auth/local_auth_services.dart';
 abstract class LocalAuthRepository {
   Future<Either<Failure, bool>> isBiometricAvailable();
   Future<Either<Failure, List<BiometricType>>> getAvailableBiometrics();
-  Future<Either<Failure, bool>> authenticateUser();
+  Future<Either<Failure, String>> loginWithBiometric();
   Future<Either<Failure, Unit>> enableBiometric(bool enable);
   Future<Either<Failure, bool>> isBiometricEnabled();
 }
@@ -45,13 +47,23 @@ class LocalAuthRepositoryImpl implements LocalAuthRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> authenticateUser() async {
+  Future<Either<Failure, String>> loginWithBiometric() async {
     try {
-      final bool result = await _localAuthService.authenticateUser();
-      return Right(result);
+      final tokenService = getIt<TokenService>();
+      final bool isAuthenticated = await _localAuthService.authenticateUser();
+      if (isAuthenticated) {
+        final isRefreshedNewToken = await tokenService.refreshToken();
+        if (!isRefreshedNewToken) {
+          return left(const ServerFailure(
+              'Session expired! Please login by credentials'));
+        }
+        return const Right('Successful authentication');
+      } else {
+        return const Left(UnknownFailure("Authentication failed."));
+      }
     } catch (e) {
       log("Error during authentication: $e");
-      return Left(const UnknownFailure("Authentication failed."));
+      return const Left(UnknownFailure("Authentication failed."));
     }
   }
 
