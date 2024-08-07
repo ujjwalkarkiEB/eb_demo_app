@@ -104,8 +104,9 @@ class SettingScreen extends StatelessWidget {
                     Icons.lock_outline,
                     size: 30,
                   ),
-                  title: const Text('Enable MFA Mode'),
-                  subtitle: const Text('Enforce login process to use OTP code'),
+                  title: const Text('Enable Biometrics'),
+                  subtitle: const Text(
+                      'Makes seamless login process ny using your biometrics'),
                   trailing: Switch(
                     value: true,
                     onChanged: (value) {},

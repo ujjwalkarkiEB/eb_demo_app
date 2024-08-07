@@ -15,16 +15,19 @@ abstract class AuthRemoteSource {
       required String repeatedPassword});
   Future<void> refreshToken({required String refreshToken});
   Future<void> logout({required String refershToken});
-  Future<void> changePassword(
-      {required String oldPassword, required String newPassword});
-  Future<String?> resetPasswordEmail({required String email});
   Future<void> resetPassword(
-      {required String token, required String newPassword});
+      {required String oid,
+      required String token,
+      required String newPassword});
+  Future<Map<String, String>?> resetPasswordEmail({required String email});
+
   Future<void> verifyAuthenticatorOtp({required String otp});
-  Future<void> verifyOtp(
-      {required String otp,
-      required String userId,
-      required bool isOtpResentForRegister});
+  Future<void> verifyOtp({
+    required String otp,
+    required String userId,
+    required bool isOtpResentForRegister,
+    String? otpType,
+  });
   Future<void> resendOtp({required String userID});
 }
 
@@ -34,11 +37,23 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
   AuthRemoteSourceImpl(DioClient client) : super(client.dio);
 
   @override
-  Future<void> changePassword({
-    required String oldPassword,
-    required String newPassword,
-  }) {
-    throw UnimplementedError();
+  Future<void> resetPassword(
+      {required String oid,
+      required String token,
+      required String newPassword}) {
+    return networkRequest<void>(
+        request: (dio) async {
+          return await dio.post(
+            '/account/password-reset-confirm',
+            data: {
+              "oId": oid,
+              "token": token,
+              "newPassword1": newPassword,
+              "newPassword2": newPassword
+            },
+          );
+        },
+        responseType: false);
   }
 
   @override
@@ -71,17 +86,8 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
   }
 
   @override
-  Future<void> resetPassword({
-    required String token,
-    required String newPassword,
-  }) {
-    // TODO: implement resetPassword
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<String?> resetPasswordEmail({required String email}) {
-    return networkRequest<String?>(
+  Future<Map<String, String>?> resetPasswordEmail({required String email}) {
+    return networkRequest<Map<String, String>?>(
       request: (dio) async {
         return await dio.post(
           '/account/password-reset',
@@ -93,7 +99,11 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
       onResponse: (data) {
         final Map<String, dynamic>? sucessData = data['data'];
         if (sucessData != null) {
-          return sucessData['userId'];
+          return {
+            'userId': sucessData['userId'],
+            'token': sucessData['token'],
+            'oid': sucessData['oid']
+          };
         }
         return null;
       },
@@ -153,11 +163,12 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
   }
 
   @override
-  Future<void> verifyOtp(
-      {required String otp,
-      required String userId,
-      required bool isOtpResentForRegister,
-      String? otpType}) async {
+  Future<void> verifyOtp({
+    required String otp,
+    required String userId,
+    required bool isOtpResentForRegister,
+    String? otpType,
+  }) async {
     return networkRequest<void>(
       request: (dio) async {
         return await dio.post(
@@ -170,7 +181,7 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
           },
         );
       },
-      responseType: false,
+      onResponse: (data) => print('data: $data'),
     );
   }
 }

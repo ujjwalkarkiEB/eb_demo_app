@@ -8,8 +8,10 @@ final class ResetPswEmailSentEvent extends PasswordResetEvent {
   ResetPswEmailSentEvent({required this.email});
 }
 
-final class VerifyResetEmailEvent extends PasswordResetEvent {
-  final String otp;
+final class VerifyResetEmailEvent extends PasswordResetEvent {}
 
-  VerifyResetEmailEvent({required this.otp});
+final class ResetNewPasswordEvent extends PasswordResetEvent {
+  final String newPsw;
+
+  ResetNewPasswordEvent({required this.newPsw});
 }

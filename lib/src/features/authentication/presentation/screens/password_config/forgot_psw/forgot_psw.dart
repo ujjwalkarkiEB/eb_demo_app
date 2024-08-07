@@ -46,7 +46,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           if (!context.mounted) {
             return;
           }
-          context.router.push(const EmailVerificationRoute());
+          context.router.push(EmailVerificationRoute());
         }
         if (state is ResetPswEmailSendError) {
           showFlashError(context, state.errMsg);

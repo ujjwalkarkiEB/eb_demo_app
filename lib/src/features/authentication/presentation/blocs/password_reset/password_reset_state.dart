@@ -13,3 +13,11 @@ final class ResetPswEmailSendError extends PasswordResetState {
 
   ResetPswEmailSendError({required this.errMsg});
 }
+
+final class ResetPswOtpVerificationSuccess extends PasswordResetState {}
+
+final class ResetPswOtpVerificationError extends PasswordResetState {}
+
+final class ResetPasswordSuccessful extends PasswordResetState {}
+
+final class ResetPasswordError extends PasswordResetState {}

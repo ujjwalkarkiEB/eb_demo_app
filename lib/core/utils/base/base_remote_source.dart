@@ -19,7 +19,7 @@ abstract class BaseRemoteSource {
   }) async {
     try {
       final response = await request(_dio);
-      print('response: ${response.data}');
+      print('response: ${response}');
 
       if (response.statusCode! >= 200 || response.statusCode! < 300) {
         if (responseType && onResponse != null) {
