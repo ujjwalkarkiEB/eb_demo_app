@@ -2,19 +2,14 @@ import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/config/theme/theme.dart';
 import 'package:eb_demo_app/core/global_bloc/session/session_bloc.dart';
-import 'package:eb_demo_app/core/utils/session/session_config.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/blocs/auth/auth_bloc.dart';
-import 'package:eb_demo_app/src/features/authentication/presentation/blocs/login_bloc/login_bloc.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/blocs/otp/otp_bloc.dart';
-import 'package:eb_demo_app/src/features/authentication/presentation/screens/password_config/email_verification/email_verification.dart';
-import 'package:eb_demo_app/src/features/authentication/presentation/screens/password_config/forgot_psw/forgot_psw.dart';
-import 'package:eb_demo_app/src/features/authentication/presentation/screens/password_config/reset_password/rest_password.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:local_session_timeout/local_session_timeout.dart';
 
+import 'features/authentication/presentation/blocs/login_bloc/login_bloc.dart';
 import 'features/shop/presentation/blocs/cart/cart_bloc.dart';
 
 class MyApp extends StatelessWidget {

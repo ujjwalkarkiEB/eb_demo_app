@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/global_bloc/session/session_bloc.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/blocs/auth/auth_bloc.dart';
+import 'package:eb_demo_app/src/features/authentication/presentation/blocs/login_bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -98,18 +99,35 @@ class SettingScreen extends StatelessWidget {
                     onChanged: (value) {},
                   ),
                 ),
-                ListTile(
-                  leading: const Icon(
-                    Icons.lock_outline,
-                    size: 30,
-                  ),
-                  title: const Text('Enable Biometrics'),
-                  subtitle: const Text(
-                      'Makes seamless login process ny using your biometrics'),
-                  trailing: Switch(
-                    value: true,
-                    onChanged: (value) {},
-                  ),
+                BlocBuilder<AuthBloc, AuthState>(
+                  buildWhen: (previous, current) =>
+                      current is BiometricDisabled ||
+                      current is BiometricDisabled ||
+                      current is BiometricEnabled,
+                  builder: (context, state) {
+                    if (state is BiometricAvailable ||
+                        (state is BiometricDisabled ||
+                            state is BiometricEnabled)) {
+                      return ListTile(
+                        leading: const Icon(
+                          Icons.lock_outline,
+                          size: 30,
+                        ),
+                        title: const Text('Enable Biometrics'),
+                        subtitle: const Text(
+                            'Makes seamless login process ny using your biometrics'),
+                        trailing: Switch(
+                          value: context.read<AuthBloc>().isBiometricEnabled,
+                          onChanged: (value) {
+                            context
+                                .read<AuthBloc>()
+                                .add(ToggleBiometricLogin(enbale: value));
+                          },
+                        ),
+                      );
+                    }
+                    return Container();
+                  },
                 ),
               ],
             ),

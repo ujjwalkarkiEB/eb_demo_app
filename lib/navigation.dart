@@ -53,6 +53,8 @@ class _MainScreenState extends State<MainNavScreen> {
         },
         child: SessionTimeoutManager(
           sessionConfig: getIt<SessionManager>().sessionConfig,
+          sessionStateStream: getIt<SessionManager>().sessionStateStream,
+          userActivityDebounceDuration: const Duration(seconds: 10),
           child: AutoTabsScaffold(
             routes: const [
               HomeRoute(),

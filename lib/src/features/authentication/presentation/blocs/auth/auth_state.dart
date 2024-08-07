@@ -27,12 +27,16 @@ class BiometricEnabled extends AuthState {}
 
 class BiometricDisabled extends AuthState {}
 
+class ToggledBiometric extends AuthState {
+  final bool enableStatus;
+
+  const ToggledBiometric({required this.enableStatus});
+}
+
 class BiometricAvailable extends AuthState {}
 
 class BiometricUnAvailable extends AuthState {}
 
 class BiometricAuthenticated extends AuthState {}
-
-class BiometricUnauthenticated extends AuthState {}
 
 class BiometricCheckFailed extends AuthState {}

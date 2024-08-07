@@ -1,13 +1,10 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
-import 'package:dartz/dartz.dart';
+import 'package:eb_demo_app/src/features/authentication/data/respository/auth_repository.dart';
+import 'package:eb_demo_app/src/features/authentication/data/respository/local_auth_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:local_auth/local_auth.dart';
 
-import '../../../data/respository/auth_repository.dart';
-import '../../../data/respository/local_auth_repository.dart';
+import '../../../../../../core/utils/error/failure/failure.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -16,77 +13,43 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository;
   final LocalAuthRepository _localAuthRepository;
+  bool isBiometricEnabled = false;
 
   AuthBloc(this._authRepository, this._localAuthRepository)
       : super(AppStarted()) {
     on<AppStartedEvent>(_onAppStarted);
-    on<AuthLogoutReuqestEvenet>(_onLogout);
+    on<AuthLogoutReuqestEvenet>(_onLogoutEvent);
     on<CheckIfBiometricEnabled>(_onCheckIfBiometricEnabled);
     on<AuthBiometricLoginEvent>(_onAuthBiometricLoginEvent);
     on<ToggleBiometricLogin>(_onToggleBiometricLogin);
+
+    // Check biometric availability and state on initialization
+    _checkBiometricAvailabilityAndState();
   }
 
-  Future<void> _onAppStarted(
-      AppStartedEvent event, Emitter<AuthState> emit) async {
+  void _onAppStarted(AppStartedEvent event, Emitter<AuthState> emit) async {
     emit(CheckLoading());
-
-    // Check if it is the user's first visit
-    final isFirstVisit = _authRepository.isFirstVisit();
+    final bool isFirstVisit = _authRepository.isFirstVisit();
     if (isFirstVisit) {
       emit(FirstVisit());
     } else {
-      // Check if the user is authenticated
-      final isAuthenticated = _authRepository.isAuthenticated();
-      if (!isAuthenticated) {
-        emit(AuthUnAuthenticated());
-
-        // Check if biometric authentication is available
-        final biometricAvailabilityResult =
-            await _localAuthRepository.isBiometricAvailable();
-        biometricAvailabilityResult.fold(
-          (failure) {
-            // Handle failure case
-            emit(BiometricCheckFailed()); // Emit a failure state
-          },
-          (isBiometricAvailable) async {
-            if (!isBiometricAvailable) {
-              emit(BiometricUnAvailable());
-            } else {
-              emit(BiometricAvailable());
-
-              // Check if biometric authentication is enabled
-              final biometricEnabledResult =
-                  await _localAuthRepository.isBiometricEnabled();
-              biometricEnabledResult.fold(
-                (failure) {
-                  emit(BiometricCheckFailed()); // Emit a failure state
-                },
-                (isBiometricEnabled) {
-                  if (!isBiometricEnabled) {
-                    emit(
-                        BiometricDisabled()); // Emit state for disabled biometric
-                  } else {
-                    emit(
-                        BiometricEnabled()); // Emit state for enabled biometric
-                  }
-                },
-              );
-            }
-          },
-        );
-      } else {
+      final bool isAuthenticated = _authRepository.isAuthenticated();
+      if (isAuthenticated) {
         emit(AuthAuthenticated());
+      } else {
+        emit(AuthUnAuthenticated());
       }
     }
   }
 
-  Future<void> _onLogout(
+  Future<void> _onLogoutEvent(
       AuthLogoutReuqestEvenet event, Emitter<AuthState> emit) async {
     try {
       emit(LoggingOut());
       await Future.delayed(const Duration(seconds: 2));
       await _authRepository.logout();
       emit(LogOutSuccessful());
+      add(CheckIfBiometricEnabled());
     } catch (e) {
       emit(LogOutFailed());
     }
@@ -97,8 +60,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final biometricEnabledResult =
         await _localAuthRepository.isBiometricEnabled();
     biometricEnabledResult.fold(
-      (failure) => emit(BiometricCheckFailed()), // Emit failure state
+      (failure) => emit(BiometricCheckFailed()),
       (isBiometricEnabled) {
+        this.isBiometricEnabled = isBiometricEnabled;
         if (isBiometricEnabled) {
           emit(BiometricEnabled());
         } else {
@@ -112,12 +76,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       AuthBiometricLoginEvent event, Emitter<AuthState> emit) async {
     final authResult = await _localAuthRepository.authenticateUser();
     authResult.fold(
-      (failure) => emit(BiometricUnauthenticated()), // Handle failure
+      (failure) => emit(BiometricCheckFailed()),
       (isAuthenticated) {
         if (isAuthenticated) {
           emit(BiometricAuthenticated());
-        } else {
-          emit(BiometricUnauthenticated());
         }
       },
     );
@@ -127,9 +89,39 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       ToggleBiometricLogin event, Emitter<AuthState> emit) async {
     try {
       await _localAuthRepository.enableBiometric(event.enbale);
-      emit(event.enbale ? BiometricEnabled() : BiometricDisabled());
+      isBiometricEnabled = event.enbale;
+      if (event.enbale) {
+        emit(BiometricEnabled());
+      } else {
+        emit(BiometricDisabled());
+      }
     } catch (e) {
-      emit(BiometricCheckFailed()); // Emit failure state
+      emit(BiometricCheckFailed());
     }
+  }
+
+  Future<void> _checkBiometricAvailabilityAndState() async {
+    final biometricAvailabilityResult =
+        await _localAuthRepository.isBiometricAvailable();
+    biometricAvailabilityResult.fold(
+      (failure) {
+        emit(BiometricCheckFailed());
+      },
+      (isAvailable) async {
+        if (!isAvailable) {
+          emit(BiometricUnAvailable());
+        } else {
+          emit(BiometricAvailable());
+          add(CheckIfBiometricEnabled());
+        }
+      },
+    );
+  }
+
+  @override
+  void onTransition(Transition<AuthEvent, AuthState> transition) {
+    // TODO: implement onTransition
+    super.onTransition(transition);
+    print('auth: $transition');
   }
 }

@@ -21,7 +21,7 @@ void main() async {
   // initialize sessionconfig with  timeout durations
   final sessionManager = getIt<SessionManager>();
   sessionManager.configureSession(
-    invalidateSessionForAppLostFocus: const Duration(seconds: 20),
+    invalidateSessionForAppLostFocus: const Duration(seconds: 10),
     invalidateSessionForUserInactivity: const Duration(minutes: 1),
   );
 

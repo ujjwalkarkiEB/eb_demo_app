@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
+import 'package:eb_demo_app/core/global_bloc/session/session_bloc.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/blocs/auth/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +14,7 @@ class SplashScreen extends StatelessWidget {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthAuthenticated) {
+          context.read<SessionBloc>().add(StartListeningEvent());
           context.router.replace(const MainNavRoute());
         }
 

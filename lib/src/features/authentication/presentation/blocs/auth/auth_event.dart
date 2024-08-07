@@ -15,7 +15,10 @@ class FirstVisitCheckEvent extends AuthEvent {}
 
 class AuthLogoutReuqestEvenet extends AuthEvent {}
 
+// biometric login events
 class CheckIfBiometricEnabled extends AuthEvent {}
+
+class CheckIfBiometricAvailable extends AuthEvent {}
 
 class AuthBiometricLoginEvent extends AuthEvent {}
 
