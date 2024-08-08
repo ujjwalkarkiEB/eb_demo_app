@@ -1,16 +1,18 @@
-// lib/core/config/session/session_manager.dart
 import 'dart:async';
+import 'dart:developer';
+
 import 'package:injectable/injectable.dart';
 import 'package:local_session_timeout/local_session_timeout.dart';
 
-enum SessionStateEnum { active, expired, paused, resumed, inactive }
-
 @lazySingleton
 class SessionManager {
-  final StreamController<SessionState> _sessionStateStreamController =
-      StreamController<SessionState>.broadcast(); // Use broadcast stream
+  late StreamController<SessionState> _sessionStateStreamController;
   late SessionConfig sessionConfig;
   StreamSubscription<SessionTimeoutState>? _timeoutSubscription;
+
+  SessionManager() {
+    _sessionStateStreamController = StreamController<SessionState>.broadcast();
+  }
 
   void configureSession({
     required Duration invalidateSessionForAppLostFocus,
@@ -23,27 +25,47 @@ class SessionManager {
   }
 
   void startListening() {
-    _timeoutSubscription =
-        sessionConfig.stream.listen((SessionTimeoutState timeoutEvent) {
-      if (timeoutEvent == SessionTimeoutState.userInactivityTimeout ||
-          timeoutEvent == SessionTimeoutState.appFocusTimeout) {
-        print('timeoy');
-        _sessionStateStreamController.add(SessionState.stopListening);
-      }
-    });
+    if (_timeoutSubscription != null) {
+      log('Already listening to session timeouts.');
+      return; // Avoid multiple subscriptions
+    }
+
+    _sessionStateStreamController = StreamController<SessionState>.broadcast();
+    log('Starting timeout subscription...');
+
+    _timeoutSubscription = sessionConfig.stream.listen(
+      (SessionTimeoutState timeoutEvent) {
+        log('Received timeout event: $timeoutEvent');
+        if (timeoutEvent == SessionTimeoutState.userInactivityTimeout ||
+            timeoutEvent == SessionTimeoutState.appFocusTimeout) {
+          log('Session timeout occurred.');
+          _sessionStateStreamController.add(SessionState.stopListening);
+        }
+      },
+      onError: (error) {
+        log('Error in session timeout stream: $error');
+      },
+      onDone: () {
+        log('Session timeout stream closed.');
+      },
+    );
   }
 
-  void stopListening() {
-    _sessionStateStreamController.add(SessionState.stopListening);
-    _timeoutSubscription?.cancel();
+  Future<void> stopListening() async {
+    await _timeoutSubscription?.cancel();
+    _timeoutSubscription = null;
+    _resetStream();
+  }
+
+  void _resetStream() {
     _sessionStateStreamController.close();
   }
 
   Stream<SessionState> get sessionStateStream =>
       _sessionStateStreamController.stream;
 
-  void dispose() {
-    _timeoutSubscription?.cancel();
+  Future<void> dispose() async {
+    await stopListening(); // Ensure any ongoing subscription is cancelled
     _sessionStateStreamController.close();
   }
 }

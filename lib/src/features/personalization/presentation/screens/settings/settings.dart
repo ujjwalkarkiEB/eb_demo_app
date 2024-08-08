@@ -28,7 +28,10 @@ class SettingScreen extends StatelessWidget {
             if (state is LogOutSuccessful) {
               EasyLoading.dismiss();
               context.read<SessionBloc>().add(StopListeningEvent());
-              context.router.replace(const SigninRoute());
+              context.router.pushAndPopUntil(
+                const SigninRoute(),
+                predicate: (route) => false,
+              );
             }
             if (state is LogOutFailed) {
               EasyLoading.dismiss();

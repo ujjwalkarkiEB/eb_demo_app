@@ -7,6 +7,7 @@ import 'package:eb_demo_app/core/common/widgets/snackbars/sucess_snackbar.dart';
 import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/blocs/store/store_bloc.dart';
+import 'package:eb_demo_app/src/features/shop/presentation/screens/myproducts/widget/filter_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickalert/models/quickalert_type.dart';
@@ -21,10 +22,6 @@ class MyProductsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final suggestions = ['Clothes', 'Electronics', 'Furniture']
-        .map((e) => SearchFieldListItem(e))
-        .toList();
-
     return BlocProvider(
       create: (context) =>
           getIt<MyproductsBloc>()..add(FetchMyProductsEvenet()),
@@ -62,6 +59,7 @@ class MyProductsScreen extends StatelessWidget {
         ],
         child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             title: Text(
               'My Products',
               style: Theme.of(context)
@@ -70,28 +68,18 @@ class MyProductsScreen extends StatelessWidget {
                   .apply(color: Colors.white),
             ),
             backgroundColor: AppColors.buttonColor,
-            actions: const [CartBadge()],
+            actions: const [
+              Padding(
+                padding: EdgeInsets.only(right: 20),
+                child: CartBadge(),
+              )
+            ],
           ),
           body: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(14.0),
-                child: SizedBox(
-                  height: 80,
-                  child: SearchField(
-                    suggestions: suggestions,
-                    searchInputDecoration: const InputDecoration(
-                      label: Text('Select Category'),
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      icon: Icon(IconData(0xf068, fontFamily: 'MaterialIcons')),
-                    ),
-                    onSuggestionTap: (value) {
-                      // context
-                      //     .read<MyproductsBloc>()
-                      //     .add(ApplyCategoryFilterEvent(value.searchKey));
-                    },
-                  ),
-                ),
+              const Padding(
+                padding: EdgeInsets.all(14.0),
+                child: SizedBox(height: 80, child: FilterDropdown()),
               ),
               Expanded(
                 child: Padding(

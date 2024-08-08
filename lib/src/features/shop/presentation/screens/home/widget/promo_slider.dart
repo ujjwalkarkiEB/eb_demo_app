@@ -50,16 +50,13 @@ class _PromoSliderState extends State<PromoSlider> {
               });
             },
           ),
-
-          carouselController: carouselController, // Set the controller here
+          carouselController: carouselController,
         ),
         const SizedBox(height: AppSizes.spaceBetweenSections),
         SmoothPageIndicator(
-          controller: PageController(
-              initialPage: currentIndex), // Temporary PageController
+          controller: PageController(initialPage: currentIndex),
           count: widget.promoBanners.length,
-          effect:
-              WormEffect(activeDotColor: Colors.green), // Your preferred effect
+          effect: const WormEffect(activeDotColor: Colors.green),
           onDotClicked: (index) {
             carouselController.animateToPage(index);
             setState(() {

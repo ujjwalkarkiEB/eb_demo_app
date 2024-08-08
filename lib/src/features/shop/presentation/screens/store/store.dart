@@ -55,7 +55,10 @@ class StoreScreenState extends State<StoreScreen> {
           title:
               Text('Store', style: Theme.of(context).textTheme.headlineMedium),
           actions: const [
-            CartBadge(),
+            Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: CartBadge(),
+            ),
           ],
           bottom: TabBar(
             isScrollable: true,

@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           create: (context) => getIt<OtpBloc>(),
         ),
         BlocProvider(
-          create: (context) => getIt<CartBloc>(),
+          create: (context) => getIt<CartBloc>()..add(GetCartItemsCount()),
         ),
         BlocProvider(
           create: (context) => getIt<SessionBloc>(),

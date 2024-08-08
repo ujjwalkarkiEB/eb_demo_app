@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -12,20 +13,9 @@ part 'session_state.dart';
 @injectable
 class SessionBloc extends Bloc<SessionEvent, BlocSessionState> {
   final SessionManager _sessionManager;
-  late final StreamSubscription<SessionState> _sessionStateSubscription;
+  StreamSubscription<SessionState>? _sessionStateSubscription;
 
   SessionBloc(this._sessionManager) : super(SessionInactive()) {
-    // Handle the stream subscription and event addition
-    _sessionStateSubscription =
-        _sessionManager.sessionStateStream.listen((state) {
-      if (state == SessionState.stopListening) {
-        add(SessionExpiredEvent());
-      } else {
-        // Add other states if needed
-        add(SessionActiveEvent()); // Assuming you have such an event
-      }
-    });
-
     on<StartListeningEvent>(_onStartListening);
     on<StopListeningEvent>(_onStopListening);
     on<PauseSessionEvent>(_onPauseSession);
@@ -35,13 +25,38 @@ class SessionBloc extends Bloc<SessionEvent, BlocSessionState> {
 
   void _onStartListening(
       StartListeningEvent event, Emitter<BlocSessionState> emit) {
-    _sessionManager.startListening();
-    emit(SessionResumed());
+    log('Starting session listener...');
+
+    try {
+      _sessionManager.startListening();
+
+      _sessionStateSubscription = _sessionManager.sessionStateStream.listen(
+        (state) {
+          log('Session state received: $state');
+
+          if (state == SessionState.stopListening) {
+            add(SessionExpiredEvent());
+          } else {
+            add(SessionActiveEvent());
+          }
+        },
+        onError: (error) {
+          log('Session state stream error: $error');
+        },
+      );
+
+      emit(SessionResumed());
+    } catch (e) {
+      log('Error starting session listener: $e');
+    }
   }
 
-  void _onStopListening(
-      StopListeningEvent event, Emitter<BlocSessionState> emit) {
-    _sessionManager.stopListening();
+  Future<void> _onStopListening(
+      StopListeningEvent event, Emitter<BlocSessionState> emit) async {
+    await _sessionStateSubscription?.cancel();
+    _sessionStateSubscription = null;
+    await _sessionManager
+        .stopListening(); // Ensure session manager stops listening
     emit(SessionExpired());
   }
 
@@ -61,16 +76,16 @@ class SessionBloc extends Bloc<SessionEvent, BlocSessionState> {
   }
 
   @override
-  Future<void> close() {
-    _sessionStateSubscription.cancel(); // Cancel the subscription
-    _sessionManager.dispose();
+  Future<void> close() async {
+    await _sessionStateSubscription
+        ?.cancel(); // Cancel subscription if it exists
+    await _sessionManager.dispose(); // Dispose the session manager
     return super.close();
   }
 
   @override
   void onTransition(Transition<SessionEvent, BlocSessionState> transition) {
-    // TODO: implement onTransition
     super.onTransition(transition);
-    print('tras: $transition');
+    print('Transition: $transition');
   }
 }

@@ -17,13 +17,17 @@ class MyproductsBloc extends Bloc<MyproductsEvent, MyproductsState> {
     on<DeleteProductEvent>(_deleteProductEvent);
   }
 
+  List<ProductSummary> fetchedProducts = [];
   void _onFetchEvent(
       FetchMyProductsEvenet event, Emitter<MyproductsState> emit) async {
     emit(FetchingMyProducts());
     final result = await _myProductsRepository.fetchMyProducts();
     result.fold(
       (failure) => emit(FailedFetchMyProducts()),
-      (products) => emit(FetchedMyProducts(products: products)),
+      (products) {
+        fetchedProducts = products;
+        emit(FetchedMyProducts(products: products));
+      },
     );
   }
 
@@ -42,5 +46,13 @@ class MyproductsBloc extends Bloc<MyproductsEvent, MyproductsState> {
   }
 
   void _applyCategoryFilter(
-      ApplyCategoryFilterEvent event, Emitter<MyproductsState> emit) async {}
+      ApplyCategoryFilterEvent event, Emitter<MyproductsState> emit) async {
+    emit(FetchingMyProducts());
+    final filteredProducts = fetchedProducts
+        .where((element) =>
+            element.categoryID ==
+            productCategoryInfo[event.category]!['id'] as int)
+        .toList();
+    emit(FetchedMyProducts(products: filteredProducts));
+  }
 }

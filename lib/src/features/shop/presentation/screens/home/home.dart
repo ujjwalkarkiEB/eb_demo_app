@@ -78,9 +78,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
               return RefreshIndicator(
                 onRefresh: () async {
-                  context.read<HomeBloc>()..add(FetchCategoriesEvent());
-                  await Future.delayed(Duration(milliseconds: 500));
-                  context.read<HomeBloc>()..add(FetchTrendingProductsEvent());
+                  context.read<HomeBloc>().add(FetchCategoriesEvent());
+                  await Future.delayed(const Duration(milliseconds: 500));
+                  context.read<HomeBloc>().add(FetchTrendingProductsEvent());
                 },
                 child: Column(
                   children: [
