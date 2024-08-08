@@ -5,7 +5,6 @@ import 'package:eb_demo_app/core/utils/session/session_config.dart';
 import 'package:eb_demo_app/src/app.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:local_session_timeout/local_session_timeout.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +12,7 @@ void main() async {
   // register dependenciies to getit
   configureDependencies();
   // initialize notificationservice
-  await getIt<NotificationService>().initNotification();
+  await getIt<NotificationService>().initializeNotification();
 
   final databaseHelper = getIt<DatabaseHelper>();
   // initialize local database

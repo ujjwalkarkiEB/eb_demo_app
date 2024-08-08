@@ -22,6 +22,13 @@ class MainNavScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainNavScreen> {
   @override
+  void initState() {
+    super.initState();
+    print("called here");
+    context.read<SessionBloc>().add(StartListeningEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [

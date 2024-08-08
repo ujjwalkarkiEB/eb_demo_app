@@ -62,7 +62,6 @@ class SigninScreen extends StatelessWidget {
             }
 
             if (state is LoginSuccess) {
-              context.read<SessionBloc>().add(StartListeningEvent());
               context.router.push(const MainNavRoute());
             }
           },

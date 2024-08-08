@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:eb_demo_app/core/common/widgets/snackbars/error_snackbar.dart';
 import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/utils/notification/notification_service.dart';
@@ -35,8 +36,9 @@ class _CartScreenState extends State<CartScreen> {
       listener: (context, state) {
         if (state is CartActionSuccess) {
           getIt<NotificationService>().showNotification(
-              body: 'Your orders have been placed!',
-              title: 'Cart Items Shipped');
+            body: 'Your orders have been placed!',
+            title: 'Cart Items Shipped',
+          );
           context.read<CartBloc>().add(FetchCartProductsEvent());
         }
 

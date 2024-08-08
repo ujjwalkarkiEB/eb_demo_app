@@ -27,6 +27,7 @@ class SessionManager {
         sessionConfig.stream.listen((SessionTimeoutState timeoutEvent) {
       if (timeoutEvent == SessionTimeoutState.userInactivityTimeout ||
           timeoutEvent == SessionTimeoutState.appFocusTimeout) {
+        print('timeoy');
         _sessionStateStreamController.add(SessionState.stopListening);
       }
     });
@@ -34,6 +35,8 @@ class SessionManager {
 
   void stopListening() {
     _sessionStateStreamController.add(SessionState.stopListening);
+    _timeoutSubscription?.cancel();
+    _sessionStateStreamController.close();
   }
 
   Stream<SessionState> get sessionStateStream =>

@@ -12,6 +12,7 @@ subprojects {
 subprojects {
     project.evaluationDependsOn(":app")
 }
+
 buildscript {
     repositories {
         google()

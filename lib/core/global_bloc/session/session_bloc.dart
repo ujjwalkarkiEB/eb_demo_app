@@ -66,4 +66,11 @@ class SessionBloc extends Bloc<SessionEvent, BlocSessionState> {
     _sessionManager.dispose();
     return super.close();
   }
+
+  @override
+  void onTransition(Transition<SessionEvent, BlocSessionState> transition) {
+    // TODO: implement onTransition
+    super.onTransition(transition);
+    print('tras: $transition');
+  }
 }

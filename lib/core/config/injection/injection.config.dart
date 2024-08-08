@@ -84,9 +84,8 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
+    gh.factory<_i857.NotificationService>(() => _i857.NotificationService());
     gh.lazySingleton<_i752.DatabaseHelper>(() => _i752.DatabaseHelper());
-    gh.lazySingleton<_i857.NotificationService>(
-        () => _i857.NotificationService());
     gh.lazySingleton<_i752.AuthInterceptor>(() => _i752.AuthInterceptor());
     gh.lazySingleton<_i220.SessionManager>(() => _i220.SessionManager());
     gh.factory<_i696.SessionBloc>(
