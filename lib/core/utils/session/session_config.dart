@@ -32,6 +32,7 @@ class SessionManager {
 
     _sessionStateStreamController = StreamController<SessionState>.broadcast();
     log('Starting timeout subscription...');
+    _sessionStateStreamController.add(SessionState.startListening);
 
     _timeoutSubscription = sessionConfig.stream.listen(
       (SessionTimeoutState timeoutEvent) {
@@ -52,6 +53,8 @@ class SessionManager {
   }
 
   Future<void> stopListening() async {
+    _sessionStateStreamController.add(SessionState.stopListening);
+
     await _timeoutSubscription?.cancel();
     _timeoutSubscription = null;
     _resetStream();

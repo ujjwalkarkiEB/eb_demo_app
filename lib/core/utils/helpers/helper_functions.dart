@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
@@ -21,9 +22,21 @@ class HelperFunctions {
     }
   }
 
-//   String compressData(Map<String, dynamic> data) {
-//   List<int> encodedData = utf8.encode(jsonEncode(data));
-//   List<int> compressedData = GZipEncoder().encode(encodedData)!;
-//   return base64Encode(compressedData);
-// }
+  static String? formatChatMessageTime(String time) {
+    final formatedChatDateTime = DateTime.tryParse(time);
+    if (formatedChatDateTime == null) {
+      log('Failed to parse cha msg time');
+      return null;
+    }
+    final now = DateTime.now();
+    final timeDifference = now.difference(formatedChatDateTime);
+
+    if (timeDifference.inDays >= 1) {
+      return '${timeDifference.inDays} ${timeDifference.inDays == 1 ? 'day ago' : 'days ago'}';
+    } else if (timeDifference.inHours >= 1) {
+      return '${timeDifference.inHours} ${timeDifference.inHours == 1 ? 'hour ago' : 'hours ago'}';
+    } else {
+      return 'now';
+    }
+  }
 }

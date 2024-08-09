@@ -21,7 +21,7 @@ void main() async {
   final sessionManager = getIt<SessionManager>();
   sessionManager.configureSession(
     invalidateSessionForAppLostFocus: const Duration(seconds: 5),
-    invalidateSessionForUserInactivity: const Duration(seconds: 10),
+    invalidateSessionForUserInactivity: const Duration(minutes: 5),
   );
 
   runApp(const MyApp());

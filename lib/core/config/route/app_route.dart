@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/screens/otp/otp_screen.dart';
+import 'package:eb_demo_app/src/features/chat/presentation/screens/chat_navigatio_screen.dart';
+import 'package:eb_demo_app/src/features/chat/presentation/screens/user_chats/user_chats.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/screens/store/widget/modal/add_product_modal.dart';
 import 'package:flutter/material.dart';
 import '../../../navigation.dart';
@@ -10,6 +12,7 @@ import '../../../src/features/authentication/presentation/screens/password_confi
 import '../../../src/features/authentication/presentation/screens/signin/signin_screen.dart';
 import '../../../src/features/authentication/presentation/screens/signup/signup_screen.dart';
 
+import '../../../src/features/chat/presentation/screens/private_chat_room/private_chat_room.dart';
 import '../../../src/features/personalization/presentation/screens/personalization.dart';
 import '../../../src/features/personalization/presentation/screens/profile/profile.dart';
 import '../../../src/features/personalization/presentation/screens/settings/settings.dart';
@@ -44,7 +47,11 @@ class AppRouter extends _$AppRouter {
             AutoRoute(page: HomeRoute.page),
 
             AutoRoute(page: StoreRoute.page),
-            AutoRoute(initial: true, page: MyProductsRoute.page),
+            AutoRoute(page: MyProductsRoute.page),
+            AutoRoute(initial: true, page: ChatNavigatioRoute.page, children: [
+              AutoRoute(initial: true, page: UserChatsRoute.page),
+              AutoRoute(page: PrivateChatRoomRoute.page),
+            ]),
             AutoRoute(
                 page: PersonalizationRoute.page,
                 maintainState: false,

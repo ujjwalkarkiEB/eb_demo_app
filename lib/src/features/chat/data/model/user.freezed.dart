@@ -23,7 +23,7 @@ mixin _$User {
   @JsonKey(name: "_id")
   String get id => throw _privateConstructorUsedError;
   String get userName => throw _privateConstructorUsedError;
-  String get avatar => throw _privateConstructorUsedError;
+  dynamic get avatar => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +35,7 @@ abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res, User>;
   @useResult
-  $Res call({@JsonKey(name: "_id") String id, String userName, String avatar});
+  $Res call({@JsonKey(name: "_id") String id, String userName, dynamic avatar});
 }
 
 /// @nodoc
@@ -53,7 +53,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   $Res call({
     Object? id = null,
     Object? userName = null,
-    Object? avatar = null,
+    Object? avatar = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -64,10 +64,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
               as String,
-      avatar: null == avatar
+      avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
-              as String,
+              as dynamic,
     ) as $Val);
   }
 }
@@ -79,7 +79,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       __$$UserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({@JsonKey(name: "_id") String id, String userName, String avatar});
+  $Res call({@JsonKey(name: "_id") String id, String userName, dynamic avatar});
 }
 
 /// @nodoc
@@ -94,7 +94,7 @@ class __$$UserImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? userName = null,
-    Object? avatar = null,
+    Object? avatar = freezed,
   }) {
     return _then(_$UserImpl(
       id: null == id
@@ -105,10 +105,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
               as String,
-      avatar: null == avatar
+      avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
-              as String,
+              as dynamic,
     ));
   }
 }
@@ -130,7 +130,7 @@ class _$UserImpl implements _User {
   @override
   final String userName;
   @override
-  final String avatar;
+  final dynamic avatar;
 
   @override
   String toString() {
@@ -145,12 +145,13 @@ class _$UserImpl implements _User {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userName, userName) ||
                 other.userName == userName) &&
-            (identical(other.avatar, avatar) || other.avatar == avatar));
+            const DeepCollectionEquality().equals(other.avatar, avatar));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, userName, avatar);
+  int get hashCode => Object.hash(
+      runtimeType, id, userName, const DeepCollectionEquality().hash(avatar));
 
   @JsonKey(ignore: true)
   @override
@@ -170,7 +171,7 @@ abstract class _User implements User {
   const factory _User(
       {@JsonKey(name: "_id") required final String id,
       required final String userName,
-      required final String avatar}) = _$UserImpl;
+      required final dynamic avatar}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -180,7 +181,7 @@ abstract class _User implements User {
   @override
   String get userName;
   @override
-  String get avatar;
+  dynamic get avatar;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

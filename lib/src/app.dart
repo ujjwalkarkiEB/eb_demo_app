@@ -4,6 +4,9 @@ import 'package:eb_demo_app/core/config/theme/theme.dart';
 import 'package:eb_demo_app/core/global_bloc/session/session_bloc.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/blocs/auth/auth_bloc.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/blocs/otp/otp_bloc.dart';
+import 'package:eb_demo_app/src/features/authentication/presentation/blocs/password_reset/password_reset_bloc.dart';
+import 'package:eb_demo_app/src/features/chat/presentation/screens/private_chat_room/private_chat_room.dart';
+import 'package:eb_demo_app/src/features/chat/presentation/screens/user_chats/user_chats.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,6 +32,9 @@ class MyApp extends StatelessWidget {
           create: (context) => getIt<CartBloc>()..add(GetCartItemsCount()),
         ),
         BlocProvider(
+          create: (context) => getIt<PasswordResetBloc>(),
+        ),
+        BlocProvider(
           create: (context) => getIt<SessionBloc>(),
         ),
       ],
@@ -47,7 +53,7 @@ class MyApp extends StatelessWidget {
       //   themeMode: ThemeMode.system,
       //   darkTheme: AppTheme.darkThemeData,
       //   theme: AppTheme.lightThemeData,
-      //   home: const SigninScreen(),
+      //   home: const PrivateChatRoomScreen(),
       // ),
     );
   }

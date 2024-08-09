@@ -1,9 +1,12 @@
 import 'dart:developer';
 import 'package:eb_demo_app/core/utils/constants/strings.dart';
+import 'package:eb_demo_app/core/utils/error/failure/failure.dart';
 import 'package:eb_demo_app/core/utils/helpers/token_services.dart';
 import 'package:eb_demo_app/core/utils/notification/notification_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:socket_io_client/socket_io_client.dart' as client;
+
+import '../../../src/features/chat/data/model/user.dart';
 
 @lazySingleton
 class SocketClientManager {
@@ -12,7 +15,7 @@ class SocketClientManager {
   late client.Socket _socket;
   // flag to check if socket connection is open already
   bool _isConnectionOpen = false;
-  List<Map<String, dynamic>> _onlineUsers = [];
+  List<User> _onlineUsers = [];
 
   SocketClientManager(this._tokenService, this._notificationService);
 
@@ -22,7 +25,7 @@ class SocketClientManager {
 
     final authToken = await _tokenService.getAccessToken();
     if (authToken == null) {
-      log('Socket token missing!');
+      log('Socket: token missing!');
       return;
     }
     _socket = client.io(
@@ -57,8 +60,13 @@ class SocketClientManager {
   /// Listen for the online users event
   void _listenForOnlineUsers() {
     _socket.on('listOnlineUsers', (data) {
-      _onlineUsers = List<Map<String, dynamic>>.from(data);
-      log('Online users updated: $_onlineUsers');
+      if (data is List) {
+        _onlineUsers = data.map((userMap) => User.fromJson(userMap)).toList();
+        print('online users: $onlineUsers');
+      } else {
+        log('Unexpected data format for online users: $data');
+        throw const UnknownFailure('something went wrong!');
+      }
     });
   }
 
@@ -135,5 +143,5 @@ class SocketClientManager {
   }
 
   /// Get the current list of online users
-  List<Map<String, dynamic>> get onlineUsers => _onlineUsers;
+  List<User> get onlineUsers => _onlineUsers;
 }

@@ -72,6 +72,7 @@ import '../../utils/network/client/dio_client.dart' as _i590;
 import '../../utils/network/client/graphql_client.dart' as _i322;
 import '../../utils/notification/notification_service.dart' as _i857;
 import '../../utils/session/session_config.dart' as _i220;
+import '../../utils/socket/socket_client_manager.dart' as _i703;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -128,6 +129,10 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.lazySingleton<_i46.ProfileRepositiory>(
         () => _i46.ProfileRepositioryImpl(gh<_i574.ProfileRemoteSource>()));
+    gh.lazySingleton<_i703.SocketClientManager>(() => _i703.SocketClientManager(
+          gh<_i863.TokenService>(),
+          gh<_i857.NotificationService>(),
+        ));
     gh.lazySingleton<_i855.MyProductsRepository>(
         () => _i855.MyProductsRepositoryImpl(
               gh<_i554.ShopDatabaseService>(),

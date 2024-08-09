@@ -44,6 +44,7 @@ class AuthInterceptor extends QueuedInterceptorsWrapper {
 
     if (token != null) {
       final bool isExpired = await tokenService.hasSession(token);
+      print('token: $token');
 
       if (isExpired) {
         final isRefreshed = await tokenService.refreshToken();

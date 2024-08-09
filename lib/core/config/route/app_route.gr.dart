@@ -21,6 +21,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const CartScreen(),
       );
     },
+    ChatNavigatioRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ChatNavigatioScreen(),
+      );
+    },
     EmailVerificationRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -72,6 +78,12 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const PersonalizationScreen(),
+      );
+    },
+    PrivateChatRoomRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const PrivateChatRoomScreen(),
       );
     },
     ProductCreateRoute.name: (routeData) {
@@ -138,6 +150,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const StoreScreen(),
       );
     },
+    UserChatsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const UserChatsScreen(),
+      );
+    },
   };
 }
 
@@ -151,6 +169,20 @@ class CartRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'CartRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ChatNavigatioScreen]
+class ChatNavigatioRoute extends PageRouteInfo<void> {
+  const ChatNavigatioRoute({List<PageRouteInfo>? children})
+      : super(
+          ChatNavigatioRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ChatNavigatioRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -291,6 +323,20 @@ class PersonalizationRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'PersonalizationRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [PrivateChatRoomScreen]
+class PrivateChatRoomRoute extends PageRouteInfo<void> {
+  const PrivateChatRoomRoute({List<PageRouteInfo>? children})
+      : super(
+          PrivateChatRoomRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PrivateChatRoomRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -455,6 +501,20 @@ class StoreRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'StoreRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [UserChatsScreen]
+class UserChatsRoute extends PageRouteInfo<void> {
+  const UserChatsRoute({List<PageRouteInfo>? children})
+      : super(
+          UserChatsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'UserChatsRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
