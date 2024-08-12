@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:eb_demo_app/core/utils/constants/strings.dart';
 import 'package:eb_demo_app/core/utils/error/failure/failure.dart';
 import 'package:eb_demo_app/core/utils/helpers/token_services.dart';
 import 'package:eb_demo_app/core/utils/notification/notification_service.dart';
+import 'package:eb_demo_app/src/features/chat/data/model/chat.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:socket_io_client/socket_io_client.dart' as client;
 
@@ -18,6 +21,13 @@ class SocketClientManager {
   List<User> _onlineUsers = [];
 
   SocketClientManager(this._tokenService, this._notificationService);
+  // stream controller for active users
+  final _onlineUsersController = StreamController<List<User>>.broadcast();
+  Stream<List<User>> get onlineUsersStream => _onlineUsersController.stream;
+
+  // stream controller for private chat
+  final _privateMessageController = StreamController<Chat>.broadcast();
+  Stream<Chat> get privateMessageStream => _privateMessageController.stream;
 
   /// Opens socket connection for first time
   void openSocketConnection() async {
@@ -41,7 +51,6 @@ class SocketClientManager {
     _socket.onConnect((_) {
       log('Socket Connection established');
       _listenForOnlineUsers();
-      _listenForPrivateMessages();
     });
 
     _socket.onDisconnect((_) {
@@ -58,11 +67,11 @@ class SocketClientManager {
   }
 
   /// Listen for the online users event
-  void _listenForOnlineUsers() {
+  _listenForOnlineUsers() {
     _socket.on('listOnlineUsers', (data) {
       if (data is List) {
         _onlineUsers = data.map((userMap) => User.fromJson(userMap)).toList();
-        print('online users: $onlineUsers');
+        _onlineUsersController.add(_onlineUsers);
       } else {
         log('Unexpected data format for online users: $data');
         throw const UnknownFailure('something went wrong!');
@@ -71,9 +80,13 @@ class SocketClientManager {
   }
 
   /// Listen for private messages
-  void _listenForPrivateMessages() {
+  void listenForPrivateMessages() {
     _socket.on('privateMessage', (data) {
-      log('Received private message: $data');
+      print('caht: $data');
+
+      final Chat newChat =
+          data['chat'].map((chatMap) => Chat.fromJson(chatMap));
+      _privateMessageController.add(newChat);
       _notificationService.showNotification(
           title: 'Message Recieved', body: 'Dolly has sent you a message!');
     });
@@ -85,7 +98,7 @@ class SocketClientManager {
   }
 
   /// Send a private message
-  void sendPrivateMessage(String receiverId, String message) {
+  void sendPrivateMessage({String? receiverId, String? message}) {
     _socket.emit('privateMessage', {
       'receiver': receiverId,
       'message': message,
@@ -96,6 +109,7 @@ class SocketClientManager {
   /// Disconnect the socket
   void disconnect() {
     _socket.disconnect();
+
     _socket.dispose();
     log('Socket disconnected and disposed');
   }
@@ -124,7 +138,6 @@ class SocketClientManager {
         _isConnectionOpen = true;
         log('Socket Connection re-established after token refreshing');
         _listenForOnlineUsers();
-        _listenForPrivateMessages();
       });
 
       _socket.onDisconnect((_) {

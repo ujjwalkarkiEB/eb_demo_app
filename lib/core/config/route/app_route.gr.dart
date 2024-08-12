@@ -81,9 +81,13 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     PrivateChatRoomRoute.name: (routeData) {
+      final args = routeData.argsAs<PrivateChatRoomRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const PrivateChatRoomScreen(),
+        child: PrivateChatRoomScreen(
+          key: args.key,
+          reciverID: args.reciverID,
+        ),
       );
     },
     ProductCreateRoute.name: (routeData) {
@@ -329,16 +333,40 @@ class PersonalizationRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [PrivateChatRoomScreen]
-class PrivateChatRoomRoute extends PageRouteInfo<void> {
-  const PrivateChatRoomRoute({List<PageRouteInfo>? children})
-      : super(
+class PrivateChatRoomRoute extends PageRouteInfo<PrivateChatRoomRouteArgs> {
+  PrivateChatRoomRoute({
+    Key? key,
+    required String reciverID,
+    List<PageRouteInfo>? children,
+  }) : super(
           PrivateChatRoomRoute.name,
+          args: PrivateChatRoomRouteArgs(
+            key: key,
+            reciverID: reciverID,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'PrivateChatRoomRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<PrivateChatRoomRouteArgs> page =
+      PageInfo<PrivateChatRoomRouteArgs>(name);
+}
+
+class PrivateChatRoomRouteArgs {
+  const PrivateChatRoomRouteArgs({
+    this.key,
+    required this.reciverID,
+  });
+
+  final Key? key;
+
+  final String reciverID;
+
+  @override
+  String toString() {
+    return 'PrivateChatRoomRouteArgs{key: $key, reciverID: $reciverID}';
+  }
 }
 
 /// generated route for

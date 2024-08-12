@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import 'features/authentication/presentation/blocs/login_bloc/login_bloc.dart';
 import 'features/shop/presentation/blocs/cart/cart_bloc.dart';
 
 class MyApp extends StatelessWidget {

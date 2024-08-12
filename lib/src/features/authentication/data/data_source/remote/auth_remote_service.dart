@@ -121,12 +121,13 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
               data: {"email": email, "password": password},
             ),
         onResponse: (data) {
-          final tokens = {
+          final loginData = {
             "accessToken": data['data'][accessTokenKey],
             "refreshToken": data['data'][refreshTokenKey],
+            "userID": data['data']['user']['_id']
           };
 
-          return json.encode(tokens);
+          return json.encode(loginData);
         });
   }
 

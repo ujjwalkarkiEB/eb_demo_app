@@ -73,10 +73,25 @@ class AuthDatabaseService {
 
   bool chechIfTokenExist() {
     final Box<String> authBox = _databaseHelper.authBox;
-    print(authBox.get(accessTokenKey));
     if (authBox.get(accessTokenKey) != null) {
       return true;
     }
     return false;
+  }
+
+  Future<void> storeUserId({required String userID}) async {
+    try {
+      final Box<String> authBox = _databaseHelper.authBox;
+
+      await authBox.put(userIdKey, userID);
+    } catch (e) {
+      log('Error saving userid: $e');
+    }
+  }
+
+  String? getUserId() {
+    final Box<String> authBox = _databaseHelper.authBox;
+
+    return authBox.get(userIdKey);
   }
 }

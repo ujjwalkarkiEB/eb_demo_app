@@ -5,6 +5,7 @@ import 'package:eb_demo_app/core/global_bloc/session/session_bloc.dart';
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
 import 'package:eb_demo_app/core/utils/session/session_config.dart';
 import 'package:eb_demo_app/core/utils/socket/socket_client_manager.dart';
+import 'package:eb_demo_app/src/features/chat/presentation/blocs/socket/socket_bloc.dart';
 import 'package:eb_demo_app/src/features/personalization/presentation/bloc/personalization_bloc.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/blocs/store/store_bloc.dart';
 import 'package:flutter/material.dart';
@@ -28,13 +29,15 @@ class _MainScreenState extends State<MainNavScreen> {
     // start subscribing stram to  listen for timeout events
     // context.read<SessionBloc>().add(StartListeningEvent());
     // open socket connection for listening events
-    getIt<SocketClientManager>().openSocketConnection();
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+            create: (context) =>
+                getIt<SocketBloc>()..add(OpenSocketConnection())),
         BlocProvider(
           create: (context) => getIt<StoreBloc>()..add(FetchCategoryProducts()),
         ),

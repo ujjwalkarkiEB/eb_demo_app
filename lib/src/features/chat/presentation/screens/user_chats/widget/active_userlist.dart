@@ -1,4 +1,6 @@
+import 'package:eb_demo_app/src/features/chat/presentation/blocs/socket/socket_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../../../../core/common/widgets/custom_shapes/container/circular_container.dart';
@@ -14,39 +16,51 @@ class ActiveUsersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 85,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        separatorBuilder: (context, index) => const Gap(10),
-        itemCount: activeUsers.length,
-        itemBuilder: (context, index) {
-          final activeUser = activeUsers[index];
-          return Column(
-            children: [
-              // user image with active mark
-              Stack(children: [
-                CircleAvatar(
-                  backgroundImage: AssetImage(AppImages.userImage),
-                  radius: 30,
+    List<User> activeUsers = [];
+    return BlocBuilder<SocketBloc, SocketState>(
+      builder: (context, state) {
+        if (state is OnlineUsersState) {
+          print('here: ${state.onlineUsers}');
+          activeUsers = state.onlineUsers;
+        }
+        return activeUsers.isEmpty
+            ? Text('No active users!')
+            : SizedBox(
+                height: 85,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  separatorBuilder: (context, index) => const Gap(10),
+                  itemCount: activeUsers.length,
+                  itemBuilder: (context, index) {
+                    final activeUser = activeUsers[index];
+                    return Column(
+                      children: [
+                        // user image with active mark
+                        Stack(children: [
+                          CircleAvatar(
+                            backgroundImage: activeUser.avatar ??
+                                AssetImage(AppImages.userImage),
+                            radius: 30,
+                          ),
+                          Positioned(
+                            right: 2,
+                            bottom: 1,
+                            child: CircularContainer(
+                              backgroundColor: Colors.green,
+                              height: 15,
+                              width: 15,
+                            ),
+                          )
+                        ]),
+                        Gap(5),
+                        // user name
+                        Text(activeUser.userName)
+                      ],
+                    );
+                  },
                 ),
-                Positioned(
-                  right: 2,
-                  bottom: 1,
-                  child: CircularContainer(
-                    backgroundColor: Colors.green,
-                    height: 15,
-                    width: 15,
-                  ),
-                )
-              ]),
-              Gap(5),
-              // user name
-              Text(activeUser.userName)
-            ],
-          );
-        },
-      ),
+              );
+      },
     );
   }
 }

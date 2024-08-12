@@ -27,7 +27,7 @@ abstract class ApiException implements Exception {
           }
           return BadRequestException(errorMessage, statusCode);
         case 401:
-          return UnauthorizedException(errorMessage, statusCode);
+          return BadRequestException(errorMessage, statusCode);
         case 403:
           return ForbiddenException(errorMessage, statusCode);
         case 404:

@@ -33,6 +33,12 @@ import '../../../src/features/authentication/presentation/blocs/password_reset/p
     as _i1031;
 import '../../../src/features/authentication/presentation/blocs/signup_bloc/signup_bloc.dart'
     as _i124;
+import '../../../src/features/chat/data/repository/chat_respository.dart'
+    as _i563;
+import '../../../src/features/chat/data/source/remote/chat_remote_source.dart'
+    as _i192;
+import '../../../src/features/chat/presentation/blocs/socket/socket_bloc.dart'
+    as _i296;
 import '../../../src/features/personalization/data/remote/profile_remote_source.dart'
     as _i574;
 import '../../../src/features/personalization/data/repository/profile_repositiory.dart'
@@ -97,8 +103,12 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i554.ShopDatabaseServiceImpl(gh<_i752.DatabaseHelper>()));
     gh.lazySingleton<_i590.DioClient>(
         () => _i590.DioClient(gh<_i752.AuthInterceptor>()));
+    gh.lazySingleton<_i192.ChatRemoteSource>(
+        () => _i192.ChatRemoteSource(gh<_i590.DioClient>()));
     gh.lazySingleton<_i457.AuthDatabaseService>(() =>
         _i457.AuthDatabaseService(databaseHelper: gh<_i752.DatabaseHelper>()));
+    gh.lazySingleton<_i563.ChatRespository>(
+        () => _i563.ChatRespositoryImpl(gh<_i192.ChatRemoteSource>()));
     gh.lazySingleton<_i322.GraphqlClient>(
         () => _i322.GraphqlClient(dioClient: gh<_i590.DioClient>()));
     gh.lazySingleton<_i4.LocalAuthRepository>(
@@ -132,6 +142,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i703.SocketClientManager>(() => _i703.SocketClientManager(
           gh<_i863.TokenService>(),
           gh<_i857.NotificationService>(),
+        ));
+    gh.factory<_i296.SocketBloc>(() => _i296.SocketBloc(
+          gh<_i703.SocketClientManager>(),
+          gh<_i563.ChatRespository>(),
         ));
     gh.lazySingleton<_i855.MyProductsRepository>(
         () => _i855.MyProductsRepositoryImpl(

@@ -4,7 +4,6 @@ import 'package:dartz/dartz.dart';
 import 'package:eb_demo_app/core/utils/error/exception/api_exception.dart';
 import 'package:eb_demo_app/src/features/personalization/data/model/profile.dart';
 import 'package:eb_demo_app/src/features/personalization/data/remote/profile_remote_source.dart';
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/utils/error/failure/failure.dart';

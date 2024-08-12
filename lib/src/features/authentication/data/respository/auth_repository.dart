@@ -61,6 +61,7 @@ class AuthReposeitoryImpl extends AuthRepository {
         accessToken: result[accessTokenKey],
         refreshToken: result[refreshTokenKey],
       );
+      await _authDatabaseService.storeUserId(userID: result[userIdKey]);
       return right(null);
     } on ApiException catch (e) {
       print('login api err: ${e.toString()}');
