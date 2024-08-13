@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:eb_demo_app/src/features/personalization/data/model/profile.dart';
 import 'package:eb_demo_app/src/features/personalization/data/remote/profile_remote_source.dart';
@@ -22,7 +24,6 @@ class PersonalizationBloc
   void _profileFetch(ProfileFetchRequestEvent event,
       Emitter<PersonalizationState> emit) async {
     emit(ProfileFetchLoading());
-    print('hrer');
     final result = await _profileRepositiory.getCurrentUserProfileId();
     result.fold(
       (l) => emit(ProfileFetchingError()),
@@ -47,18 +48,21 @@ class PersonalizationBloc
 
   void _onProfileDataFetch(ProfileDataFetchRequestEvent event,
       Emitter<PersonalizationState> emit) async {
+    log(event.profileId);
     final result = await _profileRepositiory.getCurrentUserProfileData(
         profileId: event.profileId);
+
     result.fold(
       (l) => emit(ProfileFetchingError()),
-      (profile) => emit(ProfileFetched(currentUser: profile)),
+      (profile) {
+        return emit(ProfileFetched(currentUser: profile));
+      },
     );
   }
 
   @override
   void onTransition(
       Transition<PersonalizationEvent, PersonalizationState> transition) {
-    // TODO: implement onTransition
     super.onTransition(transition);
     print(transition);
   }

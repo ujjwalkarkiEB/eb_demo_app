@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/utils/base/base_remote_source.dart';
@@ -25,20 +27,17 @@ class ProfileRemoteSourceImpl extends BaseRemoteSource
     return networkRequest<Profile>(
       request: (dio) => dio.get("/profile/$profileID"),
       onResponse: (data) {
-        return Profile.fromJson(data['data']);
+        return Profile.fromJson(data['data']['profile']);
       },
     );
   }
 
   @override
   Future<void> updateProfile({String? avatar, String? bio}) {
-    print('bio: ${bio.runtimeType}');
-    print('avatra: $avatar');
     final Map<String, dynamic> formData = {
       if (avatar != null) 'avatar': avatar,
       if (bio != null) 'bio': bio,
     };
-    print('form data: $formData');
     return networkRequest(
       request: (dio) => dio.patch(
         "/profile/",
@@ -62,7 +61,7 @@ class ProfileRemoteSourceImpl extends BaseRemoteSource
     return networkRequest<String>(
       request: (dio) => dio.get("/profile"),
       onResponse: (data) {
-        return data['data']['_id'];
+        return data['data']['user'];
       },
     );
   }

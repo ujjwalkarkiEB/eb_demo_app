@@ -30,9 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }
         if (state is ProfileUpdateSuccessful) {
           EasyLoading.showSuccess('Profile is updated Successfully!');
-          context
-              .read<PersonalizationBloc>()
-              .add(ProfileDataFetchRequestEvent(profileId: userProfile!.id));
+          context.read<PersonalizationBloc>().add(ProfileFetchRequestEvent());
         }
 
         if (state is ProfileFetched) {

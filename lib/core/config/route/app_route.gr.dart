@@ -87,6 +87,7 @@ abstract class _$AppRouter extends RootStackRouter {
         child: PrivateChatRoomScreen(
           key: args.key,
           reciverID: args.reciverID,
+          receiverName: args.receiverName,
         ),
       );
     },
@@ -337,12 +338,14 @@ class PrivateChatRoomRoute extends PageRouteInfo<PrivateChatRoomRouteArgs> {
   PrivateChatRoomRoute({
     Key? key,
     required String reciverID,
+    required String receiverName,
     List<PageRouteInfo>? children,
   }) : super(
           PrivateChatRoomRoute.name,
           args: PrivateChatRoomRouteArgs(
             key: key,
             reciverID: reciverID,
+            receiverName: receiverName,
           ),
           initialChildren: children,
         );
@@ -357,15 +360,18 @@ class PrivateChatRoomRouteArgs {
   const PrivateChatRoomRouteArgs({
     this.key,
     required this.reciverID,
+    required this.receiverName,
   });
 
   final Key? key;
 
   final String reciverID;
 
+  final String receiverName;
+
   @override
   String toString() {
-    return 'PrivateChatRoomRouteArgs{key: $key, reciverID: $reciverID}';
+    return 'PrivateChatRoomRouteArgs{key: $key, reciverID: $reciverID, receiverName: $receiverName}';
   }
 }
 

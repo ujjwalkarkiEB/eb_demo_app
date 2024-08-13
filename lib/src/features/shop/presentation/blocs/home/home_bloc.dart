@@ -35,7 +35,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     categoriesResult.fold(
       (l) => emit(HomeDataLoadError()),
       (categories) {
-        print('c: ${categories.length}');
         emit(CategoriesLoaded(categories));
       },
     );
@@ -96,7 +95,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   @override
   void onTransition(Transition<HomeEvent, HomeState> transition) {
-    // TODO: implement onTransition
     super.onTransition(transition);
     print(transition);
   }

@@ -62,7 +62,10 @@ class SigninScreen extends StatelessWidget {
             }
 
             if (state is LoginSuccess) {
-              context.router.replace(const MainNavRoute());
+              context.router.pushAndPopUntil(
+                const MainNavRoute(),
+                predicate: (route) => false,
+              );
             }
           },
           builder: (context, state) {

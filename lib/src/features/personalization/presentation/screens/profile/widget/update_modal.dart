@@ -52,8 +52,8 @@ class UpdateProfileModalState extends State<UpdateProfileModal> {
     final picker = ImagePicker();
     final XFile? imgFile = await picker.pickImage(
       source: isgallery ? ImageSource.gallery : ImageSource.camera,
-      maxHeight: 200,
-      maxWidth: 200,
+      maxHeight: 500,
+      maxWidth: 500,
       imageQuality: 100,
     );
 

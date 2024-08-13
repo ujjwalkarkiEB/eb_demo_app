@@ -6,11 +6,10 @@ part 'profile.g.dart';
 @freezed
 class Profile with _$Profile {
   const factory Profile({
-    @JsonKey(name: '_id') required String id,
+    @JsonKey(name: "_id") required String id,
     required User user,
     required dynamic avatar,
     required dynamic bio,
-    required String createdAt,
   }) = _Profile;
 
   factory Profile.fromJson(Map<String, dynamic> json) =>

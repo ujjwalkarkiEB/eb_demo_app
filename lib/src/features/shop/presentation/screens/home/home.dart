@@ -5,6 +5,7 @@ import 'package:eb_demo_app/core/common/widgets/snackbars/sucess_snackbar.dart';
 import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
 import 'package:eb_demo_app/core/utils/constants/images.dart';
+import 'package:eb_demo_app/src/features/personalization/presentation/bloc/personalization_bloc.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/blocs/cart/cart_bloc.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/blocs/home/home_bloc.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/screens/home/widget/promo_slider.dart';
@@ -32,6 +33,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<CategorySummary> categories = [];
   List<ProductSummary> trendingProducts = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<PersonalizationBloc>().add(ProfileFetchRequestEvent());
+  }
 
   @override
   Widget build(BuildContext context) {

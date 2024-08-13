@@ -20,12 +20,11 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Profile {
-  @JsonKey(name: '_id')
+  @JsonKey(name: "_id")
   String get id => throw _privateConstructorUsedError;
   User get user => throw _privateConstructorUsedError;
   dynamic get avatar => throw _privateConstructorUsedError;
   dynamic get bio => throw _privateConstructorUsedError;
-  String get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,11 +37,10 @@ abstract class $ProfileCopyWith<$Res> {
       _$ProfileCopyWithImpl<$Res, Profile>;
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') String id,
+      {@JsonKey(name: "_id") String id,
       User user,
       dynamic avatar,
-      dynamic bio,
-      String createdAt});
+      dynamic bio});
 
   $UserCopyWith<$Res> get user;
 }
@@ -64,7 +62,6 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
     Object? user = null,
     Object? avatar = freezed,
     Object? bio = freezed,
-    Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -83,10 +80,6 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
           ? _value.bio
           : bio // ignore: cast_nullable_to_non_nullable
               as dynamic,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
     ) as $Val);
   }
 
@@ -107,11 +100,10 @@ abstract class _$$ProfileImplCopyWith<$Res> implements $ProfileCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') String id,
+      {@JsonKey(name: "_id") String id,
       User user,
       dynamic avatar,
-      dynamic bio,
-      String createdAt});
+      dynamic bio});
 
   @override
   $UserCopyWith<$Res> get user;
@@ -132,7 +124,6 @@ class __$$ProfileImplCopyWithImpl<$Res>
     Object? user = null,
     Object? avatar = freezed,
     Object? bio = freezed,
-    Object? createdAt = null,
   }) {
     return _then(_$ProfileImpl(
       id: null == id
@@ -151,10 +142,6 @@ class __$$ProfileImplCopyWithImpl<$Res>
           ? _value.bio
           : bio // ignore: cast_nullable_to_non_nullable
               as dynamic,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -163,17 +150,16 @@ class __$$ProfileImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ProfileImpl implements _Profile {
   const _$ProfileImpl(
-      {@JsonKey(name: '_id') required this.id,
+      {@JsonKey(name: "_id") required this.id,
       required this.user,
       required this.avatar,
-      required this.bio,
-      required this.createdAt});
+      required this.bio});
 
   factory _$ProfileImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProfileImplFromJson(json);
 
   @override
-  @JsonKey(name: '_id')
+  @JsonKey(name: "_id")
   final String id;
   @override
   final User user;
@@ -181,12 +167,10 @@ class _$ProfileImpl implements _Profile {
   final dynamic avatar;
   @override
   final dynamic bio;
-  @override
-  final String createdAt;
 
   @override
   String toString() {
-    return 'Profile(id: $id, user: $user, avatar: $avatar, bio: $bio, createdAt: $createdAt)';
+    return 'Profile(id: $id, user: $user, avatar: $avatar, bio: $bio)';
   }
 
   @override
@@ -197,9 +181,7 @@ class _$ProfileImpl implements _Profile {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.user, user) || other.user == user) &&
             const DeepCollectionEquality().equals(other.avatar, avatar) &&
-            const DeepCollectionEquality().equals(other.bio, bio) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+            const DeepCollectionEquality().equals(other.bio, bio));
   }
 
   @JsonKey(ignore: true)
@@ -209,8 +191,7 @@ class _$ProfileImpl implements _Profile {
       id,
       user,
       const DeepCollectionEquality().hash(avatar),
-      const DeepCollectionEquality().hash(bio),
-      createdAt);
+      const DeepCollectionEquality().hash(bio));
 
   @JsonKey(ignore: true)
   @override
@@ -228,16 +209,15 @@ class _$ProfileImpl implements _Profile {
 
 abstract class _Profile implements Profile {
   const factory _Profile(
-      {@JsonKey(name: '_id') required final String id,
+      {@JsonKey(name: "_id") required final String id,
       required final User user,
       required final dynamic avatar,
-      required final dynamic bio,
-      required final String createdAt}) = _$ProfileImpl;
+      required final dynamic bio}) = _$ProfileImpl;
 
   factory _Profile.fromJson(Map<String, dynamic> json) = _$ProfileImpl.fromJson;
 
   @override
-  @JsonKey(name: '_id')
+  @JsonKey(name: "_id")
   String get id;
   @override
   User get user;
@@ -245,8 +225,6 @@ abstract class _Profile implements Profile {
   dynamic get avatar;
   @override
   dynamic get bio;
-  @override
-  String get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$ProfileImplCopyWith<_$ProfileImpl> get copyWith =>

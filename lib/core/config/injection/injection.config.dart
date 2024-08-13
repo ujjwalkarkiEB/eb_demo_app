@@ -69,6 +69,7 @@ import '../../../src/features/shop/presentation/blocs/product_detail/product_det
     as _i222;
 import '../../../src/features/shop/presentation/blocs/store/store_bloc.dart'
     as _i591;
+import '../../global_bloc/global/global_bloc.dart' as _i1043;
 import '../../global_bloc/session/session_bloc.dart' as _i696;
 import '../../utils/helpers/token_services.dart' as _i863;
 import '../../utils/local_auth/local_auth_services.dart' as _i329;
@@ -92,6 +93,7 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     gh.factory<_i857.NotificationService>(() => _i857.NotificationService());
+    gh.factory<_i1043.GlobalBloc>(() => _i1043.GlobalBloc());
     gh.lazySingleton<_i752.DatabaseHelper>(() => _i752.DatabaseHelper());
     gh.lazySingleton<_i752.AuthInterceptor>(() => _i752.AuthInterceptor());
     gh.lazySingleton<_i220.SessionManager>(() => _i220.SessionManager());

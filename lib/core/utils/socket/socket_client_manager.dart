@@ -82,13 +82,11 @@ class SocketClientManager {
   /// Listen for private messages
   void listenForPrivateMessages() {
     _socket.on('privateMessage', (data) {
-      print('caht: $data');
-
-      final Chat newChat =
-          data['chat'].map((chatMap) => Chat.fromJson(chatMap));
+      final Chat newChat = Chat.fromJson(data['chat']);
+      log('chat recieved : ${newChat.isRead} ');
       _privateMessageController.add(newChat);
-      _notificationService.showNotification(
-          title: 'Message Recieved', body: 'Dolly has sent you a message!');
+      // _notificationService.showNotification(
+      //     title: 'Message Recieved', body: 'Dolly has sent you a message!');
     });
   }
 

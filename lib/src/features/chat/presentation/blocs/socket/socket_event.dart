@@ -24,9 +24,9 @@ final class JoinPrivateChatRoom extends SocketEvent {
 }
 
 final class PrivateMessageRecievedEvent extends SocketEvent {
-  final Chat newChat;
+  final Chat? newChat;
 
-  PrivateMessageRecievedEvent({required this.newChat});
+  PrivateMessageRecievedEvent({this.newChat});
 }
 
 final class SendPrivateMsg extends SocketEvent {

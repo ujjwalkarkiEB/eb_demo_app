@@ -29,12 +29,16 @@ class HelperFunctions {
       return null;
     }
     final now = DateTime.now();
-    final timeDifference = now.difference(formatedChatDateTime);
+    final Duration timeDifference = now.difference(formatedChatDateTime);
 
     if (timeDifference.inDays >= 1) {
       return '${timeDifference.inDays} ${timeDifference.inDays == 1 ? 'day ago' : 'days ago'}';
-    } else if (timeDifference.inHours >= 1) {
-      return '${timeDifference.inHours} ${timeDifference.inHours == 1 ? 'hour ago' : 'hours ago'}';
+    } else if (timeDifference.inMinutes >= 1) {
+      return '${timeDifference.inMinutes} ${timeDifference.inMinutes == 1 ? 'minute ago' : 'minutes ago'}';
+    } else if (timeDifference.inMinutes >= 1) {
+      return '${timeDifference.inMinutes} ${timeDifference.inMinutes == 1 ? 'minute ago' : 'minutes ago'}';
+    } else if (timeDifference.inSeconds >= 1) {
+      return '${timeDifference.inSeconds} ${timeDifference.inSeconds == 1 ? 'second ago' : 'seconds ago'}';
     } else {
       return 'now';
     }

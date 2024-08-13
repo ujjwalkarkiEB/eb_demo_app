@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/src/features/chat/presentation/blocs/socket/socket_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +22,6 @@ class ActiveUsersList extends StatelessWidget {
     return BlocBuilder<SocketBloc, SocketState>(
       builder: (context, state) {
         if (state is OnlineUsersState) {
-          print('here: ${state.onlineUsers}');
           activeUsers = state.onlineUsers;
         }
         return activeUsers.isEmpty
@@ -36,22 +37,31 @@ class ActiveUsersList extends StatelessWidget {
                     return Column(
                       children: [
                         // user image with active mark
-                        Stack(children: [
-                          CircleAvatar(
-                            backgroundImage: activeUser.avatar ??
-                                AssetImage(AppImages.userImage),
-                            radius: 30,
-                          ),
-                          Positioned(
-                            right: 2,
-                            bottom: 1,
-                            child: CircularContainer(
-                              backgroundColor: Colors.green,
-                              height: 15,
-                              width: 15,
+                        GestureDetector(
+                          onTap: () {
+                            context.read<SocketBloc>().add(
+                                JoinPrivateChatRoom(userId: activeUser.id));
+                            context.router.push(PrivateChatRoomRoute(
+                                reciverID: activeUser.id,
+                                receiverName: activeUser.userName));
+                          },
+                          child: Stack(children: [
+                            CircleAvatar(
+                              backgroundImage: activeUser.avatar ??
+                                  AssetImage(AppImages.userImage),
+                              radius: 30,
                             ),
-                          )
-                        ]),
+                            Positioned(
+                              right: 2,
+                              bottom: 1,
+                              child: CircularContainer(
+                                backgroundColor: Colors.green,
+                                height: 15,
+                                width: 15,
+                              ),
+                            )
+                          ]),
+                        ),
                         Gap(5),
                         // user name
                         Text(activeUser.userName)

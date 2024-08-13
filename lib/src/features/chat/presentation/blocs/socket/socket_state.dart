@@ -35,7 +35,13 @@ final class UserMessagesLoaded extends SocketState {
   UserMessagesLoaded({required this.chats});
 }
 
+final class UserPrivateChatsLoaded extends SocketState {
+  final List<Chat> chats;
+
+  UserPrivateChatsLoaded({required this.chats});
+}
+
 class PrivateMessageRecievedState extends SocketState {
-  final List<Chat> privateMessages;
-  PrivateMessageRecievedState({required this.privateMessages});
+  final Chat newChat;
+  PrivateMessageRecievedState({required this.newChat});
 }

@@ -52,7 +52,6 @@ class ShopRepositoryImpl implements ShopRepository {
   Future<Either<Failure, List<CategorySummary>>> getCategories() async {
     try {
       final result = await _shopRemoteSource.getAllCategories();
-      print('categories result: $result');
 
       return right(result.sublist(0, 5));
     } on ApiException catch (e) {

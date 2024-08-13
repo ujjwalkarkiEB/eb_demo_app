@@ -114,7 +114,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   ),
                 ),
                 Positioned(
-                  top: 20,
+                  top: 40,
                   right: 20,
                   child: Visibility(
                     visible: !isLastPage,

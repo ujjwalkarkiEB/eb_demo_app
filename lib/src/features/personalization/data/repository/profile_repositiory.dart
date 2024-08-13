@@ -28,7 +28,7 @@ class ProfileRepositioryImpl implements ProfileRepositiory {
       await _profileRemoteSource.updateProfile(avatar: avatar, bio: bio);
       return right(null);
     } on ApiException catch (e) {
-      log(e.toString());
+      log("Profiel update error: ${e.message}");
       return left(const ServerFailure('Something went wrong'));
     } catch (e) {
       log('unknown:  ${e.toString()}');
@@ -45,7 +45,7 @@ class ProfileRepositioryImpl implements ProfileRepositiory {
       print('ProfileID fetch Error: ${e.message}');
       return left(const ServerFailure('Something went wrong'));
     } catch (e) {
-      log('profile fetch error: unknown:  ${e.toString()}');
+      log('profile ID fetch error: unknown:  ${e.toString()}');
       return left(const UnknownFailure('Something went wrong!'));
     }
   }
@@ -55,10 +55,9 @@ class ProfileRepositioryImpl implements ProfileRepositiory {
       {required String profileId}) async {
     try {
       final result = await _profileRemoteSource.getProfileData(profileId);
-      print('ridle: $result');
       return right(result);
     } on ApiException catch (e) {
-      print('Profile fetch Error: ${e.message}');
+      print('Profile data fetch Error: ${e.message}');
       return left(const ServerFailure('Something went wrong'));
     } catch (e) {
       log('profile fetch error: unknown:  ${e.toString()}');

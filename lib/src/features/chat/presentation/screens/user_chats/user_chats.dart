@@ -23,7 +23,6 @@ class UserChatsScreen extends StatefulWidget {
 class _UserChatsScreenState extends State<UserChatsScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     context.read<SocketBloc>().add(GetLastMsgWithUsers());
   }
@@ -56,9 +55,7 @@ class _UserChatsScreenState extends State<UserChatsScreen> {
               Gap(AppSizes.spaceBetweenSections),
               Text('Your Chats'),
               Gap(10),
-              UserChatList(
-                chatLists: dummyMessages,
-              )
+              UserChatList()
             ],
           ),
         ),

@@ -9,8 +9,9 @@ import '../../../../data/model/chat.dart';
 
 class ChatMessageWidget extends StatelessWidget {
   final Chat chat;
+  final bool isLatestMsg;
 
-  ChatMessageWidget({required this.chat});
+  ChatMessageWidget({required this.chat, required this.isLatestMsg});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +57,7 @@ class ChatMessageWidget extends StatelessWidget {
                 ),
               ),
               const Gap(5),
-              if (chat.isRead)
+              if (chat.isRead && isLatestMsg)
                 const CircleAvatar(
                   radius: 10,
                   backgroundImage: AssetImage(AppImages.userImage),

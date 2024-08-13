@@ -1,55 +1,77 @@
-import 'package:eb_demo_app/src/features/chat/presentation/screens/private_chat_room/widget/chat_message.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:eb_demo_app/core/global_bloc/global/global_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-
+import '../../../data/model/chat.dart';
 import '../../blocs/socket/socket_bloc.dart';
+import 'widget/chat_message.dart';
 
+@RoutePage()
 class PrivateChatRoomScreen extends StatefulWidget {
-  const PrivateChatRoomScreen({super.key, required this.reciverID});
+  const PrivateChatRoomScreen(
+      {super.key, required this.reciverID, required this.receiverName});
   final String reciverID;
+  final String receiverName;
 
   @override
   State<PrivateChatRoomScreen> createState() => _PrivateChatRoomScreenState();
 }
 
 class _PrivateChatRoomScreenState extends State<PrivateChatRoomScreen> {
+  final msgController = TextEditingController();
+  List<Chat> privateMessages = [];
+
   @override
   void initState() {
     super.initState();
-    print("called");
     context
         .read<SocketBloc>()
         .add(GetAllMessagesWithUser(userID: widget.reciverID));
   }
 
-  final msgController = TextEditingController();
+  @override
+  void dispose() {
+    msgController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: const Text('Bibek'),
+        title: Text(widget.receiverName),
       ),
       body: BlocBuilder<SocketBloc, SocketState>(
-        buildWhen: (previous, current) =>
-            current is PrivateMessageRecievedState,
-        builder: (context, state) {
-          if (state is PrivateMessageRecievedState) {
-            final chats = state.privateMessages;
+          buildWhen: (previous, current) =>
+              current is PrivateMessageRecievedState ||
+              current is UserPrivateChatsLoaded,
+          builder: (context, state) {
+            if (state is UserPrivateChatsLoaded) {
+              privateMessages = state.chats;
+            }
+            if (state is PrivateMessageRecievedState) {
+              privateMessages.add(state.newChat);
+            }
+
             return Column(
               children: [
                 Expanded(
                   child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 10, left: 14, right: 14),
+                    padding: const EdgeInsets.only(
+                        top: 10, left: 14, right: 14, bottom: 5),
                     child: ListView.separated(
+                      reverse: true,
                       separatorBuilder: (context, index) => const Gap(20),
-                      itemCount: chats.length,
+                      itemCount: privateMessages.length,
                       itemBuilder: (context, index) {
-                        final chat = chats[index];
-                        return ChatMessageWidget(chat: chat);
+                        final sortedChats = privateMessages.reversed.toList();
+                        final chat = sortedChats[index];
+                        return ChatMessageWidget(
+                          chat: chat,
+                          isLatestMsg: index == 0,
+                        );
                       },
                     ),
                   ),
@@ -61,33 +83,35 @@ class _PrivateChatRoomScreenState extends State<PrivateChatRoomScreen> {
                     child: TextField(
                       controller: msgController,
                       decoration: InputDecoration(
-                          labelText: 'Send message...',
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          fillColor: Colors.white,
-                          enabled: true,
-                          suffixIcon: InkWell(
-                            onTap: () {
-                              context.read<SocketBloc>().add(SendPrivateMsg(
-                                    receiverId: widget.reciverID,
-                                    message: msgController.text.trim(),
-                                  ));
-                              msgController.clear();
-                            },
-                            child: const Icon(
-                              Icons.send,
-                              color: Colors.green,
-                            ),
+                        labelText: 'Send message...',
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        fillColor: Colors.white,
+                        enabled: true,
+                        suffixIcon: InkWell(
+                          onTap: () {
+                            context.read<SocketBloc>().add(SendPrivateMsg(
+                                  receiverId: widget.reciverID,
+                                  message: msgController.text.trim(),
+                                ));
+
+                            context
+                                .read<GlobalBloc>()
+                                .add(RefreshDataEvent(RefreshType.chatList));
+                            msgController.clear();
+                          },
+                          child: const Icon(
+                            Icons.send,
+                            color: Colors.green,
                           ),
-                          filled: true),
+                        ),
+                        filled: true,
+                      ),
                     ),
                   ),
                 ),
               ],
             );
-          }
-          return Center(child: Text('Loading...'));
-        },
-      ),
+          }),
     );
   }
 }

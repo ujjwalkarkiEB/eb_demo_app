@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
@@ -42,28 +44,38 @@ class _MainScreenState extends State<MainNavScreen> {
           create: (context) => getIt<StoreBloc>()..add(FetchCategoryProducts()),
         ),
         BlocProvider(
-          create: (context) =>
-              getIt<PersonalizationBloc>()..add(ProfileFetchRequestEvent()),
+          create: (context) => getIt<PersonalizationBloc>(),
         ),
       ],
-      child: BlocListener<SessionBloc, BlocSessionState>(
-        listener: (context, state) async {
-          if (state is SessionExpired) {
-            await QuickAlert.show(
-              context: context,
-              type: QuickAlertType.warning,
-              text: 'Sesssion is expired! Reidrecting to login again',
-              width: 50,
-            );
-            if (!context.mounted) {
-              return;
-            }
-            context.router.pushAndPopUntil(
-              const SigninRoute(),
-              predicate: (route) => false,
-            );
-          }
-        },
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<SessionBloc, BlocSessionState>(
+            listener: (context, state) async {
+              if (state is SessionExpired) {
+                await QuickAlert.show(
+                  context: context,
+                  type: QuickAlertType.warning,
+                  text: 'Sesssion is expired! Reidrecting to login again',
+                  width: 50,
+                );
+                if (!context.mounted) {
+                  return;
+                }
+                context.router.pushAndPopUntil(
+                  const SigninRoute(),
+                  predicate: (route) => false,
+                );
+              }
+            },
+          ),
+          BlocListener<SocketBloc, SocketState>(
+            listener: (context, state) {
+              if (state is OnlineUsersState) {
+                log('emitted');
+              }
+            },
+          ),
+        ],
         child: AutoTabsScaffold(
           routes: const [
             HomeRoute(),

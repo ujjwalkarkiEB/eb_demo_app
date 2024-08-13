@@ -44,11 +44,11 @@ class AppRouter extends _$AppRouter {
         AutoRoute(
           page: MainNavRoute.page,
           children: [
-            AutoRoute(page: HomeRoute.page),
+            AutoRoute(initial: true, page: HomeRoute.page),
 
             AutoRoute(page: StoreRoute.page),
             AutoRoute(page: MyProductsRoute.page),
-            AutoRoute(initial: true, page: ChatNavigatioRoute.page, children: [
+            AutoRoute(page: ChatNavigatioRoute.page, children: [
               AutoRoute(initial: true, page: UserChatsRoute.page),
               AutoRoute(page: PrivateChatRoomRoute.page),
             ]),

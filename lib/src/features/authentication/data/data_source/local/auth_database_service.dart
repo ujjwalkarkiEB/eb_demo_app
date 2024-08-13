@@ -91,6 +91,7 @@ class AuthDatabaseService {
 
   String? getUserId() {
     final Box<String> authBox = _databaseHelper.authBox;
+    log('userid saved: ${authBox.get(userIdKey)}');
 
     return authBox.get(userIdKey);
   }

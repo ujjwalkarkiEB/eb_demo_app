@@ -14,7 +14,7 @@ class SplashScreen extends StatelessWidget {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthAuthenticated) {
-          context.read<SessionBloc>().add(StartListeningEvent());
+          // context.read<SessionBloc>().add(StartListeningEvent());
           context.router.replace(const MainNavRoute());
         }
 

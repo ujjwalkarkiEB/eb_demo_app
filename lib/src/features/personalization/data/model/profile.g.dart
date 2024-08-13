@@ -12,7 +12,6 @@ _$ProfileImpl _$$ProfileImplFromJson(Map<String, dynamic> json) =>
       user: User.fromJson(json['user'] as Map<String, dynamic>),
       avatar: json['avatar'],
       bio: json['bio'],
-      createdAt: json['createdAt'] as String,
     );
 
 Map<String, dynamic> _$$ProfileImplToJson(_$ProfileImpl instance) =>
@@ -21,7 +20,6 @@ Map<String, dynamic> _$$ProfileImplToJson(_$ProfileImpl instance) =>
       'user': instance.user,
       'avatar': instance.avatar,
       'bio': instance.bio,
-      'createdAt': instance.createdAt,
     };
 
 _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(

@@ -13,9 +13,14 @@ import 'widgets/profile_card.dart';
 import 'package:eb_demo_app/src/features/personalization/presentation/bloc/personalization_bloc.dart';
 
 @RoutePage()
-class SettingScreen extends StatelessWidget {
+class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
 
+  @override
+  State<SettingScreen> createState() => _SettingScreenState();
+}
+
+class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
@@ -27,7 +32,7 @@ class SettingScreen extends StatelessWidget {
             }
             if (state is LogOutSuccessful) {
               EasyLoading.dismiss();
-              context.read<SessionBloc>().add(StopListeningEvent());
+              // context.read<SessionBloc>().add(StopListeningEvent());
               context.router.pushAndPopUntil(
                 const SigninRoute(),
                 predicate: (route) => false,
