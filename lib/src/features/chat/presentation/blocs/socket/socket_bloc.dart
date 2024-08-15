@@ -38,7 +38,9 @@ class SocketBloc extends Bloc<SocketEvent, SocketState> {
   final currentUserId = getIt<AuthDatabaseService>().getUserId();
 
   void _onOpenSocket(OpenSocketConnection event, Emitter<SocketState> emit) {
-    _socketClientManager.openSocketConnection();
+    _socketClientManager
+      ..openSocketConnection()
+      ..listenForPrivateMessages();
     _onlineUserSubscription = _socketClientManager.onlineUsersStream.listen(
       (users) => add(GetOnlineUsers()),
     );
@@ -52,16 +54,17 @@ class SocketBloc extends Bloc<SocketEvent, SocketState> {
       GetLastMsgWithUsers event, Emitter<SocketState> emit) async {
     final result = await _chatRespository.getLastMsgWithUsers();
     result.fold(
-      (failure) => emit(UserChatsLoadingFailed(msg: failure.failureMsg!)),
+      (failure) {
+        privateMessages = [];
+        emit(UserChatsLoadingFailed(msg: failure.failureMsg!));
+      },
       (chats) => emit(UserChatsLoaded(chats: chats)),
     );
   }
 
   void _onJoinPrivateChatRoom(
       JoinPrivateChatRoom event, Emitter<SocketState> emit) async {
-    _socketClientManager
-      ..joinPrivateChatRoom(event.userId)
-      ..listenForPrivateMessages();
+    _socketClientManager.joinPrivateChatRoom(event.userId);
 
     _privateMessageSubscription?.cancel();
     _privateMessageSubscription =

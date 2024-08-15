@@ -5,12 +5,15 @@ import 'package:eb_demo_app/core/utils/constants/sizes.dart';
 import 'package:eb_demo_app/src/features/chat/data/dummydata/chats.dart';
 import 'package:eb_demo_app/src/features/chat/data/dummydata/dummy_user.dart';
 import 'package:eb_demo_app/src/features/chat/presentation/blocs/socket/socket_bloc.dart';
+import 'package:eb_demo_app/src/features/chat/presentation/blocs/usersearch/usersearch_bloc.dart';
 import 'package:eb_demo_app/src/features/chat/presentation/screens/user_chats/widget/active_userlist.dart';
 import 'package:eb_demo_app/src/features/chat/presentation/screens/user_chats/widget/user_chat_list.dart';
 import 'package:eb_demo_app/src/features/chat/presentation/screens/user_chats/widget/user_search_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+
+import '../../../../../../core/config/injection/injection.dart';
 
 @RoutePage()
 class UserChatsScreen extends StatefulWidget {
@@ -49,9 +52,7 @@ class _UserChatsScreenState extends State<UserChatsScreen> {
               Gap(AppSizes.spaceBetweenSections),
               Text('Active Users'),
               Gap(10),
-              ActiveUsersList(
-                activeUsers: dummyUsers,
-              ),
+              ActiveUsersList(),
               Gap(AppSizes.spaceBetweenSections),
               Text('Your Chats'),
               Gap(10),

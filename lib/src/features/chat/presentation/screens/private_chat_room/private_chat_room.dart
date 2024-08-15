@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/global_bloc/global/global_bloc.dart';
+import 'package:eb_demo_app/core/utils/socket/socket_client_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -41,7 +43,23 @@ class _PrivateChatRoomScreenState extends State<PrivateChatRoomScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text(widget.receiverName),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(widget.receiverName),
+            StreamBuilder<bool>(
+                stream: getIt<SocketClientManager>().typingEventStream,
+                builder: (context, snapshot) {
+                  if (snapshot.data == true) {
+                    return Text(
+                      '${widget.receiverName} is typing...',
+                      style: const TextStyle(fontSize: 12),
+                    );
+                  }
+                  return const SizedBox();
+                }),
+          ],
+        ),
       ),
       body: BlocBuilder<SocketBloc, SocketState>(
           buildWhen: (previous, current) =>
@@ -56,6 +74,7 @@ class _PrivateChatRoomScreenState extends State<PrivateChatRoomScreen> {
             }
 
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Padding(
@@ -82,6 +101,15 @@ class _PrivateChatRoomScreenState extends State<PrivateChatRoomScreen> {
                         const EdgeInsets.only(left: 20, right: 20, bottom: 10),
                     child: TextField(
                       controller: msgController,
+                      onChanged: (value) {
+                        if (value.trim().isEmpty) {
+                          getIt<SocketClientManager>().sendTypingEvent(
+                              recieverId: widget.reciverID, isTyping: false);
+                        } else {
+                          getIt<SocketClientManager>().sendTypingEvent(
+                              recieverId: widget.reciverID, isTyping: true);
+                        }
+                      },
                       decoration: InputDecoration(
                         labelText: 'Send message...',
                         floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -98,6 +126,9 @@ class _PrivateChatRoomScreenState extends State<PrivateChatRoomScreen> {
                                 .read<GlobalBloc>()
                                 .add(RefreshDataEvent(RefreshType.chatList));
                             msgController.clear();
+                            // Stop typing event when sending message
+                            getIt<SocketClientManager>().sendTypingEvent(
+                                recieverId: widget.reciverID, isTyping: false);
                           },
                           child: const Icon(
                             Icons.send,

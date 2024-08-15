@@ -29,6 +29,7 @@ abstract class AuthRemoteSource {
     String? otpType,
   });
   Future<void> resendOtp({required String userID});
+  Future<void> updateUser({required String token});
 }
 
 @LazySingleton(as: AuthRemoteSource)
@@ -184,5 +185,17 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
       },
       onResponse: (data) => print('data: $data'),
     );
+  }
+
+  @override
+  Future<void> updateUser({required String token}) {
+    return networkRequest<void>(
+        request: (dio) async {
+          return await dio.post(
+            '/user',
+            data: {"fcmToken": token},
+          );
+        },
+        responseType: false);
   }
 }

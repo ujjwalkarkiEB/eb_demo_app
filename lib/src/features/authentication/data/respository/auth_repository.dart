@@ -56,6 +56,7 @@ class AuthReposeitoryImpl extends AuthRepository {
     try {
       final response =
           await _authRemoteSource.signInUser(email: email, password: password);
+      // await _authRemoteSource.updateUser(token: token);
       final result = json.decode(response);
       await _authDatabaseService.storeToken(
         accessToken: result[accessTokenKey],

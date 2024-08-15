@@ -39,6 +39,8 @@ import '../../../src/features/chat/data/source/remote/chat_remote_source.dart'
     as _i192;
 import '../../../src/features/chat/presentation/blocs/socket/socket_bloc.dart'
     as _i296;
+import '../../../src/features/chat/presentation/blocs/usersearch/usersearch_bloc.dart'
+    as _i475;
 import '../../../src/features/personalization/data/remote/profile_remote_source.dart'
     as _i574;
 import '../../../src/features/personalization/data/repository/profile_repositiory.dart'
@@ -71,6 +73,7 @@ import '../../../src/features/shop/presentation/blocs/store/store_bloc.dart'
     as _i591;
 import '../../global_bloc/global/global_bloc.dart' as _i1043;
 import '../../global_bloc/session/session_bloc.dart' as _i696;
+import '../../utils/helpers/fcm_helpers.dart' as _i684;
 import '../../utils/helpers/token_services.dart' as _i863;
 import '../../utils/local_auth/local_auth_services.dart' as _i329;
 import '../../utils/local_storage/database_helper.dart' as _i752;
@@ -94,8 +97,10 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i857.NotificationService>(() => _i857.NotificationService());
     gh.factory<_i1043.GlobalBloc>(() => _i1043.GlobalBloc());
+    gh.factory<_i475.UsersearchBloc>(() => _i475.UsersearchBloc());
     gh.lazySingleton<_i752.DatabaseHelper>(() => _i752.DatabaseHelper());
     gh.lazySingleton<_i752.AuthInterceptor>(() => _i752.AuthInterceptor());
+    gh.lazySingleton<_i684.FcmHelper>(() => _i684.FcmHelper());
     gh.lazySingleton<_i220.SessionManager>(() => _i220.SessionManager());
     gh.factory<_i696.SessionBloc>(
         () => _i696.SessionBloc(gh<_i220.SessionManager>()));

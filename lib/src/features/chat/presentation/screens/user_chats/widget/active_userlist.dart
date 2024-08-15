@@ -12,9 +12,7 @@ import '../../../../data/model/user.dart';
 class ActiveUsersList extends StatelessWidget {
   const ActiveUsersList({
     super.key,
-    required this.activeUsers,
   });
-  final List<User> activeUsers;
 
   @override
   Widget build(BuildContext context) {

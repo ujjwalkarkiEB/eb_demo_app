@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:eb_demo_app/src/features/chat/presentation/blocs/usersearch/usersearch_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
 class ChatNavigatioScreen extends StatelessWidget {
@@ -7,6 +9,9 @@ class ChatNavigatioScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AutoRouter();
+    return BlocProvider(
+      create: (context) => UsersearchBloc(),
+      child: const AutoRouter(),
+    );
   }
 }

@@ -13,6 +13,7 @@ import '../../../src/features/authentication/presentation/screens/signin/signin_
 import '../../../src/features/authentication/presentation/screens/signup/signup_screen.dart';
 
 import '../../../src/features/chat/presentation/screens/private_chat_room/private_chat_room.dart';
+import '../../../src/features/chat/presentation/screens/user_list/user_list.dart';
 import '../../../src/features/personalization/presentation/screens/personalization.dart';
 import '../../../src/features/personalization/presentation/screens/profile/profile.dart';
 import '../../../src/features/personalization/presentation/screens/settings/settings.dart';
@@ -44,12 +45,13 @@ class AppRouter extends _$AppRouter {
         AutoRoute(
           page: MainNavRoute.page,
           children: [
-            AutoRoute(initial: true, page: HomeRoute.page),
+            AutoRoute(page: HomeRoute.page),
 
             AutoRoute(page: StoreRoute.page),
             AutoRoute(page: MyProductsRoute.page),
-            AutoRoute(page: ChatNavigatioRoute.page, children: [
+            AutoRoute(initial: true, page: ChatNavigatioRoute.page, children: [
               AutoRoute(initial: true, page: UserChatsRoute.page),
+              AutoRoute(page: UserListRoute.page),
               AutoRoute(page: PrivateChatRoomRoute.page),
             ]),
             AutoRoute(

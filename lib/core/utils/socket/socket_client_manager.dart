@@ -28,6 +28,9 @@ class SocketClientManager {
   // stream controller for private chat
   final _privateMessageController = StreamController<Chat>.broadcast();
   Stream<Chat> get privateMessageStream => _privateMessageController.stream;
+//
+  final _typingEventController = StreamController<bool>.broadcast();
+  Stream<bool> get typingEventStream => _typingEventController.stream;
 
   /// Opens socket connection for first time
   void openSocketConnection() async {
@@ -83,7 +86,7 @@ class SocketClientManager {
   void listenForPrivateMessages() {
     _socket.on('privateMessage', (data) {
       final Chat newChat = Chat.fromJson(data['chat']);
-      log('chat recieved : ${newChat.isRead} ');
+      log('chat recieved : ${newChat} ');
       _privateMessageController.add(newChat);
       // _notificationService.showNotification(
       //     title: 'Message Recieved', body: 'Dolly has sent you a message!');
@@ -93,15 +96,40 @@ class SocketClientManager {
   /// Join a private chat room
   void joinPrivateChatRoom(String userId) {
     _socket.emit('joinPrivateChatRoom', {'userId': userId});
+    _listenForTypingEvents();
   }
 
   /// Send a private message
-  void sendPrivateMessage({String? receiverId, String? message}) {
+  void sendPrivateMessage(
+      {required String receiverId, required String message}) {
+    if (message.isEmpty) {
+      return;
+    }
     _socket.emit('privateMessage', {
       'receiver': receiverId,
       'message': message,
     });
     log('Private message sent: $message to $receiverId');
+  }
+
+  // Listen for typing events
+  void _listenForTypingEvents() {
+    _socket.on('typingStarted', (data) {
+      log('Typing started event: $data');
+      _typingEventController.add(data['isTyping']);
+    });
+
+    _socket.on('typingStopped', (data) {
+      log('Typing stopped event: $data');
+      _typingEventController.add(data['isTyping']);
+    });
+  }
+
+  // Send typing event to server
+  void sendTypingEvent({required bool isTyping, required String recieverId}) {
+    final event = isTyping ? 'typingStarted' : 'typingStopped';
+    _socket.emit(event, {'userId': recieverId});
+    log('$event event sent to $recieverId');
   }
 
   /// Disconnect the socket

@@ -11,7 +11,8 @@ class ChatMessageWidget extends StatelessWidget {
   final Chat chat;
   final bool isLatestMsg;
 
-  ChatMessageWidget({required this.chat, required this.isLatestMsg});
+  const ChatMessageWidget(
+      {super.key, required this.chat, required this.isLatestMsg});
 
   @override
   Widget build(BuildContext context) {
