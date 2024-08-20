@@ -7,6 +7,7 @@ import 'package:eb_demo_app/core/utils/socket/socket_client_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import '../../../../../../core/config/route/app_route.dart';
 import '../../../../authentication/data/data_source/local/auth_database_service.dart';
 import '../../../data/model/chat.dart';
 import '../../blocs/private_chat/private_chat_room_bloc.dart';
@@ -30,6 +31,7 @@ class _PrivateChatRoomScreenState extends State<PrivateChatRoomScreen> {
   @override
   void initState() {
     super.initState();
+
     _currentUserId = getIt<AuthDatabaseService>().getUserId();
     context
         .read<PrivateChatRoomBloc>()
@@ -45,6 +47,8 @@ class _PrivateChatRoomScreenState extends State<PrivateChatRoomScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log(' hajskdhakajsdh :  ${getIt<AppRouter>().currentChild?.name}');
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -91,10 +95,14 @@ class _PrivateChatRoomScreenState extends State<PrivateChatRoomScreen> {
                                 'No messages yet. Start the conversation!'),
                           );
                         }
-                        return ChatMessageWidget(
-                          chat: chat,
-                          isLatestMsg: index == 0,
-                          currentUserID: _currentUserId!,
+                        return BlocSelector<PrivateChatRoomBloc,
+                            PrivateChatRoomState, Chat>(
+                          selector: (state) => state.chats[index],
+                          builder: (context, state) => ChatMessageWidget(
+                            chat: chat,
+                            isLatestMsg: index == 0,
+                            currentUserID: _currentUserId!,
+                          ),
                         );
                       },
                     ),

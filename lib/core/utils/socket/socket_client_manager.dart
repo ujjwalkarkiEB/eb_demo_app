@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:injectable/injectable.dart';
 import '../../../src/features/chat/data/model/chat.dart';
@@ -10,9 +11,8 @@ import 'socket_setup.dart';
 class SocketClientManager {
   final SocketSetup _socketSetup;
   final SocketEventHandlers _eventHandlers;
-  bool _isPrivateMessagesListenerAdded = false;
 
-  final _onlineUsersController = StreamController<List<User>>();
+  final _onlineUsersController = StreamController<List<User>>.broadcast();
   Stream<List<User>> get onlineUsersStream => _onlineUsersController.stream;
 
   final _privateMessageController = StreamController<Chat>();
@@ -39,7 +39,8 @@ class SocketClientManager {
       _eventHandlers.listenForTypingEvents(_typingEventController);
 
   void joinPrivateChatRoom(String userId) {
-    _socketSetup.openSocketConnection();
+    // _socketSetup.openSocketConnection();
+
     _socketSetup.socket.emit('joinPrivateChatRoom', {'userId': userId});
   }
 
@@ -57,6 +58,7 @@ class SocketClientManager {
   }
 
   void sendTypingEvent({required bool isTyping, required String receiverId}) {
+    log('send typin events');
     _socketSetup.socket.emit(
         isTyping ? 'typingStarted' : 'typingStopped', {'userId': receiverId});
   }

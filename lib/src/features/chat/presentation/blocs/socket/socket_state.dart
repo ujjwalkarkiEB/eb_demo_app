@@ -27,3 +27,9 @@ final class UserChatsLoadingFailed extends SocketState {
 
   UserChatsLoadingFailed({required this.msg});
 }
+
+final class NewMessageState extends SocketState {
+  final Chat recievedChat;
+
+  NewMessageState({required this.recievedChat});
+}

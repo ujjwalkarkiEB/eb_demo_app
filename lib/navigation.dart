@@ -80,6 +80,10 @@ class _MainScreenState extends State<MainNavScreen> {
           ),
           BlocListener<InternetBloc, InternetState>(
             listener: (context, state) {
+              if (state is Online) {
+                showSuccessSnackbar(
+                    context, 'Your Internet Connection is Restored');
+              }
               if (state is Offline) {
                 // ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
                 //     content: const Text('You are in offline mode!'),

@@ -14,7 +14,7 @@ import '../../../data/model/user.dart';
 part 'socket_event.dart';
 part 'socket_state.dart';
 
-@injectable
+@lazySingleton
 class SocketBloc extends Bloc<SocketEvent, SocketState> {
   final SocketClientManager _socketClientManager;
   final ChatRespository _chatRespository;
@@ -23,6 +23,9 @@ class SocketBloc extends Bloc<SocketEvent, SocketState> {
       : super(SocektInitial()) {
     on<OpenSocketConnection>(_onOpenSocket);
     on<GetLastMsgWithUsers>(_onGetLastMsgEvent);
+    on<RecievedNewMessageFromUserEvent>(
+      (event, emit) => emit(NewMessageState(recievedChat: event.recievedChat)),
+    );
   }
 
   List<Chat> privateMessages = [];

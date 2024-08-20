@@ -37,14 +37,14 @@ class _UserChatListState extends State<UserChatList> {
             }
           },
         ),
-        BlocListener<GlobalBloc, GlobalStatusState>(
-          listener: (context, state) {
-            if (state is RefreshState &&
-                state.refershType == RefreshType.chatList) {
-              context.read<SocketBloc>().add(GetLastMsgWithUsers());
-            }
-          },
-        ),
+        // BlocListener<GlobalBloc, GlobalStatusState>(
+        //   listener: (context, state) {
+        //     if (state is RefreshState &&
+        //         state.refershType == RefreshType.chatList) {
+        //       context.read<SocketBloc>().add(GetLastMsgWithUsers());
+        //     }
+        //   },
+        // ),
       ],
       child: BlocBuilder<SocketBloc, SocketState>(
         buildWhen: (previous, current) => current is UserChatsLoaded,

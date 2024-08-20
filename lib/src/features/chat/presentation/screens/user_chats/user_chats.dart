@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/core/common/widgets/snackbars/error_snackbar.dart';
+import 'package:eb_demo_app/core/config/injection/injection.dart';
+import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
 import 'package:eb_demo_app/core/utils/constants/sizes.dart';
 import 'package:eb_demo_app/src/features/chat/data/dummydata/chats.dart';

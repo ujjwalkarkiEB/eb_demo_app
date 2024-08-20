@@ -15,3 +15,9 @@ final class GetAllMessagesWithUser extends SocketEvent {
 
   GetAllMessagesWithUser({required this.userID});
 }
+
+final class RecievedNewMessageFromUserEvent extends SocketEvent {
+  final Chat recievedChat;
+
+  RecievedNewMessageFromUserEvent({required this.recievedChat});
+}

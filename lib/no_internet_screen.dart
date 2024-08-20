@@ -14,6 +14,7 @@ class NoInternetScreen extends StatelessWidget {
     return BlocListener<InternetBloc, InternetState>(
       listener: (context, state) {
         if (state is Online) {
+          log('reae dherer');
           context.router.back();
         }
       },

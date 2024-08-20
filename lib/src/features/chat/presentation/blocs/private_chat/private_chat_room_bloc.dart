@@ -36,7 +36,8 @@ class PrivateChatRoomBloc
       Emitter<PrivateChatRoomState> emit) async {
     _socketClientManager
       ..joinPrivateChatRoom(event.userId)
-      ..listenForPrivateMessages();
+      ..listenForPrivateMessages()
+      ..listenForTypingEvents();
   }
 
   void _onFetchPrivateChats(

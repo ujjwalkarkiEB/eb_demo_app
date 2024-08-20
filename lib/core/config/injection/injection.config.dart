@@ -89,6 +89,8 @@ import '../../utils/session/session_config.dart' as _i220;
 import '../../utils/socket/event_handlers.dart' as _i88;
 import '../../utils/socket/socket_client_manager.dart' as _i703;
 import '../../utils/socket/socket_setup.dart' as _i541;
+import '../route/app_route.dart' as _i193;
+import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -101,9 +103,11 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
+    final registerModule = _$RegisterModule();
     gh.factory<_i857.NotificationService>(() => _i857.NotificationService());
     gh.factory<_i1043.GlobalBloc>(() => _i1043.GlobalBloc());
     gh.factory<_i475.UsersearchBloc>(() => _i475.UsersearchBloc());
+    gh.singleton<_i193.AppRouter>(() => registerModule.appRouter);
     gh.lazySingleton<_i752.DatabaseHelper>(() => _i752.DatabaseHelper());
     gh.lazySingleton<_i752.AuthInterceptor>(() => _i752.AuthInterceptor());
     gh.lazySingleton<_i841.InternetConnectionHelpers>(
@@ -199,10 +203,15 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i703.SocketClientManager>(),
           gh<_i563.ChatRespository>(),
         ));
-    gh.factory<_i296.SocketBloc>(() => _i296.SocketBloc(
+    gh.lazySingleton<_i296.SocketBloc>(() => _i296.SocketBloc(
           gh<_i703.SocketClientManager>(),
           gh<_i563.ChatRespository>(),
         ));
     return this;
   }
+}
+
+class _$RegisterModule extends _i291.RegisterModule {
+  @override
+  _i193.AppRouter get appRouter => _i193.AppRouter();
 }

@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/core/config/injection/injection.dart';
+import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/utils/socket/socket_setup.dart';
 import 'package:eb_demo_app/src/features/chat/data/model/chat.dart';
 import 'package:eb_demo_app/src/features/chat/data/model/user.dart';
 import 'package:eb_demo_app/src/features/chat/presentation/blocs/private_chat/private_chat_room_bloc.dart';
+import 'package:eb_demo_app/src/features/chat/presentation/blocs/socket/socket_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:socket_io_client/socket_io_client.dart' as client;
 import '../../../core/utils/error/failure/failure.dart';
@@ -62,6 +65,16 @@ class SocketEventHandlers {
       if (receivedChat.sender.id == currentUserId) {
         privateRoomBloc.add(LastMsgReadEvent(chatId: receivedChat.room));
       }
+    });
+  }
+
+  void listenForprivateMessageToUpdateChat() {
+    _socket.on('privateMessageToUpdateChat', (data) {
+      final receivedChat = Chat.fromJson(data['chat']);
+      String currentRoute = getIt<AppRouter>().current.name;
+      if (currentRoute == "")
+        getIt<SocketBloc>()
+            .add(RecievedNewMessageFromUserEvent(recievedChat: receivedChat));
     });
   }
 
