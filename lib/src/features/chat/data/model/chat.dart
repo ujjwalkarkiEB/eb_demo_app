@@ -6,6 +6,7 @@ part 'chat.g.dart';
 @freezed
 class Chat with _$Chat {
   const factory Chat({
+    @JsonKey(name: "_id") required String id,
     required User sender,
     required User receiver,
     required String room,

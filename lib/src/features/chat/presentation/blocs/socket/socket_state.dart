@@ -27,21 +27,3 @@ final class UserChatsLoadingFailed extends SocketState {
 
   UserChatsLoadingFailed({required this.msg});
 }
-
-// private chatroom states
-final class UserMessagesLoaded extends SocketState {
-  final List<Chat> chats;
-
-  UserMessagesLoaded({required this.chats});
-}
-
-final class UserPrivateChatsLoaded extends SocketState {
-  final List<Chat> chats;
-
-  UserPrivateChatsLoaded({required this.chats});
-}
-
-class PrivateMessageRecievedState extends SocketState {
-  final Chat newChat;
-  PrivateMessageRecievedState({required this.newChat});
-}

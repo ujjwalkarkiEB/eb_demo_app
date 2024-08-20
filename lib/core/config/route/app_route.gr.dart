@@ -57,6 +57,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const MyProductsScreen(),
       );
     },
+    NoInternetRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const NoInternetScreen(),
+      );
+    },
     OnboardingRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -264,6 +270,20 @@ class MyProductsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MyProductsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [NoInternetScreen]
+class NoInternetRoute extends PageRouteInfo<void> {
+  const NoInternetRoute({List<PageRouteInfo>? children})
+      : super(
+          NoInternetRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NoInternetRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

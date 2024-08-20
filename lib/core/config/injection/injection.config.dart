@@ -37,6 +37,8 @@ import '../../../src/features/chat/data/repository/chat_respository.dart'
     as _i563;
 import '../../../src/features/chat/data/source/remote/chat_remote_source.dart'
     as _i192;
+import '../../../src/features/chat/presentation/blocs/private_chat/private_chat_room_bloc.dart'
+    as _i596;
 import '../../../src/features/chat/presentation/blocs/socket/socket_bloc.dart'
     as _i296;
 import '../../../src/features/chat/presentation/blocs/usersearch/usersearch_bloc.dart'
@@ -71,9 +73,11 @@ import '../../../src/features/shop/presentation/blocs/product_detail/product_det
     as _i222;
 import '../../../src/features/shop/presentation/blocs/store/store_bloc.dart'
     as _i591;
+import '../../global_bloc/bloc/internet_bloc.dart' as _i331;
 import '../../global_bloc/global/global_bloc.dart' as _i1043;
 import '../../global_bloc/session/session_bloc.dart' as _i696;
 import '../../utils/helpers/fcm_helpers.dart' as _i684;
+import '../../utils/helpers/internet_connection_helpers.dart' as _i841;
 import '../../utils/helpers/token_services.dart' as _i863;
 import '../../utils/local_auth/local_auth_services.dart' as _i329;
 import '../../utils/local_storage/database_helper.dart' as _i752;
@@ -82,7 +86,9 @@ import '../../utils/network/client/dio_client.dart' as _i590;
 import '../../utils/network/client/graphql_client.dart' as _i322;
 import '../../utils/notification/notification_service.dart' as _i857;
 import '../../utils/session/session_config.dart' as _i220;
+import '../../utils/socket/event_handlers.dart' as _i88;
 import '../../utils/socket/socket_client_manager.dart' as _i703;
+import '../../utils/socket/socket_setup.dart' as _i541;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -100,6 +106,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i475.UsersearchBloc>(() => _i475.UsersearchBloc());
     gh.lazySingleton<_i752.DatabaseHelper>(() => _i752.DatabaseHelper());
     gh.lazySingleton<_i752.AuthInterceptor>(() => _i752.AuthInterceptor());
+    gh.lazySingleton<_i841.InternetConnectionHelpers>(
+        () => _i841.InternetConnectionHelpers());
     gh.lazySingleton<_i684.FcmHelper>(() => _i684.FcmHelper());
     gh.lazySingleton<_i220.SessionManager>(() => _i220.SessionManager());
     gh.factory<_i696.SessionBloc>(
@@ -118,6 +126,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i563.ChatRespositoryImpl(gh<_i192.ChatRemoteSource>()));
     gh.lazySingleton<_i322.GraphqlClient>(
         () => _i322.GraphqlClient(dioClient: gh<_i590.DioClient>()));
+    gh.lazySingleton<_i331.InternetBloc>(
+        () => _i331.InternetBloc(gh<_i841.InternetConnectionHelpers>()));
     gh.lazySingleton<_i4.LocalAuthRepository>(
         () => _i4.LocalAuthRepositoryImpl(gh<_i329.LocalAuthService>()));
     gh.lazySingleton<_i354.CartRepository>(
@@ -146,14 +156,8 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.lazySingleton<_i46.ProfileRepositiory>(
         () => _i46.ProfileRepositioryImpl(gh<_i574.ProfileRemoteSource>()));
-    gh.lazySingleton<_i703.SocketClientManager>(() => _i703.SocketClientManager(
-          gh<_i863.TokenService>(),
-          gh<_i857.NotificationService>(),
-        ));
-    gh.factory<_i296.SocketBloc>(() => _i296.SocketBloc(
-          gh<_i703.SocketClientManager>(),
-          gh<_i563.ChatRespository>(),
-        ));
+    gh.lazySingleton<_i541.SocketSetup>(
+        () => _i541.SocketSetup(gh<_i863.TokenService>()));
     gh.lazySingleton<_i855.MyProductsRepository>(
         () => _i855.MyProductsRepositoryImpl(
               gh<_i554.ShopDatabaseService>(),
@@ -184,6 +188,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i839.AuthBloc>(() => _i839.AuthBloc(
           gh<_i819.AuthRepository>(),
           gh<_i4.LocalAuthRepository>(),
+        ));
+    gh.lazySingleton<_i88.SocketEventHandlers>(
+        () => _i88.SocketEventHandlers(gh<_i541.SocketSetup>()));
+    gh.lazySingleton<_i703.SocketClientManager>(() => _i703.SocketClientManager(
+          gh<_i541.SocketSetup>(),
+          gh<_i88.SocketEventHandlers>(),
+        ));
+    gh.lazySingleton<_i596.PrivateChatRoomBloc>(() => _i596.PrivateChatRoomBloc(
+          gh<_i703.SocketClientManager>(),
+          gh<_i563.ChatRespository>(),
+        ));
+    gh.factory<_i296.SocketBloc>(() => _i296.SocketBloc(
+          gh<_i703.SocketClientManager>(),
+          gh<_i563.ChatRespository>(),
         ));
     return this;
   }

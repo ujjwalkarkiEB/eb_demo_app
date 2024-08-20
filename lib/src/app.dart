@@ -1,6 +1,7 @@
 import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/config/theme/theme.dart';
+import 'package:eb_demo_app/core/global_bloc/bloc/internet_bloc.dart';
 import 'package:eb_demo_app/core/global_bloc/global/global_bloc.dart';
 import 'package:eb_demo_app/core/global_bloc/session/session_bloc.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/blocs/auth/auth_bloc.dart';
@@ -36,6 +37,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt<SessionBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<InternetBloc>(),
         ),
         BlocProvider(
           create: (context) => getIt<GlobalBloc>(),

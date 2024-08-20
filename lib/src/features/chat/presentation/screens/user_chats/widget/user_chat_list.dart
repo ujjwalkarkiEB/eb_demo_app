@@ -11,6 +11,7 @@ import 'package:gap/gap.dart';
 import '../../../../../../../core/global_bloc/global/global_bloc.dart';
 import '../../../../../../../core/utils/constants/images.dart';
 import '../../../../data/model/chat.dart';
+import '../../../blocs/private_chat/private_chat_room_bloc.dart';
 import '../../../blocs/socket/socket_bloc.dart';
 
 class UserChatList extends StatefulWidget {
@@ -46,9 +47,7 @@ class _UserChatListState extends State<UserChatList> {
         ),
       ],
       child: BlocBuilder<SocketBloc, SocketState>(
-        buildWhen: (previous, current) =>
-            current is PrivateMessageRecievedState ||
-            current is UserChatsLoaded,
+        buildWhen: (previous, current) => current is UserChatsLoaded,
         builder: (context, state) {
           if (state is UserChatsLoaded) {
             userLastChats = state.chats;
@@ -97,13 +96,11 @@ class SenderChatWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SocketBloc, SocketState>(
       builder: (context, state) {
-        bool newChatRecievedFromThisSender = false;
-        if (state is PrivateMessageRecievedState) {}
         return ListTile(
           onTap: () {
-            context.read<SocketBloc>().add(
-                  JoinPrivateChatRoom(userId: otherUser.id),
-                );
+            context
+                .read<PrivateChatRoomBloc>()
+                .add(JoinPrivateChatRoomEvent(userId: otherUser.id));
             context.router.push(PrivateChatRoomRoute(
               reciverID: otherUser.id,
               receiverName: otherUser.userName,

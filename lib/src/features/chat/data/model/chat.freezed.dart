@@ -20,6 +20,8 @@ Chat _$ChatFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Chat {
+  @JsonKey(name: "_id")
+  String get id => throw _privateConstructorUsedError;
   User get sender => throw _privateConstructorUsedError;
   User get receiver => throw _privateConstructorUsedError;
   String get room => throw _privateConstructorUsedError;
@@ -39,7 +41,8 @@ abstract class $ChatCopyWith<$Res> {
       _$ChatCopyWithImpl<$Res, Chat>;
   @useResult
   $Res call(
-      {User sender,
+      {@JsonKey(name: "_id") String id,
+      User sender,
       User receiver,
       String room,
       bool isRead,
@@ -64,6 +67,7 @@ class _$ChatCopyWithImpl<$Res, $Val extends Chat>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? sender = null,
     Object? receiver = null,
     Object? room = null,
@@ -73,6 +77,10 @@ class _$ChatCopyWithImpl<$Res, $Val extends Chat>
     Object? updatedAt = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       sender: null == sender
           ? _value.sender
           : sender // ignore: cast_nullable_to_non_nullable
@@ -129,7 +137,8 @@ abstract class _$$ChatImplCopyWith<$Res> implements $ChatCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {User sender,
+      {@JsonKey(name: "_id") String id,
+      User sender,
       User receiver,
       String room,
       bool isRead,
@@ -153,6 +162,7 @@ class __$$ChatImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? sender = null,
     Object? receiver = null,
     Object? room = null,
@@ -162,6 +172,10 @@ class __$$ChatImplCopyWithImpl<$Res>
     Object? updatedAt = null,
   }) {
     return _then(_$ChatImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       sender: null == sender
           ? _value.sender
           : sender // ignore: cast_nullable_to_non_nullable
@@ -198,7 +212,8 @@ class __$$ChatImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ChatImpl implements _Chat {
   const _$ChatImpl(
-      {required this.sender,
+      {@JsonKey(name: "_id") required this.id,
+      required this.sender,
       required this.receiver,
       required this.room,
       required this.isRead,
@@ -209,6 +224,9 @@ class _$ChatImpl implements _Chat {
   factory _$ChatImpl.fromJson(Map<String, dynamic> json) =>
       _$$ChatImplFromJson(json);
 
+  @override
+  @JsonKey(name: "_id")
+  final String id;
   @override
   final User sender;
   @override
@@ -226,7 +244,7 @@ class _$ChatImpl implements _Chat {
 
   @override
   String toString() {
-    return 'Chat(sender: $sender, receiver: $receiver, room: $room, isRead: $isRead, message: $message, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Chat(id: $id, sender: $sender, receiver: $receiver, room: $room, isRead: $isRead, message: $message, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -234,6 +252,7 @@ class _$ChatImpl implements _Chat {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ChatImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.sender, sender) || other.sender == sender) &&
             (identical(other.receiver, receiver) ||
                 other.receiver == receiver) &&
@@ -248,8 +267,8 @@ class _$ChatImpl implements _Chat {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, sender, receiver, room, isRead,
-      message, createdAt, updatedAt);
+  int get hashCode => Object.hash(runtimeType, id, sender, receiver, room,
+      isRead, message, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -267,7 +286,8 @@ class _$ChatImpl implements _Chat {
 
 abstract class _Chat implements Chat {
   const factory _Chat(
-      {required final User sender,
+      {@JsonKey(name: "_id") required final String id,
+      required final User sender,
       required final User receiver,
       required final String room,
       required final bool isRead,
@@ -277,6 +297,9 @@ abstract class _Chat implements Chat {
 
   factory _Chat.fromJson(Map<String, dynamic> json) = _$ChatImpl.fromJson;
 
+  @override
+  @JsonKey(name: "_id")
+  String get id;
   @override
   User get sender;
   @override

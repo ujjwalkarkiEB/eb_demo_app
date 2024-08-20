@@ -13,8 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
-import '../../../../../../core/config/injection/injection.dart';
-
 @RoutePage()
 class UserChatsScreen extends StatefulWidget {
   const UserChatsScreen({super.key});

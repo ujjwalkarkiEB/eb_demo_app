@@ -14,7 +14,6 @@ class ChatRemoteSource extends BaseRemoteSource {
     return networkRequest<List<Chat>>(
       request: (dio) => dio.get('/chat/last-msg-with-users'),
       onResponse: (data) {
-        print('lasts chats: ${data['data']}');
         final chats = data['data'];
 
         // Check if all elements in the list are null

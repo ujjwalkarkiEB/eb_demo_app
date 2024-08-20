@@ -15,23 +15,3 @@ final class GetAllMessagesWithUser extends SocketEvent {
 
   GetAllMessagesWithUser({required this.userID});
 }
-
-// events for chat room
-final class JoinPrivateChatRoom extends SocketEvent {
-  final String userId;
-
-  JoinPrivateChatRoom({required this.userId});
-}
-
-final class PrivateMessageRecievedEvent extends SocketEvent {
-  final Chat? newChat;
-
-  PrivateMessageRecievedEvent({this.newChat});
-}
-
-final class SendPrivateMsg extends SocketEvent {
-  final String receiverId;
-  final String message;
-
-  SendPrivateMsg({required this.receiverId, required this.message});
-}

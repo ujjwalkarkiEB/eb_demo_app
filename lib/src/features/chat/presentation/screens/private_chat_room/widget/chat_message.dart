@@ -10,13 +10,17 @@ import '../../../../data/model/chat.dart';
 class ChatMessageWidget extends StatelessWidget {
   final Chat chat;
   final bool isLatestMsg;
+  final String currentUserID;
 
   const ChatMessageWidget(
-      {super.key, required this.chat, required this.isLatestMsg});
+      {super.key,
+      required this.chat,
+      required this.isLatestMsg,
+      required this.currentUserID});
 
   @override
   Widget build(BuildContext context) {
-    final currentUserId = getIt<AuthDatabaseService>().getUserId();
+    final currentUserId = currentUserID;
     final isSender = chat.sender.id == currentUserId;
     final textColor = isSender ? Colors.white : Colors.black;
     final messageAlignment =

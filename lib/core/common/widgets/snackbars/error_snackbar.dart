@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-void showFlashError(BuildContext context, String message) {
+void showFlashError(BuildContext context, String message,
+    {IconData icon = Icons.error}) {
   ScaffoldMessenger.of(context).clearSnackBars();
 
   ScaffoldMessenger.of(context).showSnackBar(
@@ -9,7 +10,7 @@ void showFlashError(BuildContext context, String message) {
         height: 30,
         child: Row(
           children: [
-            const Icon(Icons.error, color: Colors.white),
+            Icon(icon, color: Colors.white),
             const SizedBox(width: 10),
             Expanded(
               child: Text(

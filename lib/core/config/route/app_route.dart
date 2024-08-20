@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:eb_demo_app/core/config/route/guards/internet_guard.dart';
 import 'package:eb_demo_app/src/features/authentication/presentation/screens/otp/otp_screen.dart';
 import 'package:eb_demo_app/src/features/chat/presentation/screens/chat_navigatio_screen.dart';
 import 'package:eb_demo_app/src/features/chat/presentation/screens/user_chats/user_chats.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/screens/store/widget/modal/add_product_modal.dart';
 import 'package:flutter/material.dart';
 import '../../../navigation.dart';
+import '../../../no_internet_screen.dart';
 import '../../../src/features/authentication/presentation/screens/onBoarding/onboarding_screen.dart';
 import '../../../src/features/authentication/presentation/screens/password_config/email_verification/email_verification.dart';
 import '../../../src/features/authentication/presentation/screens/password_config/forgot_psw/forgot_psw.dart';
@@ -34,12 +36,13 @@ class AppRouter extends _$AppRouter {
         AutoRoute(initial: true, page: SplashRoute.page),
 
         AutoRoute(page: OnboardingRoute.page),
-        AutoRoute(page: SigninRoute.page),
+        AutoRoute(guards: [InternetGuard()], page: SigninRoute.page),
         AutoRoute(page: EmailVerificationRoute.page),
         AutoRoute(page: ForgotPasswordRoute.page),
         AutoRoute(page: ResetPasswordRoute.page),
         AutoRoute(page: SignupRoute.page),
         AutoRoute(page: OtpRoute.page),
+        AutoRoute(page: NoInternetRoute.page),
 
         // navigation bar routes configuration
         AutoRoute(
