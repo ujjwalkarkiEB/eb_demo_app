@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/screens/store/widget/modal/add_product_modal.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/screens/store/widget/filter_section.dart';
@@ -26,6 +27,8 @@ class StoreScreenState extends State<StoreScreen> {
   void initState() {
     super.initState();
     scrollController.addListener(_onScroll);
+    print(
+        ' store :  ${getIt<AppRouter>().root.innerRouterOf<TabsRouter>(MainNavRoute.name)?.activeIndex}');
   }
 
   void _onScroll() {

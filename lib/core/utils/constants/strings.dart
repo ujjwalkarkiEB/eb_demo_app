@@ -12,6 +12,7 @@ const String cacheBoxName = 'cacheBox';
 const String authBoxName = "authBox";
 const String cartBoxName = "cartBox";
 const String settingsBoxName = "settingsBox";
+const String notificationBadgeBoxName = "notificationBadgeBox";
 
 // keys
 const String accessTokenKey = "accessToken";

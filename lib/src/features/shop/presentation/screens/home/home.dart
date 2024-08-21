@@ -3,6 +3,7 @@ import 'package:eb_demo_app/core/common/widgets/layout/grid_layout.dart';
 import 'package:eb_demo_app/core/common/widgets/snackbars/error_snackbar.dart';
 import 'package:eb_demo_app/core/common/widgets/snackbars/sucess_snackbar.dart';
 import 'package:eb_demo_app/core/config/injection/injection.dart';
+import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
 import 'package:eb_demo_app/core/utils/constants/images.dart';
 import 'package:eb_demo_app/src/features/personalization/presentation/bloc/personalization_bloc.dart';
@@ -39,6 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
     super.initState();
     context.read<PersonalizationBloc>().add(ProfileFetchRequestEvent());
+    print(
+        ' home :  ${getIt<AppRouter>().root.innerRouterOf<TabsRouter>(MainNavRoute.name)?.activeIndex}');
   }
 
   @override

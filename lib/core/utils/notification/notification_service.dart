@@ -1,11 +1,22 @@
+import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:eb_demo_app/core/config/injection/injection.dart';
+import 'package:eb_demo_app/core/config/route/app_route.dart';
+import 'package:eb_demo_app/core/utils/constants/images.dart';
+import 'package:eb_demo_app/core/utils/constants/strings.dart';
+import 'package:eb_demo_app/core/utils/local_storage/database_helper.dart';
+import 'package:eb_demo_app/core/utils/notification/notification_badge_model.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class NotificationService {
+  final DatabaseHelper _databaseHelper;
+
+  NotificationService(this._databaseHelper);
   Future<void> initializeNotification() async {
     await AwesomeNotifications().initialize(
       null,
@@ -52,11 +63,18 @@ class NotificationService {
   Future<void> onActionReceivedMethod(ReceivedAction recivedAction) async {
     debugPrint("On Action Recived");
     final payload = recivedAction.payload ?? {};
-    // if (payload['navigate'] == 'true') {
-    //   MyApp.navigatorKey.currentState?.push(MaterialPageRoute(
-    //     builder: (_) => DemoPage(),
-    //   ));
-    // }
+    final senderId = payload['senderId'];
+    final senderUserName = payload['senderUserName'];
+    if (senderId != null && senderUserName != null) {
+      getIt<AppRouter>().pushAll([
+        const ChatNavigatioRoute(),
+        PrivateChatRoomRoute(
+          reciverID: senderId,
+          receiverName: senderUserName,
+        ),
+      ]);
+      resetBadgeCount(senderId);
+    }
   }
 
   Future<void> onNotificationCreatedMethod(
@@ -75,6 +93,7 @@ class NotificationService {
   }
 
   Future<void> showNotification({
+    final String? senderID,
     required final String title,
     required final String body,
     final String? summary,
@@ -88,6 +107,12 @@ class NotificationService {
     final int? interval,
   }) async {
     assert(!scheduled || (scheduled && interval != null));
+    late final int? badgeCount;
+    if (senderID != null) {
+      badgeCount = await getBadgeCount(senderID);
+    }
+    log('badgecount: ${badgeCount}');
+
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: -1,
@@ -100,15 +125,56 @@ class NotificationService {
         category: category,
         payload: payload,
         bigPicture: bigPicture,
+        badge: badgeCount,
       ),
       actionButtons: actionButtons,
       schedule: scheduled
           ? NotificationInterval(
               interval: interval,
-              timeZone: await AwesomeNotifications.localTimeZoneIdentifier,
+              timeZone: AwesomeNotifications.localTimeZoneIdentifier,
               preciseAlarm: true,
             )
           : null,
     );
+  }
+
+  Future<void> incrementBadgeCount(String userId) async {
+    final box = _databaseHelper.notificationBadgeBox;
+
+    NotificationBadgeModel? model;
+    try {
+      model = box.values.firstWhere((item) => item.userId == userId);
+    } catch (e) {
+      model = null;
+    }
+
+    if (model == null) {
+      // If no model exists, create a new one with count set to 1
+      model = NotificationBadgeModel(userId: userId, badgeCount: 1);
+      await box.add(model);
+    } else {
+      // Increment the badge count
+      model.incrementUnreadCount();
+    }
+  }
+
+  Future<int> getBadgeCount(String userId) async {
+    final box = _databaseHelper.notificationBadgeBox;
+
+    NotificationBadgeModel? model =
+        box.values.firstWhere((item) => item.userId == userId);
+    return model.badgeCount;
+  }
+
+  void resetBadgeCount(String userId) async {
+    final box = _databaseHelper.notificationBadgeBox;
+
+    NotificationBadgeModel? model = box.values.firstWhere(
+      (item) => item.userId == userId,
+    );
+
+    if (model != null) {
+      model.resetUnreadCount();
+    }
   }
 }

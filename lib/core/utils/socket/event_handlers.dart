@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
 import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
+import 'package:eb_demo_app/core/utils/notification/notification_service.dart';
 import 'package:eb_demo_app/core/utils/socket/socket_setup.dart';
 import 'package:eb_demo_app/src/features/chat/data/model/chat.dart';
 import 'package:eb_demo_app/src/features/chat/data/model/user.dart';
@@ -20,8 +21,9 @@ import '../../../src/features/authentication/data/data_source/local/auth_databas
 class SocketEventHandlers {
   late final client.Socket _socket;
   late final SocketSetup _socketSetup;
+  final NotificationService _notificationService;
 
-  SocketEventHandlers(this._socketSetup);
+  SocketEventHandlers(this._socketSetup, this._notificationService);
 
   void listenForOnlineUsers(
       StreamController<List<User>> onlineUsersController) {
@@ -69,12 +71,31 @@ class SocketEventHandlers {
   }
 
   void listenForprivateMessageToUpdateChat() {
-    _socket.on('privateMessageToUpdateChat', (data) {
+    _socket.on('privateMessageToUpdateChat', (data) async {
       final receivedChat = Chat.fromJson(data['chat']);
-      String currentRoute = getIt<AppRouter>().current.name;
-      if (currentRoute == "")
-        getIt<SocketBloc>()
-            .add(RecievedNewMessageFromUserEvent(recievedChat: receivedChat));
+      log("read: ${receivedChat.isRead}");
+      Future.delayed(const Duration(milliseconds: 100), () async {
+        final isChatScreen = getIt<AppRouter>()
+                .root
+                .innerRouterOf<TabsRouter>(MainNavRoute.name)
+                ?.activeIndex ==
+            3;
+        if (isChatScreen) {
+          getIt<SocketBloc>()
+              .add(RecievedNewMessageFromUserEvent(recievedChat: receivedChat));
+        } else {
+          await _notificationService
+              .incrementBadgeCount(receivedChat.sender.id);
+          _notificationService.showNotification(
+              senderID: receivedChat.sender.id,
+              title: receivedChat.sender.userName,
+              body: 'New Message Recieved!',
+              payload: {
+                'senderId': receivedChat.sender.id,
+                'senderUserName': receivedChat.sender.userName
+              });
+        }
+      });
     });
   }
 

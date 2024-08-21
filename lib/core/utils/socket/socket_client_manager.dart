@@ -27,6 +27,7 @@ class SocketClientManager {
     if (!_socketSetup.isConnectionOpen) {
       await _socketSetup.openSocketConnection();
       _eventHandlers.listenForOnlineUsers(_onlineUsersController);
+      _eventHandlers.listenForprivateMessageToUpdateChat();
     }
   }
 

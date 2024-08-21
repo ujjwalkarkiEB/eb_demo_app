@@ -5,6 +5,7 @@ import 'package:eb_demo_app/src/features/chat/presentation/screens/chat_navigati
 import 'package:eb_demo_app/src/features/chat/presentation/screens/user_chats/user_chats.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/screens/store/widget/modal/add_product_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import '../../../navigation.dart';
 import '../../../no_internet_screen.dart';
 import '../../../src/features/authentication/presentation/screens/onBoarding/onboarding_screen.dart';
@@ -52,7 +53,7 @@ class AppRouter extends _$AppRouter {
 
             AutoRoute(page: StoreRoute.page),
             AutoRoute(page: MyProductsRoute.page),
-            AutoRoute(initial: true, page: ChatNavigatioRoute.page, children: [
+            AutoRoute(page: ChatNavigatioRoute.page, children: [
               AutoRoute(initial: true, page: UserChatsRoute.page),
               AutoRoute(page: UserListRoute.page),
               AutoRoute(page: PrivateChatRoomRoute.page),

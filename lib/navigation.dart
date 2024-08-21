@@ -8,15 +8,12 @@ import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/global_bloc/bloc/internet_bloc.dart';
 import 'package:eb_demo_app/core/global_bloc/session/session_bloc.dart';
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
-import 'package:eb_demo_app/core/utils/session/session_config.dart';
-import 'package:eb_demo_app/core/utils/socket/socket_client_manager.dart';
 import 'package:eb_demo_app/src/features/chat/presentation/blocs/socket/socket_bloc.dart';
 import 'package:eb_demo_app/src/features/personalization/presentation/bloc/personalization_bloc.dart';
 import 'package:eb_demo_app/src/features/shop/presentation/blocs/store/store_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:local_session_timeout/local_session_timeout.dart';
 import 'package:quickalert/quickalert.dart';
 
 @RoutePage()
@@ -123,12 +120,12 @@ class _MainScreenState extends State<MainNavScreen> {
               elevation: 14,
               currentIndex: tabsRouter.activeIndex,
               onTap: (index) {
-                // if (tabsRouter.activeIndex != index) {
-                //   if (tabsRouter.activeIndex == 0) {
-                //     tabsRouter.stack.first;
-                //   }
-                tabsRouter.setActiveIndex(index);
-                // }
+                if (tabsRouter.activeIndex != index) {
+                  tabsRouter.setActiveIndex(index);
+                  // Optionally, log the index for debugging
+                  log('Navigating to index: $index');
+                  log('tabsrouetr  to index: ${tabsRouter.activeIndex}');
+                }
               },
               selectedIconTheme:
                   const IconThemeData(color: AppColors.buttonColor),

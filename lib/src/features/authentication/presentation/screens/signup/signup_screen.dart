@@ -17,7 +17,9 @@ class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-
+    // print(' 123 :  ${getIt<AppRouter>().currentChild?.name}');
+    // print(' 1234 :  ${getIt<AppRouter>().stackData.first.name}');
+    // print(' 1235 :  ${getIt<AppRouter>().root.}');
     return BlocProvider(
       create: (context) => getIt<SignupBloc>(),
       child: BlocListener<SignupBloc, SignupState>(

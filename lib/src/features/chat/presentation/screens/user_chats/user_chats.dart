@@ -4,6 +4,7 @@ import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/utils/constants/colors.dart';
 import 'package:eb_demo_app/core/utils/constants/sizes.dart';
+import 'package:eb_demo_app/core/utils/socket/socket_client_manager.dart';
 import 'package:eb_demo_app/src/features/chat/data/dummydata/chats.dart';
 import 'package:eb_demo_app/src/features/chat/data/dummydata/dummy_user.dart';
 import 'package:eb_demo_app/src/features/chat/presentation/blocs/socket/socket_bloc.dart';

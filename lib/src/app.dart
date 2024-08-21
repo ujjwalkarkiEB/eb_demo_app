@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appRouter = getIt<AppRouter>();
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.system,
         darkTheme: AppTheme.darkThemeData,
         theme: AppTheme.lightThemeData,
-        routerConfig: AppRouter().config(),
+        routerConfig: appRouter.config(),
         builder: EasyLoading.init(),
       ),
       // child: MaterialApp(

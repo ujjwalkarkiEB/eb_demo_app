@@ -1,18 +1,17 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:eb_demo_app/core/common/widgets/snackbars/error_snackbar.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
+import 'package:eb_demo_app/core/utils/constants/images.dart';
 import 'package:eb_demo_app/core/utils/helpers/helper_functions.dart';
+import 'package:eb_demo_app/src/features/chat/data/model/chat.dart';
 import 'package:eb_demo_app/src/features/chat/data/model/user.dart';
+import 'package:eb_demo_app/src/features/chat/presentation/blocs/private_chat/private_chat_room_bloc.dart';
+import 'package:eb_demo_app/src/features/chat/presentation/blocs/socket/socket_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-
-import '../../../../../../../core/global_bloc/global/global_bloc.dart';
-import '../../../../../../../core/utils/constants/images.dart';
-import '../../../../data/model/chat.dart';
-import '../../../blocs/private_chat/private_chat_room_bloc.dart';
-import '../../../blocs/socket/socket_bloc.dart';
 
 class UserChatList extends StatefulWidget {
   const UserChatList({super.key});
@@ -22,58 +21,49 @@ class UserChatList extends StatefulWidget {
 }
 
 class _UserChatListState extends State<UserChatList> {
-  List<Chat> userLastChats = [];
-
   @override
   Widget build(BuildContext context) {
     final currentUserId = context.read<SocketBloc>().currentUserId;
 
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<SocketBloc, SocketState>(
-          listener: (context, state) {
-            if (state is UserChatsLoadingFailed) {
-              showFlashError(context, 'Failed to load chat list');
-            }
-          },
-        ),
-        // BlocListener<GlobalBloc, GlobalStatusState>(
-        //   listener: (context, state) {
-        //     if (state is RefreshState &&
-        //         state.refershType == RefreshType.chatList) {
-        //       context.read<SocketBloc>().add(GetLastMsgWithUsers());
-        //     }
-        //   },
-        // ),
-      ],
-      child: BlocBuilder<SocketBloc, SocketState>(
-        buildWhen: (previous, current) => current is UserChatsLoaded,
-        builder: (context, state) {
-          if (state is UserChatsLoaded) {
-            userLastChats = state.chats;
-          }
-
+    return BlocBuilder<SocketBloc, SocketState>(
+      buildWhen: (previous, current) => current is UserChatsLoaded,
+      builder: (context, state) {
+        if (state is UserChatsLoaded) {
           return Expanded(
             child: ListView.separated(
               separatorBuilder: (_, __) => const Gap(10),
-              itemCount: userLastChats.length,
+              itemCount: state.chats.length,
               itemBuilder: (context, index) {
-                final chat = userLastChats[index];
+                final chat = state.chats[index];
+
                 final isSentByMe = chat.sender.id == currentUserId;
                 final otherUser = isSentByMe ? chat.receiver : chat.sender;
                 final formattedDateTime =
                     HelperFunctions.formatChatMessageTime(chat.createdAt);
 
-                return SenderChatWidget(
-                    otherUser: otherUser,
-                    isSentByMe: isSentByMe,
-                    chat: chat,
-                    formattedDateTime: formattedDateTime);
+                return BlocSelector<SocketBloc, SocketState, Chat?>(
+                  selector: (state) {
+                    if (state is NewMessageState &&
+                        state.recievedChat.room == chat.room) {
+                      return state.recievedChat;
+                    }
+                    return null;
+                  },
+                  builder: (context, updatedChat) {
+                    return SenderChatWidget(
+                      otherUser: otherUser,
+                      isSentByMe: isSentByMe,
+                      chat: updatedChat ?? chat,
+                      formattedDateTime: formattedDateTime,
+                    );
+                  },
+                );
               },
             ),
           );
-        },
-      ),
+        }
+        return Center(child: CircularProgressIndicator());
+      },
     );
   }
 }
@@ -117,10 +107,10 @@ class SenderChatWidget extends StatelessWidget {
           subtitle: Text(
             isSentByMe ? 'You: ${chat.message}' : chat.message,
             style: TextStyle(
-              color: chat.isRead && !isSentByMe
+              color: !chat.isRead && !isSentByMe
                   ? Colors.black
                   : Colors.black.withOpacity(0.4),
-              fontWeight: chat.isRead && !isSentByMe
+              fontWeight: !chat.isRead && !isSentByMe
                   ? FontWeight.bold
                   : FontWeight.normal,
             ),

@@ -23,9 +23,7 @@ class SocketBloc extends Bloc<SocketEvent, SocketState> {
       : super(SocektInitial()) {
     on<OpenSocketConnection>(_onOpenSocket);
     on<GetLastMsgWithUsers>(_onGetLastMsgEvent);
-    on<RecievedNewMessageFromUserEvent>(
-      (event, emit) => emit(NewMessageState(recievedChat: event.recievedChat)),
-    );
+    on<RecievedNewMessageFromUserEvent>(_onReceivedNewMessageFromUserEvent);
   }
 
   List<Chat> privateMessages = [];
@@ -33,6 +31,21 @@ class SocketBloc extends Bloc<SocketEvent, SocketState> {
 
   void _onOpenSocket(OpenSocketConnection event, Emitter<SocketState> emit) {
     _socketClientManager.openSocketConnection();
+  }
+
+  void _onReceivedNewMessageFromUserEvent(
+    RecievedNewMessageFromUserEvent event,
+    Emitter<SocketState> emit,
+  ) {
+    // final updatedChats = privateMessages.map((chat) {
+    //   if (chat.id == event.recievedChat.id) {
+    //     return event.recievedChat; // Update chat with new message
+    //   }
+    //   return chat;
+    // }).toList();
+
+    print('reached here');
+    emit(NewMessageState(recievedChat: event.recievedChat));
   }
 
   void _onGetLastMsgEvent(

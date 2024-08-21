@@ -104,7 +104,6 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final registerModule = _$RegisterModule();
-    gh.factory<_i857.NotificationService>(() => _i857.NotificationService());
     gh.factory<_i1043.GlobalBloc>(() => _i1043.GlobalBloc());
     gh.factory<_i475.UsersearchBloc>(() => _i475.UsersearchBloc());
     gh.singleton<_i193.AppRouter>(() => registerModule.appRouter);
@@ -118,6 +117,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i696.SessionBloc(gh<_i220.SessionManager>()));
     gh.lazySingleton<_i329.LocalAuthService>(
         () => _i329.LocalAuthService(gh<_i752.DatabaseHelper>()));
+    gh.factory<_i857.NotificationService>(
+        () => _i857.NotificationService(gh<_i752.DatabaseHelper>()));
     gh.lazySingleton<_i554.ShopDatabaseService>(
         () => _i554.ShopDatabaseServiceImpl(gh<_i752.DatabaseHelper>()));
     gh.lazySingleton<_i590.DioClient>(
@@ -193,8 +194,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i819.AuthRepository>(),
           gh<_i4.LocalAuthRepository>(),
         ));
-    gh.lazySingleton<_i88.SocketEventHandlers>(
-        () => _i88.SocketEventHandlers(gh<_i541.SocketSetup>()));
+    gh.lazySingleton<_i88.SocketEventHandlers>(() => _i88.SocketEventHandlers(
+          gh<_i541.SocketSetup>(),
+          gh<_i857.NotificationService>(),
+        ));
     gh.lazySingleton<_i703.SocketClientManager>(() => _i703.SocketClientManager(
           gh<_i541.SocketSetup>(),
           gh<_i88.SocketEventHandlers>(),
@@ -211,7 +214,4 @@ extension GetItInjectableX on _i174.GetIt {
   }
 }
 
-class _$RegisterModule extends _i291.RegisterModule {
-  @override
-  _i193.AppRouter get appRouter => _i193.AppRouter();
-}
+class _$RegisterModule extends _i291.RegisterModule {}

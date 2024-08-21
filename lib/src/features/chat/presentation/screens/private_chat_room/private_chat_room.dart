@@ -47,11 +47,14 @@ class _PrivateChatRoomScreenState extends State<PrivateChatRoomScreen> {
 
   @override
   Widget build(BuildContext context) {
-    log(' hajskdhakajsdh :  ${getIt<AppRouter>().currentChild?.name}');
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              context.router.back();
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -96,13 +99,18 @@ class _PrivateChatRoomScreenState extends State<PrivateChatRoomScreen> {
                           );
                         }
                         return BlocSelector<PrivateChatRoomBloc,
-                            PrivateChatRoomState, Chat>(
-                          selector: (state) => state.chats[index],
-                          builder: (context, state) => ChatMessageWidget(
-                            chat: chat,
-                            isLatestMsg: index == 0,
-                            currentUserID: _currentUserId!,
+                            PrivateChatRoomState, Chat?>(
+                          selector: (state) => state.chats.firstWhere(
+                            (element) => element.id == chat.id,
                           ),
+                          builder: (context, updatedChat) {
+                            log('found updae chat: ${updatedChat?.isRead}');
+                            return ChatMessageWidget(
+                              chat: updatedChat ?? chat,
+                              isLatestMsg: index == 0,
+                              currentUserID: _currentUserId!,
+                            );
+                          },
                         );
                       },
                     ),

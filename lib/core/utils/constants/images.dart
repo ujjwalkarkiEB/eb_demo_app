@@ -3,6 +3,7 @@ class AppImages {
   static const loginLogo = "assets/logo/login_logo.jpg";
   static const otpLogo = "assets/logo/otp_logo.jpg";
   static const googleLogo = "assets/logo/googleLogo.jpg";
+  static const notificationLogo = "assets/logo/ebcom.png";
 
   // images
   static const loginBackgroundImg = "assets/images/login_bg.jpg";
