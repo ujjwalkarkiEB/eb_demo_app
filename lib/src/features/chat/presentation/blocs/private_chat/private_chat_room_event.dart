@@ -23,8 +23,12 @@ final class NewPrivateMessageRecievedEvent extends PrivateChatRoomEvent {
 final class SendPrivateMsgEvent extends PrivateChatRoomEvent {
   final String receiverId;
   final String message;
+  final String senderId;
 
-  SendPrivateMsgEvent({required this.receiverId, required this.message});
+  SendPrivateMsgEvent(
+      {required this.senderId,
+      required this.receiverId,
+      required this.message});
 }
 
 final class LastMsgReadEvent extends PrivateChatRoomEvent {

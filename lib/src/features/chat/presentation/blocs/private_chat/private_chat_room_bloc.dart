@@ -11,6 +11,8 @@ import '../../../data/repository/chat_respository.dart';
 part 'private_chat_room_event.dart';
 part 'private_chat_room_state.dart';
 
+enum Status { initial, loading, success, error, newChatRecieved, lastChatRead }
+
 @lazySingleton
 class PrivateChatRoomBloc
     extends Bloc<PrivateChatRoomEvent, PrivateChatRoomState> {
@@ -37,7 +39,8 @@ class PrivateChatRoomBloc
     _socketClientManager
       ..joinPrivateChatRoom(event.userId)
       ..listenForPrivateMessages()
-      ..listenForTypingEvents();
+      ..listenForTypingEvents()
+      ..listenForReadChat();
   }
 
   void _onFetchPrivateChats(
@@ -57,7 +60,9 @@ class PrivateChatRoomBloc
   void _onSendPrivateRoom(
       SendPrivateMsgEvent event, Emitter<PrivateChatRoomState> emit) async {
     _socketClientManager.sendPrivateMessage(
-        receiverId: event.receiverId, message: event.message);
+        receiverId: event.receiverId,
+        message: event.message,
+        senderId: event.senderId);
   }
 
   void _onPrivateMsgRecieved(NewPrivateMessageRecievedEvent event,

@@ -19,7 +19,7 @@ class NotificationService {
   NotificationService(this._databaseHelper);
   Future<void> initializeNotification() async {
     await AwesomeNotifications().initialize(
-      null,
+      "resource://drawable/ebcom",
       [
         NotificationChannel(
           channelGroupKey: 'high_importance_channel',
@@ -28,10 +28,11 @@ class NotificationService {
           channelDescription: 'Notification channel for basic task',
           defaultColor: Colors.deepPurple,
           ledColor: Colors.red,
+          icon: "resource://drawable/ebcom",
           importance: NotificationImportance.Max,
           channelShowBadge: true,
           onlyAlertOnce: true,
-          playSound: true,
+          // playSound: true,
           criticalAlerts: true,
         )
       ],
@@ -67,10 +68,15 @@ class NotificationService {
     final senderUserName = payload['senderUserName'];
     if (senderId != null && senderUserName != null) {
       getIt<AppRouter>().pushAll([
-        const ChatNavigatioRoute(),
-        PrivateChatRoomRoute(
-          reciverID: senderId,
-          receiverName: senderUserName,
+        ChatNavigatioRoute(
+          children: [
+            UserChatsRoute(),
+            UserListRoute(),
+            PrivateChatRoomRoute(
+              reciverID: senderId,
+              receiverName: senderUserName,
+            ),
+          ],
         ),
       ]);
       resetBadgeCount(senderId);

@@ -6,6 +6,7 @@ import 'package:eb_demo_app/core/global_bloc/global/global_bloc.dart';
 import 'package:eb_demo_app/core/utils/socket/socket_client_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_debouncer/flutter_debouncer.dart';
 import 'package:gap/gap.dart';
 import '../../../../../../core/config/route/app_route.dart';
 import '../../../../authentication/data/data_source/local/auth_database_service.dart';
@@ -50,11 +51,11 @@ class _PrivateChatRoomScreenState extends State<PrivateChatRoomScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              context.router.back();
-            },
-            icon: const Icon(Icons.arrow_back_ios)),
+        // leading: IconButton(
+        //     onPressed: () {
+        //       context.router.back();
+        //     },
+        //     icon: const Icon(Icons.arrow_back_ios)),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -78,6 +79,11 @@ class _PrivateChatRoomScreenState extends State<PrivateChatRoomScreen> {
               previous.chats.length != current.chats.length ||
               current.status != previous.status,
           builder: (context, state) {
+            if (state.status == Status.loading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -100,9 +106,19 @@ class _PrivateChatRoomScreenState extends State<PrivateChatRoomScreen> {
                         }
                         return BlocSelector<PrivateChatRoomBloc,
                             PrivateChatRoomState, Chat?>(
-                          selector: (state) => state.chats.firstWhere(
-                            (element) => element.id == chat.id,
-                          ),
+                          selector: (state) {
+                            if (state.status == Status.lastChatRead) {
+                              log('herere');
+                              final updatedChat = state.chats
+                                  .where(
+                                    (element) => element.id == chat.id,
+                                  )
+                                  .toList();
+                              print(updatedChat[0]);
+                              return updatedChat[0];
+                            }
+                            return null;
+                          },
                           builder: (context, updatedChat) {
                             log('found updae chat: ${updatedChat?.isRead}');
                             return ChatMessageWidget(
@@ -123,13 +139,7 @@ class _PrivateChatRoomScreenState extends State<PrivateChatRoomScreen> {
                     child: TextField(
                       controller: msgController,
                       onChanged: (value) {
-                        if (value.trim().isEmpty) {
-                          getIt<SocketClientManager>().sendTypingEvent(
-                              receiverId: widget.reciverID, isTyping: false);
-                        } else {
-                          getIt<SocketClientManager>().sendTypingEvent(
-                              receiverId: widget.reciverID, isTyping: true);
-                        }
+                        sendTypingEvents(value);
                       },
                       decoration: InputDecoration(
                         labelText: 'Send message...',
@@ -156,8 +166,26 @@ class _PrivateChatRoomScreenState extends State<PrivateChatRoomScreen> {
     );
   }
 
+  void sendTypingEvents(String value) {
+    final throttler = Throttler();
+    const duration = Duration(seconds: 2);
+    throttler.throttle(
+      duration: duration,
+      onThrottle: () {
+        if (value.trim().isEmpty) {
+          getIt<SocketClientManager>()
+              .sendTypingEvent(receiverId: widget.reciverID, isTyping: false);
+        } else {
+          getIt<SocketClientManager>()
+              .sendTypingEvent(receiverId: widget.reciverID, isTyping: true);
+        }
+      },
+    );
+  }
+
   void onSendMessage(BuildContext context) {
     context.read<PrivateChatRoomBloc>().add(SendPrivateMsgEvent(
+          senderId: _currentUserId!,
           receiverId: widget.reciverID,
           message: msgController.text.trim(),
         ));

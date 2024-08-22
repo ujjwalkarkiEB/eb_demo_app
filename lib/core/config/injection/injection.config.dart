@@ -76,7 +76,6 @@ import '../../../src/features/shop/presentation/blocs/store/store_bloc.dart'
 import '../../global_bloc/bloc/internet_bloc.dart' as _i331;
 import '../../global_bloc/global/global_bloc.dart' as _i1043;
 import '../../global_bloc/session/session_bloc.dart' as _i696;
-import '../../utils/helpers/fcm_helpers.dart' as _i684;
 import '../../utils/helpers/internet_connection_helpers.dart' as _i841;
 import '../../utils/helpers/token_services.dart' as _i863;
 import '../../utils/local_auth/local_auth_services.dart' as _i329;
@@ -111,7 +110,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i752.AuthInterceptor>(() => _i752.AuthInterceptor());
     gh.lazySingleton<_i841.InternetConnectionHelpers>(
         () => _i841.InternetConnectionHelpers());
-    gh.lazySingleton<_i684.FcmHelper>(() => _i684.FcmHelper());
     gh.lazySingleton<_i220.SessionManager>(() => _i220.SessionManager());
     gh.factory<_i696.SessionBloc>(
         () => _i696.SessionBloc(gh<_i220.SessionManager>()));

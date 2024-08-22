@@ -46,15 +46,19 @@ class SocketClientManager {
   }
 
   void leavePrivateChatRoom(String userId) {
+    log('left room');
     _socketSetup.socket.emit('leavePrivateChatRoom', {'userId': userId});
   }
 
   void sendPrivateMessage(
-      {required String receiverId, required String message}) {
+      {required String receiverId,
+      required String message,
+      required String senderId}) {
     if (message.isEmpty) return;
     _socketSetup.socket.emit('privateMessage', {
       'receiver': receiverId,
       'message': message,
+      'sender': senderId,
     });
   }
 

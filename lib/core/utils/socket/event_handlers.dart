@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:eb_demo_app/core/config/injection/injection.dart';
 import 'package:eb_demo_app/core/config/route/app_route.dart';
 import 'package:eb_demo_app/core/utils/notification/notification_service.dart';
@@ -48,7 +49,7 @@ class SocketEventHandlers {
     // which will cause duplication of messages
     // as more listeners added respectively [NewPrivateMessageRecievedEvent] will be added
     _socket.off('privateMessage');
-
+    log('adasdasdasdadasdasdas');
     _socket.on('privateMessage', (data) {
       final Chat newChat = Chat.fromJson(data['chat']);
       getIt<PrivateChatRoomBloc>()
@@ -65,15 +66,16 @@ class SocketEventHandlers {
     _socket.on('isRead', (data) {
       final receivedChat = Chat.fromJson(data['chat']);
       if (receivedChat.sender.id == currentUserId) {
-        privateRoomBloc.add(LastMsgReadEvent(chatId: receivedChat.room));
+        privateRoomBloc.add(LastMsgReadEvent(chatId: receivedChat.id));
       }
     });
   }
 
   void listenForprivateMessageToUpdateChat() {
-    _socket.on('privateMessageToUpdateChat', (data) async {
+    _socket.on('privateMessageToUpdateChat', (data) {
+      log("read: message receievd insde from chat");
+
       final receivedChat = Chat.fromJson(data['chat']);
-      log("read: ${receivedChat.isRead}");
       Future.delayed(const Duration(milliseconds: 100), () async {
         final isChatScreen = getIt<AppRouter>()
                 .root
@@ -90,6 +92,7 @@ class SocketEventHandlers {
               senderID: receivedChat.sender.id,
               title: receivedChat.sender.userName,
               body: 'New Message Recieved!',
+              notificationLayout: NotificationLayout.Messaging,
               payload: {
                 'senderId': receivedChat.sender.id,
                 'senderUserName': receivedChat.sender.userName

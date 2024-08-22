@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:built_collection/built_collection.dart';
-import 'package:eb_demo_app/core/utils/base/base_graphql_remote_source.dart';
+import 'package:eb_demo_app/core/utils/base/remote_source/base_graphql_remote_source.dart';
 import 'package:eb_demo_app/core/utils/error/exception/api_exception.dart';
 import 'package:eb_demo_app/core/utils/network/client/graphql_client.dart';
 import 'package:eb_demo_app/graphql/mutation/g.files/add_product.data.gql.dart';

@@ -1,7 +1,5 @@
 part of 'private_chat_room_bloc.dart';
 
-enum Status { initial, loading, success, error, newChatRecieved, lastChatRead }
-
 class PrivateChatRoomState extends Equatable {
   final Status status;
   final List<Chat> chats;

@@ -37,14 +37,6 @@ class SocketBloc extends Bloc<SocketEvent, SocketState> {
     RecievedNewMessageFromUserEvent event,
     Emitter<SocketState> emit,
   ) {
-    // final updatedChats = privateMessages.map((chat) {
-    //   if (chat.id == event.recievedChat.id) {
-    //     return event.recievedChat; // Update chat with new message
-    //   }
-    //   return chat;
-    // }).toList();
-
-    print('reached here');
     emit(NewMessageState(recievedChat: event.recievedChat));
   }
 

@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:eb_demo_app/core/config/injection/injection.dart';
-import 'package:eb_demo_app/core/utils/base/base_remote_source.dart';
+import 'package:eb_demo_app/core/utils/base/remote_source/base_remote_source.dart';
 import 'package:eb_demo_app/core/utils/error/exception/api_exception.dart';
 import 'package:eb_demo_app/core/utils/helpers/token_services.dart';
 import 'package:injectable/injectable.dart';

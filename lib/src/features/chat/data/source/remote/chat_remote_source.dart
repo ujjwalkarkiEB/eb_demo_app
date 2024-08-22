@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:eb_demo_app/core/utils/base/base_remote_source.dart';
+import 'package:eb_demo_app/core/utils/base/remote_source/base_remote_source.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/utils/network/client/dio_client.dart';

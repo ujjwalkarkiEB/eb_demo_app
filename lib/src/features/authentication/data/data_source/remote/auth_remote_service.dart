@@ -1,7 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:eb_demo_app/core/utils/base/base_remote_source.dart';
+import 'package:eb_demo_app/core/utils/base/remote_source/base_remote_source.dart';
 import 'package:eb_demo_app/core/utils/constants/strings.dart';
 import 'package:eb_demo_app/core/utils/network/client/dio_client.dart';
 import 'package:injectable/injectable.dart';
@@ -122,6 +123,7 @@ class AuthRemoteSourceImpl extends BaseRemoteSource
               data: {"email": email, "password": password},
             ),
         onResponse: (data) {
+          log('api response data: ${data}');
           final loginData = {
             "accessToken": data['data'][accessTokenKey],
             "refreshToken": data['data'][refreshTokenKey],

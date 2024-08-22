@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:ferry/ferry.dart';
 
-import '../error/exception/api_exception.dart' as apiexception;
+import '../../error/exception/api_exception.dart' as apiexception;
 
 abstract class BaseGraphQLRemoteSource {
   final Client _client;
