@@ -26,7 +26,6 @@ class SocketBloc extends Bloc<SocketEvent, SocketState> {
     on<RecievedNewMessageFromUserEvent>(_onReceivedNewMessageFromUserEvent);
   }
 
-  List<Chat> privateMessages = [];
   final currentUserId = getIt<AuthDatabaseService>().getUserId();
 
   void _onOpenSocket(OpenSocketConnection event, Emitter<SocketState> emit) {
@@ -43,11 +42,9 @@ class SocketBloc extends Bloc<SocketEvent, SocketState> {
   void _onGetLastMsgEvent(
       GetLastMsgWithUsers event, Emitter<SocketState> emit) async {
     emit(UserChatsLoading());
-    await Future.delayed(const Duration(seconds: 1));
     final result = await _chatRespository.getLastMsgWithUsers();
     result.fold(
       (failure) {
-        privateMessages = [];
         emit(UserChatsLoadingFailed(msg: failure.failureMsg!));
       },
       (chats) => emit(UserChatsLoaded(chats: chats)),

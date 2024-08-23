@@ -30,6 +30,9 @@ class _UserChatListState extends State<UserChatList> {
       builder: (context, state) {
         if (state is UserChatsLoaded) {
           chats = state.chats;
+          chats.sort(
+            (a, b) => a.createdAt.compareTo(b.createdAt),
+          );
         }
 
         if (state is NewMessageState) {

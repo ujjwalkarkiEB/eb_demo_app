@@ -35,7 +35,7 @@ class _CartScreenState extends State<CartScreen> {
       },
       listener: (context, state) {
         if (state is CartActionSuccess) {
-          getIt<NotificationService>().showNotification(
+          getIt<NotificationService>().showLocalNotification(
             body: 'Your orders have been placed!',
             title: 'Cart Items Shipped',
           );

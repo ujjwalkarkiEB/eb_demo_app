@@ -86,13 +86,9 @@ class SocketEventHandlers {
           getIt<SocketBloc>()
               .add(RecievedNewMessageFromUserEvent(recievedChat: receivedChat));
         } else {
-          await _notificationService
-              .incrementBadgeCount(receivedChat.sender.id);
-          _notificationService.showNotification(
-              senderID: receivedChat.sender.id,
+          _notificationService.showLocalNotification(
               title: receivedChat.sender.userName,
               body: 'New Message Recieved!',
-              notificationLayout: NotificationLayout.Messaging,
               payload: {
                 'senderId': receivedChat.sender.id,
                 'senderUserName': receivedChat.sender.userName

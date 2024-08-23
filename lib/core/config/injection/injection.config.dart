@@ -103,6 +103,7 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final registerModule = _$RegisterModule();
+    gh.factory<_i857.NotificationService>(() => _i857.NotificationService());
     gh.factory<_i1043.GlobalBloc>(() => _i1043.GlobalBloc());
     gh.factory<_i475.UsersearchBloc>(() => _i475.UsersearchBloc());
     gh.singleton<_i193.AppRouter>(() => registerModule.appRouter);
@@ -115,8 +116,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i696.SessionBloc(gh<_i220.SessionManager>()));
     gh.lazySingleton<_i329.LocalAuthService>(
         () => _i329.LocalAuthService(gh<_i752.DatabaseHelper>()));
-    gh.factory<_i857.NotificationService>(
-        () => _i857.NotificationService(gh<_i752.DatabaseHelper>()));
     gh.lazySingleton<_i554.ShopDatabaseService>(
         () => _i554.ShopDatabaseServiceImpl(gh<_i752.DatabaseHelper>()));
     gh.lazySingleton<_i590.DioClient>(

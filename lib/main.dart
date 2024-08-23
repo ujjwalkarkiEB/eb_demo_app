@@ -12,7 +12,7 @@ void main() async {
   // register dependenciies to getit
   configureDependencies();
   // initialize notificationservice
-  await getIt<NotificationService>().initializeNotification();
+  await getIt<NotificationService>().initializeNotifications();
 
   final databaseHelper = getIt<DatabaseHelper>();
   // initialize local database

@@ -45,11 +45,13 @@ class SocketClientManager {
     _socketSetup.socket.emit('joinPrivateChatRoom', {'userId': userId});
   }
 
+  ///
   void leavePrivateChatRoom(String userId) {
-    log('left room');
+    _socketSetup.socket.off('privateMessage');
     _socketSetup.socket.emit('leavePrivateChatRoom', {'userId': userId});
   }
 
+  /// emits [privateMessageEvent] when user send message
   void sendPrivateMessage(
       {required String receiverId,
       required String message,
